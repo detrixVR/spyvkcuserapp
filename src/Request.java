@@ -5,7 +5,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class Request {
-    public static String send(String request) throws IOException {
+    public String send(String request) throws IOException {
         StringBuilder result = new StringBuilder();
         URL url = new URL(request);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
