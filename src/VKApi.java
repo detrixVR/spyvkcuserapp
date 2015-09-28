@@ -1,48 +1,182 @@
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.*;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class VKApi {
     private Client client = null;
+    public volatile boolean isPasswordEntered = false;
+    private volatile String password = null;
+    private JFrame frame = null;
 
     public class Auth {
-        public void authorize(Client client) {
-            String authorizeLink = "https://oauth.vk.com/authorize?" +
-                    "client_id=" + client.getClientID() +
-                    "&redirect_uri=" + "https://oauth.vk.com/blank.html" +
-                    "&display=" + "page" +
-                    "&scope=" + "groups" +
-                    "&response_type=" + "token" +
-                    "&v=" + 5.37;
-            showPopup(authorizeLink);
+        public String authorize(Client client) throws IOException {
+            StringBuilder authorizeLink = new StringBuilder();
+            authorizeLink.append("https://oauth.vk.com/authorize?");
+            authorizeLink.append("client_id=");
+            authorizeLink.append(client.getClientID());
+            authorizeLink.append("&redirect_uri=https://oauth.vk.com/blank.html");
+            authorizeLink.append("&display=page");
+            authorizeLink.append("&scope=groups");
+            authorizeLink.append("&response_type=token");
+            authorizeLink.append("&v=5.37");
+
+            // authorization via console browser
+            // browser setup
+            System.setErr(new PrintStream("NUL"));
+            BrowserVersion browserVersion = BrowserVersion.CHROME;
+            browserVersion.setBrowserLanguage("ru-RU");
+            browserVersion.setUserLanguage("ru-RU");
+            WebClient webClient = new WebClient(browserVersion);
+            webClient.addRequestHeader("charset", "utf-8");
+            HtmlPage page = webClient.getPage(authorizeLink.toString());
+            List<HtmlForm> forms = page.getForms();
+            HtmlForm form = forms.get(0);
+            // form filling
+            String[] emailpass = requestLoginData();
+            HtmlTextInput textInput = form.getInputByName("email");
+            textInput.setText(emailpass[0]);
+            HtmlPasswordInput passwordInput = form.getInputByName("pass");
+            passwordInput.setText(emailpass[1]);
+            HtmlButton button = (HtmlButton) form.getByXPath("//*[@id=\"install_allow\"]").get(0);
+            // try to remove extra input that interrupt authorization
+            HtmlSubmitInput trap = (HtmlSubmitInput) form.getByXPath("//*[@id=\"box\"]/div/input[8]").get(0);
+            trap.remove();
+            HtmlPage result = button.click();
+
+            String accessToken = parseAccessToken(result.getUrl().toString());
+            if(accessToken != null) {
+                System.setErr(new PrintStream(System.err));
+                return accessToken;
+            }
+
+            HtmlButton allowButton = (HtmlButton) result.getByXPath("//*[@id=\"install_allow\"]").get(0);
+            HtmlPage accessPage = allowButton.click();
+            String url = accessPage.getUrl().toString();
+            accessToken = parseAccessToken(url);
+            System.setErr(new PrintStream(System.err));
+            return accessToken;
         }
 
-        private void showPopup(String authorizeLink) {
-            try {
-                Desktop.getDesktop().browse(new URI(authorizeLink));
-            } catch (IOException | URISyntaxException e) {
-                e.printStackTrace();
+        private String parseAccessToken(String url) {
+            Pattern pattern = Pattern.compile("access_token=([^&]*)");
+            Matcher matcher = pattern.matcher(url);
+            if(matcher.find()) {
+                return matcher.group(1);
+            }
+            return null;
+        }
+
+        public String[] requestLoginData() throws IOException {
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            String[] emailpass = new String[2];
+            System.out.print("Login: ");
+            emailpass[0] = br.readLine();
+            showPasswordRequest();
+            while(!isPasswordEntered) {/*wait...*/}
+            emailpass[1] = password;
+            return emailpass;
+        }
+
+        private void showPasswordRequest() {
+            Panel p = new Panel();
+            Runnable r = () -> {
+                UIManager.put("swing.boldMetal", Boolean.FALSE);
+                p.createAndShowGUI();
+            };
+            SwingUtilities.invokeLater(r);
+        }
+
+        class Panel extends JPanel
+                implements ActionListener {
+            private final String OK = "OK";
+            private JPasswordField passwordField;
+
+            public Panel() {
+                passwordField = new JPasswordField(10);
+                passwordField.setActionCommand(OK);
+                passwordField.addActionListener(this);
+
+                JLabel passLabel = new JLabel("Password: ");
+                passLabel.setLabelFor(passwordField);
+                JComponent buttonPane = createButtonPanel();
+
+                JPanel textPane = new JPanel(new FlowLayout(FlowLayout.TRAILING));
+                textPane.add(passwordField);
+                textPane.add(passLabel);
+
+                add(textPane);
+                add(buttonPane);
+            }
+
+            private JComponent createButtonPanel() {
+                JPanel p = new JPanel(new GridLayout(0,1));
+                JButton okButton = new JButton("OK");
+                okButton.setActionCommand(OK);
+                okButton.addActionListener(this);
+                p.add(okButton);
+                return p;
+            }
+
+            public void actionPerformed(ActionEvent e) {
+                String cmd = e.getActionCommand();
+
+                if (OK.equals(cmd)) {
+                    char[] input = passwordField.getPassword();
+                    password = String.valueOf(input);
+                    isPasswordEntered = true;
+                    frame.dispose();
+                }
+            }
+
+
+            public void createAndShowGUI() {
+                frame = new JFrame("Password");
+                frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                final Panel newContentPane = new Panel();
+                newContentPane.setOpaque(true);
+                frame.setContentPane(newContentPane);
+                frame.pack();
+                frame.setVisible(true);
             }
         }
     }
 
-    public void authorize(Client client) {
+    public String authorize(Client client) {
         this.client = client;
-        (new Auth()).authorize(client);
+        try {
+            return (new Auth()).authorize(client);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public long resolve(String userlink) {
         userlink = userlink.replace("https://vk.com/", "");
         try {
-            String result = (new Request()).send("https://api.vk.com/method/utils.resolveScreenName?" +
-                            "screen_name=" + userlink +
-                            "&v=" + 5.37
-            );
+            StringBuilder request = new StringBuilder();
+            request.append("https://api.vk.com/method/utils.resolveScreenName?");
+            request.append("screen_name=");
+            request.append(userlink);
+            request.append("&v=5.37");
+
+            String result = (new Request()).get(request.toString());
             JSONObject jsonObject = new JSONObject(result);
             return jsonObject.getJSONObject("response").getLong("object_id");
         } catch (IOException e) {
@@ -54,12 +188,16 @@ public class VKApi {
     public ArrayList<Long> getGroupIDs(long userID) {
         String groupsJSON = "";
         try {
-            groupsJSON = (new Request()).send("https://api.vk.com/method/groups.get?" +
-                            "user_id=" + userID +
-                            "&count=" + 1000 +
-                            "&v=" + 5.37 +
-                            "&access_token=" + client.getAccessToken()
-            );
+            StringBuilder request = new StringBuilder();
+            request.append("https://api.vk.com/method/groups.get?");
+            request.append("user_id=");
+            request.append(userID);
+            request.append("&count=1000");
+            request.append("&v=5.37");
+            request.append("&access_token=");
+            request.append(client.getAccessToken());
+
+            groupsJSON = (new Request()).get(request.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -75,12 +213,15 @@ public class VKApi {
     public ArrayList<Long> getPostIDs(long groupID) {
         String postsJSON = "";
         try {
-            postsJSON = (new Request()).send("https://api.vk.com/method/wall.get?" +
-                            "owner_id=-" + groupID +
-                            "&offset=" + 0 +
-                            "&count=" + 100 +
-                            "&v=" + 5.37
-            );
+            StringBuilder request = new StringBuilder();
+            request.append("https://api.vk.com/method/wall.get?");
+            request.append("owner_id=-");
+            request.append(groupID);
+            request.append("&offset=0");
+            request.append("&count=100");
+            request.append("&v=5.37");
+
+            postsJSON = (new Request()).get(request.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -94,13 +235,17 @@ public class VKApi {
     }
 
     public ArrayList<Long> getLikesUserIDs(long groupID, long postID) throws IOException {
-        String likesJSON = (new Request()).send("https://api.vk.com/method/likes.getList?" +
-                        "type=" + "post" +
-                        "&owner_id=-" + groupID +
-                        "&item_id=" + postID +
-                        "&offset=" + 0 +
-                        "&count=" + 1000
-        );
+        StringBuilder request = new StringBuilder();
+        request.append("https://api.vk.com/method/likes.getList?");
+        request.append("type=post");
+        request.append("&owner_id=-");
+        request.append(groupID);
+        request.append("&item_id=");
+        request.append(postID);
+        request.append("&offset=0");
+        request.append("&count=1000");
+
+        String likesJSON = (new Request()).get(request.toString());
         ArrayList<Long> userIDs = new ArrayList<>();
         JSONObject jsonObject = new JSONObject(likesJSON);
         JSONArray userArray = jsonObject.getJSONObject("response").getJSONArray("users");

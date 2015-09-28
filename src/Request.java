@@ -1,11 +1,9 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class Request {
-    public String send(String request) throws IOException {
+    public String get(String request) throws IOException {
         StringBuilder result = new StringBuilder();
         URL url = new URL(request);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();

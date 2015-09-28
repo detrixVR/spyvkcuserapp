@@ -13,8 +13,8 @@ public class VKChase {
     }
 
     public void collectInfo() throws IOException {
-        vkApi.authorize(client);
-        client.setAccessToken(requestAccessToken());
+        String accessToken = vkApi.authorize(client);
+        client.setAccessToken(accessToken);
         String userlink = requestUserlink();
         long userID = vkApi.resolve(userlink);
         List<Long> groupIDs = vkApi.getGroupIDs(userID);
@@ -35,12 +35,6 @@ public class VKChase {
 
     private String requestUserlink() throws IOException {
         System.out.print("User link: ");
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        return br.readLine();
-    }
-
-    public String requestAccessToken() throws IOException {
-        System.out.print("Access token: ");
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         return br.readLine();
     }
