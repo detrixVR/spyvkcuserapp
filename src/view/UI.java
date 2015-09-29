@@ -11,22 +11,36 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class UI {
-    private static volatile boolean isPasswordEntered = false;
-    private static volatile String password = null;
-    private static JFrame passwordFrame = null;
+    private static volatile UI instance;
+    private volatile boolean isPasswordEntered = false;
+    private volatile String password = null;
+    private JFrame passwordFrame = null;
 
-    public static void showLikedPosts(HashMap<Long, ArrayList<Long>> likedPosts) {
+    private UI() {}
+
+    public static UI getInstance() {
+        if(instance == null) {
+            synchronized (UI.class) {
+                if(instance == null) {
+                    instance = new UI();
+                }
+            }
+        }
+        return instance;
+    }
+
+    public void showLikedPosts(HashMap<Long, ArrayList<Long>> likedPosts) {
         likedPosts.forEach((groupID, posts) -> {
             System.out.println("Group " + groupID + ":");
             posts.forEach((postID) -> System.out.println("https://vk.com/wall-" + groupID + "_" + postID));
         });
     }
 
-    public static void pleaseWait() {
+    public void pleaseWait() {
         System.out.println("Please, wait...");
     }
 
-    public static String[] requestLoginData() throws IOException {
+    public String[] requestLoginData() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String[] emailpass = new String[2];
         System.out.print("Login: ");
@@ -37,7 +51,7 @@ public class UI {
         return emailpass;
     }
 
-    public static void showPasswordRequest() {
+    public void showPasswordRequest() {
         PasswordPanel p = new PasswordPanel();
         Runnable r = () -> {
             UIManager.put("swing.boldMetal", Boolean.FALSE);
@@ -46,7 +60,19 @@ public class UI {
         SwingUtilities.invokeLater(r);
     }
 
-    static class PasswordPanel extends JPanel
+    public int requestCountOfPosts() throws IOException {
+        System.out.println("How many last posts do you want to check for each group?");
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        return Integer.valueOf(br.readLine());
+    }
+
+    public String requestUserlink() throws IOException {
+        System.out.print("User link: ");
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        return br.readLine();
+    }
+
+    class PasswordPanel extends JPanel
                 implements ActionListener {
             private final String OK = "OK";
             private JPasswordField passwordField;

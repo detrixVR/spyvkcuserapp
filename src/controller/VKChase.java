@@ -3,9 +3,7 @@ package controller;
 import model.Client;
 import view.UI;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,20 +20,24 @@ public class VKChase {
     public void collectInfo() throws IOException {
         String accessToken = vkApi.authorize(client);
         client.setAccessToken(accessToken);
-        String userlink = requestUserlink();
+        String userlink = UI.getInstance().requestUserlink();
         long userID = vkApi.resolveScreenName(userlink);
-        UI.pleaseWait();
         List<Long> groupIDs = vkApi.getGroupIDs(userID);
+        HashMap<Long, ArrayList<Long>> likedPostsIDsByGroups = findLikedPostsIDsByGroups(groupIDs, userID);
+        UI.getInstance().showLikedPosts(likedPostsIDsByGroups);
+    }
 
+    private HashMap<Long, ArrayList<Long>> findLikedPostsIDsByGroups(List<Long> groupIDs, long userID) throws IOException {
         HashMap<Long, ArrayList<Long>> likedPostsIDsByGroups = new HashMap<>();
-
+        int countOfPosts = UI.getInstance().requestCountOfPosts();
+        UI.getInstance().pleaseWait();
         for(Long groupID: groupIDs) {
-            List<Long> postIDs = vkApi.getPostIDs(groupID);
+            List<Long> postIDs = vkApi.getPostIDs(groupID, countOfPosts);
             ArrayList<Long> likedPostIDs = new ArrayList<>();
             for (Long postID : postIDs) {
                 try {
                     List<Long> userIDs = vkApi.getLikesUserIDs(groupID, postID);
-                    if(checkPresenceOfUser(userIDs, userID, groupID, postID)) {
+                    if(checkPresenceOfUser(userIDs, userID)) {
                         likedPostIDs.add(postID);
                     }
                 } catch (IOException e) {
@@ -44,19 +46,11 @@ public class VKChase {
             }
             likedPostsIDsByGroups.put(groupID, likedPostIDs);
         }
-        UI.showLikedPosts(likedPostsIDsByGroups);
+        return likedPostsIDsByGroups;
     }
 
-    private String requestUserlink() throws IOException {
-        System.out.print("User link: ");
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        return br.readLine();
-    }
 
-    private boolean checkPresenceOfUser(List<Long> userIDs, long userID, Long groupID, Long postID) {
-        if(userIDs.contains(Long.valueOf(userID))) {
-            return true;
-        }
-        return false;
+    private boolean checkPresenceOfUser(List<Long> userIDs, long userID) {
+       return userIDs.contains(Long.valueOf(userID));
     }
 }

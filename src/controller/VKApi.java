@@ -4,11 +4,13 @@ import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 
+import com.sun.istack.internal.NotNull;
 import model.Client;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import view.UI;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ public class VKApi {
     private Client client = null;
 
     public class Auth {
-        public String authorize(Client client) throws IOException {
+        public String authorize(@NotNull Client client) throws IOException {
             StringBuilder authorizeLink = new StringBuilder();
             authorizeLink.append("https://oauth.vk.com/authorize?");
             authorizeLink.append("client_id=");
@@ -33,24 +35,45 @@ public class VKApi {
 
             // authorization via console browser
             // browser setup
-            System.setErr(new PrintStream("NUL"));
-            BrowserVersion browserVersion = BrowserVersion.CHROME;
-            browserVersion.setBrowserLanguage("ru-RU");
-            browserVersion.setUserLanguage("ru-RU");
-            WebClient webClient = new WebClient(browserVersion);
-            webClient.addRequestHeader("charset", "utf-8");
-            HtmlPage page = webClient.getPage(authorizeLink.toString());
-            List<HtmlForm> forms = page.getForms();
-            HtmlForm form = forms.get(0);
+            final HtmlForm[] form = new HtmlForm[1];
+            Thread t = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        System.setErr(new PrintStream("NUL")); // disable warnings
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    BrowserVersion browserVersion = BrowserVersion.CHROME;
+                    browserVersion.setBrowserLanguage("ru-RU");
+                    browserVersion.setUserLanguage("ru-RU");
+                    WebClient webClient = new WebClient(browserVersion);
+                    webClient.addRequestHeader("charset", "utf-8");
+                    HtmlPage page = null;
+                    try {
+                        page = webClient.getPage(authorizeLink.toString());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    List<HtmlForm> forms = page.getForms();
+                    form[0] = forms.get(0);
+                }
+            };
+            t.run();
             // form filling
-            String[] emailpass = UI.requestLoginData();
-            HtmlTextInput textInput = form.getInputByName("email");
+            String[] emailpass = UI.getInstance().requestLoginData();
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            HtmlTextInput textInput = form[0].getInputByName("email");
             textInput.setText(emailpass[0]);
-            HtmlPasswordInput passwordInput = form.getInputByName("pass");
+            HtmlPasswordInput passwordInput = form[0].getInputByName("pass");
             passwordInput.setText(emailpass[1]);
-            HtmlButton button = (HtmlButton) form.getByXPath("//*[@id=\"install_allow\"]").get(0);
+            HtmlButton button = (HtmlButton) form[0].getByXPath("//*[@id=\"install_allow\"]").get(0);
             // try to remove extra input that interrupt authorization
-            HtmlSubmitInput trap = (HtmlSubmitInput) form.getByXPath("//*[@id=\"box\"]/div/input[8]").get(0);
+            HtmlSubmitInput trap = (HtmlSubmitInput) form[0].getByXPath("//*[@id=\"box\"]/div/input[8]").get(0);
             trap.remove();
             HtmlPage result = button.click();
 
@@ -131,7 +154,7 @@ public class VKApi {
         return groupIDs;
     }
 
-    public ArrayList<Long> getPostIDs(long groupID) {
+    public ArrayList<Long> getPostIDs(long groupID, int countOfPosts) {
         String postsJSON = "";
         try {
             StringBuilder request = new StringBuilder();
@@ -139,7 +162,8 @@ public class VKApi {
             request.append("owner_id=-");
             request.append(groupID);
             request.append("&offset=0");
-            request.append("&count=100");
+            request.append("&count=");
+            request.append(countOfPosts);
             request.append("&v=5.37");
 
             postsJSON = (new Request()).get(request.toString());
