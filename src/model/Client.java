@@ -1,3 +1,5 @@
+package model;
+
 public class Client {
     private String accessToken;
     private long clientID;
@@ -16,9 +18,5 @@ public class Client {
 
     public long getClientID() {
         return clientID;
-    }
-
-    public void setClientID(long clientID) {
-        this.clientID = clientID;
     }
 }

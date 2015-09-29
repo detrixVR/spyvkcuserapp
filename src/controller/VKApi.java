@@ -1,17 +1,15 @@
+package controller;
+
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 
+import model.Client;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import view.UI;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +18,6 @@ import java.util.regex.Pattern;
 
 public class VKApi {
     private Client client = null;
-    public volatile boolean isPasswordEntered = false;
-    private volatile String password = null;
-    private JFrame frame = null;
 
     public class Auth {
         public String authorize(Client client) throws IOException {
@@ -48,7 +43,7 @@ public class VKApi {
             List<HtmlForm> forms = page.getForms();
             HtmlForm form = forms.get(0);
             // form filling
-            String[] emailpass = requestLoginData();
+            String[] emailpass = UI.requestLoginData();
             HtmlTextInput textInput = form.getInputByName("email");
             textInput.setText(emailpass[0]);
             HtmlPasswordInput passwordInput = form.getInputByName("pass");
@@ -81,80 +76,6 @@ public class VKApi {
             }
             return null;
         }
-
-        public String[] requestLoginData() throws IOException {
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            String[] emailpass = new String[2];
-            System.out.print("Login: ");
-            emailpass[0] = br.readLine();
-            showPasswordRequest();
-            while(!isPasswordEntered) {/*wait...*/}
-            emailpass[1] = password;
-            return emailpass;
-        }
-
-        private void showPasswordRequest() {
-            Panel p = new Panel();
-            Runnable r = () -> {
-                UIManager.put("swing.boldMetal", Boolean.FALSE);
-                p.createAndShowGUI();
-            };
-            SwingUtilities.invokeLater(r);
-        }
-
-        class Panel extends JPanel
-                implements ActionListener {
-            private final String OK = "OK";
-            private JPasswordField passwordField;
-
-            public Panel() {
-                passwordField = new JPasswordField(10);
-                passwordField.setActionCommand(OK);
-                passwordField.addActionListener(this);
-
-                JLabel passLabel = new JLabel("Password: ");
-                passLabel.setLabelFor(passwordField);
-                JComponent buttonPane = createButtonPanel();
-
-                JPanel textPane = new JPanel(new FlowLayout(FlowLayout.TRAILING));
-                textPane.add(passwordField);
-                textPane.add(passLabel);
-
-                add(textPane);
-                add(buttonPane);
-            }
-
-            private JComponent createButtonPanel() {
-                JPanel p = new JPanel(new GridLayout(0,1));
-                JButton okButton = new JButton("OK");
-                okButton.setActionCommand(OK);
-                okButton.addActionListener(this);
-                p.add(okButton);
-                return p;
-            }
-
-            public void actionPerformed(ActionEvent e) {
-                String cmd = e.getActionCommand();
-
-                if (OK.equals(cmd)) {
-                    char[] input = passwordField.getPassword();
-                    password = String.valueOf(input);
-                    isPasswordEntered = true;
-                    frame.dispose();
-                }
-            }
-
-
-            public void createAndShowGUI() {
-                frame = new JFrame("Password");
-                frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                final Panel newContentPane = new Panel();
-                newContentPane.setOpaque(true);
-                frame.setContentPane(newContentPane);
-                frame.pack();
-                frame.setVisible(true);
-            }
-        }
     }
 
     public String authorize(Client client) {
@@ -167,7 +88,7 @@ public class VKApi {
         return null;
     }
 
-    public long resolve(String userlink) {
+    public long resolveScreenName(String userlink) {
         userlink = userlink.replace("https://vk.com/", "");
         try {
             StringBuilder request = new StringBuilder();
