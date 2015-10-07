@@ -8,6 +8,10 @@ public class Client {
         this.clientID = clientID;
     }
 
+    public Client() {
+
+    }
+
     public String getAccessToken() {
         return accessToken;
     }

@@ -1,7 +1,6 @@
 package controller;
 
 import model.Client;
-import view.UI;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,25 +11,24 @@ public class VKChase {
     private Client client;
     private VKApi vkApi;
 
-    public VKChase() {
-        vkApi = new VKApi();
-        client = new Client(5071208);
+    public VKChase(VKApi vkApi, Client client) {
+        this.vkApi = vkApi;
+        this.client = client;
     }
 
-    public void collectInfo() throws IOException {
+    public HashMap<Long, ArrayList<Long>> collectInfo() throws IOException {
         String accessToken = vkApi.authorize(client);
         client.setAccessToken(accessToken);
-        String userlink = UI.getInstance().requestUserlink();
+        String userlink = null;
         long userID = vkApi.resolveScreenName(userlink);
         List<Long> groupIDs = vkApi.getGroupIDs(userID);
-        HashMap<Long, ArrayList<Long>> likedPostsIDsByGroups = findLikedPostsIDsByGroups(groupIDs, userID);
-        UI.getInstance().showLikedPosts(likedPostsIDsByGroups);
+        return findLikedPostsIDsByGroups(groupIDs, userID);
     }
 
     private HashMap<Long, ArrayList<Long>> findLikedPostsIDsByGroups(List<Long> groupIDs, long userID) throws IOException {
         HashMap<Long, ArrayList<Long>> likedPostsIDsByGroups = new HashMap<>();
-        int countOfPosts = UI.getInstance().requestCountOfPosts();
-        UI.getInstance().pleaseWait();
+        int countOfPosts = 0;
+        // wait
         for(Long groupID: groupIDs) {
             List<Long> postIDs = vkApi.getPostIDs(groupID, countOfPosts);
             ArrayList<Long> likedPostIDs = new ArrayList<>();
