@@ -6,7 +6,7 @@ public class Group {
     private Long id;
     private String name;
     private String screenName;
-    private ArrayList<Post> posts;
+    private ArrayList<Post> posts = new ArrayList<>();
 
     public Long getId() {
         return id;

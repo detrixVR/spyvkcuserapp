@@ -23,7 +23,7 @@ public class Main {
         Servlet loginServlet = new LoginServlet(apiService, accountService);
         Servlet followerServlet = new AddFollowerServlet(apiService, accountService, cookiesService);
         Servlet getGroupsServlet = new GetGroupsServlet(apiService, accountService, cookiesService);
-        Servlet likesInGroupsServlet = new LikesInGroupsServlet(apiService, logic);
+        Servlet likesInGroupsServlet = new LikesInGroupsServlet(apiService, accountService, cookiesService, logic);
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/vkchase");
