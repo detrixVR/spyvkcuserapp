@@ -31,6 +31,7 @@ public class LogicTest {
     @Test
     public void testFindGroupsWithPostsLikedByUser() throws Exception {
         Long userId = 5L;
+
         ArrayList<Group> groups = new ArrayList<>();
         ArrayList<Group> expectedGroups = new ArrayList<>();
 
