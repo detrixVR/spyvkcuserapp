@@ -21,6 +21,11 @@ public class Request {
             result.append(line);
         }
         rd.close();
+        try {
+            Thread.sleep(250L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return result.toString();
     }
 }

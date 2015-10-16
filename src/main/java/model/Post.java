@@ -3,9 +3,9 @@ package model;
 import java.util.ArrayList;
 
 public class Post {
-    private Long id;
-    private String text;
-    private ArrayList<Long> likedUserIds;
+    private Long id = 0L;
+    private String text = "";
+    private ArrayList<Long> likedUserIds = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -28,6 +28,12 @@ public class Post {
     }
 
     public void setText(String text) {
-        this.text = text;
+       text = text;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Post post = (Post) obj;
+        return this.id.equals(post.id) && this.text.equals(post.text) && this.likedUserIds.equals(post.likedUserIds);
     }
 }

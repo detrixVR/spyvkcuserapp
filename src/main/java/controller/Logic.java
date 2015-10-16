@@ -20,6 +20,7 @@ public class Logic {
 
     public ArrayList<Group> findGroupsWithPostsLikedByUser(ArrayList<Group> groups, Long userId) {
         ArrayList<Group> groupsWithPostsLikedByUser = new ArrayList<>();
+
         for (Group group : groups) {
             ArrayList<Post> posts = group.getPosts();
             Group newGroup = new Group();
@@ -36,7 +37,6 @@ public class Logic {
             }
             if(isAdded) {
                 groupsWithPostsLikedByUser.add(newGroup);
-                isAdded = false;
             }
         }
         return groupsWithPostsLikedByUser;

@@ -102,7 +102,7 @@ public class LinkBuilder {
         return requestGroupsLink.toString();
     }
 
-    public String getRequestPostsLink(Long groupId, int count) {
+    public String getRequestPostsLink(Long groupId, int count, String accessToken) {
         StringBuilder requestPostsLink = new StringBuilder();
         requestPostsLink
                 .append("https://api.vk.com/method/wall.get?")
@@ -111,11 +111,13 @@ public class LinkBuilder {
                 .append("&offset=0")
                 .append("&count=")
                 .append(count)
-                .append("&v=5.37");
+                .append("&v=5.37")
+                .append("&access_token=")
+                .append(accessToken);
         return requestPostsLink.toString();
     }
 
-    public String getRequestLikedUserIdsLink(Long groupId, Long postId) {
+    public String getRequestLikedUserIdsLink(Long groupId, Long postId, String accessToken) {
         StringBuilder requestLikedUserIdsLink = new StringBuilder();
         requestLikedUserIdsLink
                 .append("https://api.vk.com/method/likes.getList?")
@@ -125,7 +127,10 @@ public class LinkBuilder {
                 .append("&item_id=")
                 .append(postId)
                 .append("&offset=0")
-                .append("&count=1000");
+                .append("&count=1000")
+                .append("&v=5.37")
+                .append("&access_token=")
+                .append(accessToken);
         return requestLikedUserIdsLink.toString();
     }
 }

@@ -4,6 +4,7 @@ import model.Group;
 import model.Post;
 import model.UserInfo;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -58,6 +59,7 @@ public class JsonService {
     public ArrayList<Post> getPosts(String answer) {
         ArrayList<Post> posts = new ArrayList<>();
         JSONObject jsonObject = new JSONObject(answer);
+        System.out.println(answer);
         JSONArray itemsArray = jsonObject.getJSONObject("response").getJSONArray("items");
         for (int i = 0; !itemsArray.isNull(i); i++) {
             Post post = new Post();
@@ -71,10 +73,16 @@ public class JsonService {
 
     public ArrayList<Long> getLikedUserIds(String answer) {
         ArrayList<Long> userIDs = new ArrayList<>();
-        JSONObject jsonObject = new JSONObject(answer);
-        JSONArray userArray = jsonObject.getJSONObject("response").getJSONArray("users");
-        for (int i = 0; !userArray.isNull(i); i++) {
-            userIDs.add(userArray.getLong(i));
+        try {
+            JSONObject jsonObject = new JSONObject(answer);
+            System.out.println(answer);
+            JSONArray userArray = jsonObject.getJSONObject("response").getJSONArray("items");
+            for (int i = 0; !userArray.isNull(i); i++) {
+                userIDs.add(userArray.getLong(i));
+            }
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+            return userIDs;
         }
         return userIDs;
     }

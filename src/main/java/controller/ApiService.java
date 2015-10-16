@@ -80,8 +80,8 @@ public class ApiService {
         return jsonService.getGroups(answer);
     }
 
-    public ArrayList<Post> requestPosts(Long groupId, int count) {
-        String requestPostsLink = linkBuilder.getRequestPostsLink(groupId, count);
+    public ArrayList<Post> requestPosts(Long groupId, int count, String accessToken) {
+        String requestPostsLink = linkBuilder.getRequestPostsLink(groupId, count, accessToken);
         String answer = null;
         try {
             answer = request.get(requestPostsLink);
@@ -91,8 +91,8 @@ public class ApiService {
         return jsonService.getPosts(answer);
     }
 
-    public ArrayList<Long> requestLikedUserIds(Long groupId, Long postId) {
-        String requestLikedUserIdsLink = linkBuilder.getRequestLikedUserIdsLink(groupId, postId);
+    public ArrayList<Long> requestLikedUserIds(Long groupId, Long postId, String accessToken) {
+        String requestLikedUserIdsLink = linkBuilder.getRequestLikedUserIdsLink(groupId, postId, accessToken);
         String answer = null;
         try {
             answer = request.get(requestLikedUserIdsLink);
