@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Groups</title>
+</head>
+<body>
+    <script>
+        function addTextInputAndInfo(checkboxId, name, screenName) {
+            var countInput = document.createElement('input');
+            countInput.type = "text";
+            countInput.name = "count";
+            var nameInput = document.createElement('input');
+            nameInput.type = "hidden";
+            nameInput.name = "name";
+            nameInput.value = name;
+            var screenNameInput = document.createElement('input');
+            screenNameInput.type = "hidden";
+            screenNameInput.name = "screenName";
+            screenNameInput.value = screenName;
+            document.getElementById(checkboxId).appendChild(countInput);
+            document.getElementById(checkboxId).appendChild(nameInput);
+            document.getElementById(checkboxId).appendChild(screenNameInput);
+        }
+    </script>
+    <form action="http://localhost:8080/vkchase/grouplikes" method="get">
+        <#list groups as group>
+            <div id="${group.id?c}">
+                <input type="checkbox" name="id" value="${group.id?c}"
+                       onclick='addTextInputAndInfo(${group.id?c}, "${group.name}", "${group.screenName}")'>
+                <a href="https://vk.com/${group.screenName}">${group.name}</a><br>
+            </div>
+            <br>
+        </#list>
+        <button type="submit">Ok</button>
+    </form>
+</body>
+</html>

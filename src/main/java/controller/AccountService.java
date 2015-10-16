@@ -1,27 +1,33 @@
 package controller;
 
-import model.Client;
+import model.User;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class AccountService {
-    private Map<String, Client> clients = new HashMap<>();
-    private Map<String, Client> sessions = new HashMap<>();
+    private Map<Long, User> users = new HashMap<>();
+    private Map<String, User> sessions = new HashMap<>();
 
-    public boolean addUser() {
+    public boolean addUser(Long id, User user) {
+        users.put(id, user);
         return true;
     }
 
-    public void addSession(String sessionId, Client client) {
-        sessions.put(sessionId, client);
+    public void addSession(String sessionId, User user) {
+        sessions.put(sessionId, user);
     }
 
-    public Client getClient() {
-        return new Client();
-    }
-
-    public Client getSessions(String sessionId) {
+    public User getSessions(String sessionId) {
         return sessions.get(sessionId);
     }
+
+    public User getUser(Long id) {
+        return users.get(id);
+    }
+
+    public int getUsersCount() {
+        return users.size();
+    }
+
 }
