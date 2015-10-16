@@ -36,6 +36,7 @@ public class Logic {
             }
             if(isAdded) {
                 groupsWithPostsLikedByUser.add(newGroup);
+                isAdded = false;
             }
         }
         return groupsWithPostsLikedByUser;

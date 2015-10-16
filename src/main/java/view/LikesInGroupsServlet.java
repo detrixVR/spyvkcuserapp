@@ -49,7 +49,8 @@ public class LikesInGroupsServlet extends HttpServlet {
         }
 
         User user = accountService.getUser(Long.valueOf(cookiesService.getCookie(req, "id")));
-        ArrayList<Group> groupsWithPostsLikedByUser = logic.findGroupsWithPostsLikedByUser(groups, user.getFollowedIds().get(0));
+        Long followed = user.getFollowedIds().get(0);
+        ArrayList<Group> groupsWithPostsLikedByUser = logic.findGroupsWithPostsLikedByUser(groups, followed);
 
         Map<String, Object> pageVariables = new HashMap<>();
         pageVariables.put("groups", groupsWithPostsLikedByUser);
