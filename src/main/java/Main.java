@@ -1,3 +1,5 @@
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import controller.*;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -12,13 +14,12 @@ import javax.servlet.Servlet;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        Request request = new Request();
-        LinkBuilder linkBuilder = new LinkBuilder();
         AccountService accountService = new AccountService();
-        JsonService jsonService = new JsonService();
         CookiesService cookiesService = new CookiesService();
         PageGenerator pageGenerator = new PageGenerator();
-        ApiService apiService = new ApiService(request, linkBuilder, jsonService);
+
+        Injector injector = Guice.createInjector(new ApiServiceModule());
+        ApiService apiService = injector.getInstance(ApiService.class);
         Logic logic = new Logic();
 
         Servlet rootServlet = new RootServlet(accountService, cookiesService, pageGenerator);

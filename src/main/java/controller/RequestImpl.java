@@ -8,7 +8,8 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URL;
 
-public class Request {
+public class RequestImpl implements IRequest {
+    @Override
     public String get(String request) throws IOException {
         StringBuilder result = new StringBuilder();
         URL url = new URL(request);

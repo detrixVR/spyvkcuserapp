@@ -6,12 +6,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LinkBuilder {
+public class LinkBuilderImpl implements ILinkBuilder {
     private int clientId = 5103937;
     private String redirectUri = "http://localhost:8080/vkchase/login";
     private String clientSecret = null;
 
-    public LinkBuilder() {
+    public LinkBuilderImpl() {
         String path = getClass().getResource("/values.json").getPath();
         path = path.substring(1);
         List<String> lines = new ArrayList<>();
@@ -23,9 +23,10 @@ public class LinkBuilder {
         StringBuilder valuesJsonBuilder = new StringBuilder();
         lines.forEach(valuesJsonBuilder::append);
         String valuesJson = valuesJsonBuilder.toString();
-        clientSecret = (new JsonService()).getClientSecret(valuesJson);
+        clientSecret = (new JsonServiceImpl()).getClientSecret(valuesJson);
     }
 
+    @Override
     public String getRequestCodeLink() {
         StringBuilder requestCodeLink = new StringBuilder();
         requestCodeLink
@@ -41,6 +42,7 @@ public class LinkBuilder {
         return requestCodeLink.toString();
     }
 
+    @Override
     public String getRequestAccessTokenLink(String code) {
         StringBuilder requestAccessTokenLink = new StringBuilder();
         requestAccessTokenLink
@@ -56,6 +58,7 @@ public class LinkBuilder {
         return requestAccessTokenLink.toString();
     }
 
+    @Override
     public String getUserInfoLink(Long userId, String accessToken) {
         StringBuilder userInfoLink = new StringBuilder();
         userInfoLink
@@ -66,6 +69,7 @@ public class LinkBuilder {
         return userInfoLink.toString();
     }
 
+    @Override
     public String getResolveScreenNameLink(String screenName) {
         StringBuilder resolveScreenNameLink = new StringBuilder();
         resolveScreenNameLink.
@@ -76,6 +80,7 @@ public class LinkBuilder {
         return resolveScreenNameLink.toString();
     }
 
+    @Override
     public String getRequestGroupIdsLink(long followerId, String accessToken) {
         StringBuilder requestGroupIdsLink = new StringBuilder();
         requestGroupIdsLink
@@ -89,6 +94,7 @@ public class LinkBuilder {
         return requestGroupIdsLink.toString();
     }
 
+    @Override
     public String getRequestGroupsLink(List<Long> groupIds) {
         StringBuilder requestGroupsLink = new StringBuilder();
         requestGroupsLink
@@ -102,6 +108,7 @@ public class LinkBuilder {
         return requestGroupsLink.toString();
     }
 
+    @Override
     public String getRequestPostsLink(Long groupId, int count, String accessToken) {
         StringBuilder requestPostsLink = new StringBuilder();
         requestPostsLink
@@ -117,6 +124,7 @@ public class LinkBuilder {
         return requestPostsLink.toString();
     }
 
+    @Override
     public String getRequestLikedUserIdsLink(Long groupId, Long postId, String accessToken) {
         StringBuilder requestLikedUserIdsLink = new StringBuilder();
         requestLikedUserIdsLink

@@ -11,12 +11,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JsonService {
+public class JsonServiceImpl implements IJsonService {
+    @Override
     public String getAccessToken(String answer) {
         JSONObject jsonObject = new JSONObject(answer);
         return jsonObject.getString("access_token");
     }
 
+    @Override
     public UserInfo getUserInfo(String userInfoString) {
         JSONObject responseObject = new JSONObject(userInfoString);
         JSONObject userObject = responseObject.getJSONArray("response").getJSONObject(0);
@@ -27,11 +29,13 @@ public class JsonService {
         return userInfo;
     }
 
+    @Override
     public Long getFollowerId(String answer) {
         JSONObject responseObject = new JSONObject(answer);
         return responseObject.getJSONObject("response").getLong("object_id");
     }
 
+    @Override
     public ArrayList<Long> getGroupsIds(String answer) {
         JSONObject jsonObject = new JSONObject(answer);
         JSONArray jsonArray = jsonObject.getJSONObject("response").getJSONArray("items");
@@ -42,6 +46,7 @@ public class JsonService {
         return groupIDs;
     }
 
+    @Override
     public ArrayList<GroupInfo> getGroupsInfo(String answer) {
         ArrayList<GroupInfo> groupsInfo = new ArrayList<>();
         JSONObject jsonObject = new JSONObject(answer);
@@ -57,6 +62,7 @@ public class JsonService {
         return groupsInfo;
     }
 
+    @Override
     public ArrayList<Post> getPosts(String answer) {
         ArrayList<Post> posts = new ArrayList<>();
         JSONObject jsonObject = new JSONObject(answer);
@@ -72,6 +78,7 @@ public class JsonService {
         return posts;
     }
 
+    @Override
     public ArrayList<Long> getLikedUserIds(String answer) {
         ArrayList<Long> userIDs = new ArrayList<>();
         try {
@@ -88,6 +95,7 @@ public class JsonService {
         return userIDs;
     }
 
+    @Override
     public String getClientSecret(String valuesJson) {
         JSONObject jsonObject = new JSONObject(valuesJson);
         return jsonObject.getString("client_secret");

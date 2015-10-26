@@ -1,5 +1,6 @@
 package controller;
 
+import com.google.inject.Inject;
 import model.GroupInfo;
 import model.Post;
 import model.UserInfo;
@@ -9,11 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ApiService {
-    private LinkBuilder linkBuilder;
-    private JsonService jsonService;
-    private Request request;
+    private ILinkBuilder linkBuilder;
+    private IJsonService jsonService;
+    private IRequest request;
 
-    public ApiService(Request request, LinkBuilder linkBuilder, JsonService jsonService) {
+    @Inject
+    public ApiService(IRequest request, ILinkBuilder linkBuilder, IJsonService jsonService) {
         this.request = request;
         this.linkBuilder = linkBuilder;
         this.jsonService = jsonService;
