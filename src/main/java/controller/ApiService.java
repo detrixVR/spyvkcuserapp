@@ -1,6 +1,6 @@
 package controller;
 
-import model.Group;
+import model.GroupInfo;
 import model.Post;
 import model.UserInfo;
 
@@ -69,7 +69,7 @@ public class ApiService {
         return jsonService.getGroupsIds(answer);
     }
 
-    public ArrayList<Group> requestGroups(List<Long> groupIds) {
+    public List<GroupInfo> requestGroupsInfo(List<Long> groupIds) {
         String requestGroupsLink = linkBuilder.getRequestGroupsLink(groupIds);
         String answer = null;
         try {
@@ -77,7 +77,7 @@ public class ApiService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return jsonService.getGroups(answer);
+        return jsonService.getGroupsInfo(answer);
     }
 
     public ArrayList<Post> requestPosts(Long groupId, int count, String accessToken) {

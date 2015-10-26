@@ -1,44 +1,43 @@
 package controller;
 
 import model.Group;
+import model.GroupInfo;
 import model.Post;
 
 import java.util.ArrayList;
 
 public class Logic {
-    public ArrayList<Group> formGroupsFromSources(String[] ids, String[] names, String[] screenNames) {
-        ArrayList<Group> groups = new ArrayList<>();
+    public ArrayList<GroupInfo> formGroupsInfoFromSources(String[] ids, String[] names, String[] screenNames) {
+        ArrayList<GroupInfo> groupsInfo = new ArrayList<>();
         for(int i=0; i<ids.length; i++) {
-            Group group = new Group();
-            group.setId(Long.valueOf(ids[i]));
-            group.setName(names[i]);
-            group.setScreenName(screenNames[i]);
-            groups.add(group);
+            GroupInfo groupInfo = new GroupInfo();
+            groupInfo.setId(Long.valueOf(ids[i]));
+            groupInfo.setName(names[i]);
+            groupInfo.setScreenName(screenNames[i]);
+            groupsInfo.add(groupInfo);
         }
-        return groups;
+        return groupsInfo;
     }
 
-    public ArrayList<Group> findGroupsWithPostsLikedByUser(ArrayList<Group> groups, Long userId) {
-        ArrayList<Group> groupsWithPostsLikedByUser = new ArrayList<>();
+    public ArrayList<Group> filterGroupsByFollowerLike(ArrayList<Group> groups, Long userId) {
+        ArrayList<Group> groupsWithPostsLikedByFollower = new ArrayList<>();
 
         for (Group group : groups) {
             ArrayList<Post> posts = group.getPosts();
-            Group newGroup = new Group();
-            newGroup.setId(group.getId());
-            newGroup.setName(group.getName());
-            newGroup.setScreenName(group.getScreenName());
+            ArrayList<Post> likedPosts = new ArrayList<>();
             boolean isAdded = false;
             for (Post post : posts) {
                 ArrayList<Long> likedUserIds = post.getLikedUserIds();
                 if(likedUserIds.contains(userId)) {
-                    newGroup.getPosts().add(post);
+                    likedPosts.add(post);
                     isAdded = true;
                 }
             }
             if(isAdded) {
-                groupsWithPostsLikedByUser.add(newGroup);
+                Group newGroup = new Group(group.getGroupInfo(), likedPosts);
+                groupsWithPostsLikedByFollower.add(newGroup);
             }
         }
-        return groupsWithPostsLikedByUser;
+        return groupsWithPostsLikedByFollower;
     }
 }

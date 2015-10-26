@@ -24,11 +24,11 @@
         }
     </script>
     <form action="http://localhost:8080/vkchase/grouplikes" method="get">
-        <#list groups as group>
-            <div id="${group.id?c}">
-                <input type="checkbox" name="id" value="${group.id?c}"
-                       onclick='addTextInputAndInfo(${group.id?c}, "${group.name}", "${group.screenName}")'>
-                <a href="https://vk.com/${group.screenName}">${group.name}</a><br>
+        <#list groupsInfo as groupInfo>
+            <div id="${groupInfo.id?c}">
+                <input type="checkbox" name="id" value="${groupInfo.id?c}"
+                       onclick='addTextInputAndInfo(${groupInfo.id?c}, "${groupInfo.name}", "${groupInfo.screenName}")'>
+                <a href="https://vk.com/${groupInfo.screenName}">${groupInfo.name}</a><br>
             </div>
             <br>
         </#list>

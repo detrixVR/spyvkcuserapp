@@ -5,6 +5,7 @@ import controller.ApiService;
 import controller.CookiesService;
 import controller.Logic;
 import model.Group;
+import model.GroupInfo;
 import model.Post;
 import model.User;
 import view.templater.PageGenerator;
@@ -42,9 +43,10 @@ public class LikesInGroupsServlet extends HttpServlet {
         String[] groupNames = req.getParameterValues("name");
         String[] groupScreenNames = req.getParameterValues("screenName");
         String[] count = req.getParameterValues("count");
-        ArrayList<Group> groups = logic.formGroupsFromSources(groupIds, groupNames, groupScreenNames);
+        ArrayList<GroupInfo> groupsInfo = logic.formGroupsInfoFromSources(groupIds, groupNames, groupScreenNames);
+        ArrayList<Group> groups = new ArrayList<>();
 
-        for (int i = 0; i < groups.size(); i++) {
+        for (int i = 0; i < groupsInfo.size(); i++) {
             ArrayList<Post> posts = apiService.requestPosts(Long.valueOf(groupIds[i]), Integer.valueOf(count[i]),
                     user.getAccessToken());
             for (Post post : posts) {
@@ -52,11 +54,11 @@ public class LikesInGroupsServlet extends HttpServlet {
                         , user.getAccessToken());
                 post.setLikedUserIds(userIds);
             }
-            groups.get(i).setPosts(posts);
+            groups.add(new Group(groupsInfo.get(i), posts));
         }
 
-        Long followed = user.getFollowedIds().get(0);
-        ArrayList<Group> groupsWithPostsLikedByUser = logic.findGroupsWithPostsLikedByUser(groups, followed);
+        Long follower = user.getFollowerIds().get(0);
+        ArrayList<Group> groupsWithPostsLikedByUser = logic.filterGroupsByFollowerLike(groups, follower);
 
         Map<String, Object> pageVariables = new HashMap<>();
         pageVariables.put("groups", groupsWithPostsLikedByUser);

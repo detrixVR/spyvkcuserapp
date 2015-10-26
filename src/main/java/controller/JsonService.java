@@ -1,6 +1,7 @@
 package controller;
 
 import model.Group;
+import model.GroupInfo;
 import model.Post;
 import model.UserInfo;
 import org.json.JSONArray;
@@ -41,19 +42,19 @@ public class JsonService {
         return groupIDs;
     }
 
-    public ArrayList<Group> getGroups(String answer) {
-        ArrayList<Group> groups = new ArrayList<>();
+    public ArrayList<GroupInfo> getGroupsInfo(String answer) {
+        ArrayList<GroupInfo> groupsInfo = new ArrayList<>();
         JSONObject jsonObject = new JSONObject(answer);
         JSONArray jsonArray = jsonObject.getJSONArray("response");
         for(int i=0; !jsonArray.isNull(i); i++) {
             JSONObject groupObject = jsonArray.getJSONObject(i);
-            Group group = new Group();
-            group.setId(groupObject.getLong("id"));
-            group.setName(groupObject.getString("name"));
-            group.setScreenName(groupObject.getString("screen_name"));
-            groups.add(group);
+            GroupInfo groupInfo = new GroupInfo();
+            groupInfo.setId(groupObject.getLong("id"));
+            groupInfo.setName(groupObject.getString("name"));
+            groupInfo.setScreenName(groupObject.getString("screen_name"));
+            groupsInfo.add(groupInfo);
         }
-        return groups;
+        return groupsInfo;
     }
 
     public ArrayList<Post> getPosts(String answer) {

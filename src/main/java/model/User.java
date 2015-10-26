@@ -9,7 +9,7 @@ public class User {
     private String accessToken;
     private ArrayList<Long> followedIds;
 
-    public ArrayList<Long> getFollowedIds() {
+    public ArrayList<Long> getFollowerIds() {
         return followedIds;
     }
 

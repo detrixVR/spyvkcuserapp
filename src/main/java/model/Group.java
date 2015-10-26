@@ -1,36 +1,22 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Group {
-    private Long id = 0L;
-    private String name = "";
-    private String screenName = "";
+    private GroupInfo groupInfo;
     private ArrayList<Post> posts = new ArrayList<>();
 
-    public Long getId() {
-        return id;
+    public Group(GroupInfo groupInfo, ArrayList<Post> posts) {
+        this.groupInfo = groupInfo;
+        this.posts = posts;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public GroupInfo getGroupInfo() {
+        return groupInfo;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getScreenName() {
-        return screenName;
-    }
-
-    public void setScreenName(String screenName) {
-        this.screenName = screenName;
+    public void setGroupInfo(GroupInfo groupInfo) {
+        this.groupInfo = groupInfo;
     }
 
     public ArrayList<Post> getPosts() {
@@ -41,10 +27,10 @@ public class Group {
         this.posts = posts;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        Group group = (Group) obj;
-        return Objects.equals(this.id, group.id) && this.name.equals(group.name) && this.screenName.equals(group.screenName) &&
-                this.posts.equals(group.posts);
-    }
+//    @Override
+//    public boolean equals(Object obj) {
+//        Group group = (Group) obj;
+//        return Objects.equals(this.id, group.id) && this.name.equals(group.name) && this.screenName.equals(group.screenName) &&
+//                this.posts.equals(group.posts);
+//    }
 }

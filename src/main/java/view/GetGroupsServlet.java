@@ -4,6 +4,7 @@ import controller.AccountService;
 import controller.ApiService;
 import controller.CookiesService;
 import model.Group;
+import model.GroupInfo;
 import view.templater.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -35,10 +36,10 @@ public class GetGroupsServlet extends HttpServlet {
         Long id = Long.valueOf(cookiesService.getCookie(req, "id"));
         String accessToken = accountService.getUser(id).getAccessToken();
         List<Long> groupIds = apiService.requestGroupIds(followerId, accessToken);
-        List<Group> groups = apiService.requestGroups(groupIds);
+        List<GroupInfo> groupsInfo = apiService.requestGroupsInfo(groupIds);
 
         Map<String, Object> pageVariables = new HashMap<>();
-        pageVariables.put("groups", groups);
+        pageVariables.put("groupsInfo", groupsInfo);
         resp.setContentType("text/html; charset=utf-8");
         resp.getWriter().println(pageGenerator.getPage("groups.html", pageVariables));
         resp.setStatus(HttpServletResponse.SC_OK);
