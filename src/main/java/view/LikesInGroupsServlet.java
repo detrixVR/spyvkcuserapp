@@ -23,12 +23,15 @@ public class LikesInGroupsServlet extends HttpServlet {
     private AccountService accountService;
     private CookiesService cookiesService;
     private Logic logic;
+    private PageGenerator pageGenerator;
 
-    public LikesInGroupsServlet(ApiService apiService, AccountService accountService, CookiesService cookiesService, Logic logic) {
+    public LikesInGroupsServlet(ApiService apiService, AccountService accountService, CookiesService cookiesService,
+                                Logic logic, PageGenerator pageGenerator) {
         this.apiService = apiService;
         this.accountService = accountService;
         this.cookiesService = cookiesService;
         this.logic = logic;
+        this.pageGenerator = pageGenerator;
     }
 
     @Override
@@ -58,7 +61,7 @@ public class LikesInGroupsServlet extends HttpServlet {
         Map<String, Object> pageVariables = new HashMap<>();
         pageVariables.put("groups", groupsWithPostsLikedByUser);
         resp.setContentType("text/html; charset=utf-8");
-        resp.getWriter().println(PageGenerator.getPage("likedposts.html", pageVariables));
+        resp.getWriter().println(pageGenerator.getPage("likedposts.html", pageVariables));
         resp.setStatus(HttpServletResponse.SC_OK);
     }
 }

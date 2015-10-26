@@ -19,11 +19,14 @@ public class GetGroupsServlet extends HttpServlet {
     private ApiService apiService;
     private AccountService accountService;
     private CookiesService cookiesService;
+    private PageGenerator pageGenerator;
 
-    public GetGroupsServlet(ApiService apiService, AccountService accountService, CookiesService cookiesService) {
+    public GetGroupsServlet(ApiService apiService, AccountService accountService, CookiesService cookiesService,
+                            PageGenerator pageGenerator) {
         this.apiService = apiService;
         this.accountService = accountService;
         this.cookiesService = cookiesService;
+        this.pageGenerator = pageGenerator;
     }
 
     @Override
@@ -37,7 +40,7 @@ public class GetGroupsServlet extends HttpServlet {
         Map<String, Object> pageVariables = new HashMap<>();
         pageVariables.put("groups", groups);
         resp.setContentType("text/html; charset=utf-8");
-        resp.getWriter().println(PageGenerator.getPage("groups.html", pageVariables));
+        resp.getWriter().println(pageGenerator.getPage("groups.html", pageVariables));
         resp.setStatus(HttpServletResponse.SC_OK);
     }
 }

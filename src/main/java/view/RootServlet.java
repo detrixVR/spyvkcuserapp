@@ -16,10 +16,12 @@ import java.util.Map;
 public class RootServlet extends HttpServlet {
     AccountService accountService;
     private CookiesService cookiesService;
+    private PageGenerator pageGenerator;
 
-    public RootServlet(AccountService accountService, CookiesService cookiesService) {
+    public RootServlet(AccountService accountService, CookiesService cookiesService, PageGenerator pageGenerator) {
         this.accountService = accountService;
         this.cookiesService = cookiesService;
+        this.pageGenerator = pageGenerator;
     }
 
     @Override
@@ -33,7 +35,7 @@ public class RootServlet extends HttpServlet {
             pageVariables.put("firstName", user.getUserInfo().getFirstName());
             pageVariables.put("lastName", user.getUserInfo().getLastName());
             resp.setContentType("text/html; charset=utf-8");
-            resp.getWriter().println(PageGenerator.getPage("index.html", pageVariables));
+            resp.getWriter().println(pageGenerator.getPage("index.html", pageVariables));
             resp.setStatus(HttpServletResponse.SC_OK);
         }
     }

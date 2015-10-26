@@ -6,6 +6,7 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import view.*;
+import view.templater.PageGenerator;
 
 import javax.servlet.Servlet;
 
@@ -16,14 +17,16 @@ public class Main {
         AccountService accountService = new AccountService();
         JsonService jsonService = new JsonService();
         CookiesService cookiesService = new CookiesService();
+        PageGenerator pageGenerator = new PageGenerator();
         ApiService apiService = new ApiService(request, linkBuilder, jsonService);
         Logic logic = new Logic();
 
-        Servlet rootServlet = new RootServlet(accountService, cookiesService);
+        Servlet rootServlet = new RootServlet(accountService, cookiesService, pageGenerator);
         Servlet loginServlet = new LoginServlet(apiService, accountService);
         Servlet followerServlet = new AddFollowerServlet(apiService, accountService, cookiesService);
-        Servlet getGroupsServlet = new GetGroupsServlet(apiService, accountService, cookiesService);
-        Servlet likesInGroupsServlet = new LikesInGroupsServlet(apiService, accountService, cookiesService, logic);
+        Servlet getGroupsServlet = new GetGroupsServlet(apiService, accountService, cookiesService, pageGenerator);
+        Servlet likesInGroupsServlet = new LikesInGroupsServlet(apiService, accountService, cookiesService, logic,
+                pageGenerator);
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/vkchase");
