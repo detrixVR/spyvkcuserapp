@@ -6,7 +6,8 @@ import model.post.Post;
 
 import java.util.ArrayList;
 
-public class AppLogic {
+public class AppLogicImpl implements IAppLogic {
+    @Override
     public ArrayList<GroupInfo> formGroupsInfoFromSources(String[] ids, String[] names, String[] screenNames) {
         ArrayList<GroupInfo> groupsInfo = new ArrayList<>();
         for(int i=0; i<ids.length; i++) {
@@ -19,6 +20,7 @@ public class AppLogic {
         return groupsInfo;
     }
 
+    @Override
     public ArrayList<Group> filterGroupsByFollowerLike(ArrayList<Group> groups, Long userId) {
         ArrayList<Group> groupsWithPostsLikedByFollower = new ArrayList<>();
 

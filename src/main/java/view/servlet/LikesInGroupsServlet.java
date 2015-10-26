@@ -1,14 +1,15 @@
 package view.servlet;
 
-import controller.account_service.AccountService;
-import controller.api_service.ApiService;
-import controller.cookies_service.CookiesService;
-import controller.logic.AppLogic;
+import com.google.inject.Inject;
+import controller.account_service.IAccountService;
+import controller.api_service.IApiService;
+import controller.cookies_service.ICookiesService;
+import controller.logic.IAppLogic;
 import model.group.Group;
 import model.group.GroupInfo;
 import model.post.Post;
 import model.user.User;
-import view.templater.PageGenerator;
+import view.templater.IPageGenerator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,14 +21,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LikesInGroupsServlet extends HttpServlet {
-    private ApiService apiService;
-    private AccountService accountService;
-    private CookiesService cookiesService;
-    private AppLogic logic;
-    private PageGenerator pageGenerator;
+    private IApiService apiService;
+    private IAccountService accountService;
+    private ICookiesService cookiesService;
+    private IAppLogic logic;
+    private IPageGenerator pageGenerator;
 
-    public LikesInGroupsServlet(ApiService apiService, AccountService accountService, CookiesService cookiesService,
-                                AppLogic logic, PageGenerator pageGenerator) {
+    @Inject
+    public LikesInGroupsServlet(IApiService apiService, IAccountService accountService, ICookiesService cookiesService,
+                                IAppLogic logic, IPageGenerator pageGenerator) {
         this.apiService = apiService;
         this.accountService = accountService;
         this.cookiesService = cookiesService;

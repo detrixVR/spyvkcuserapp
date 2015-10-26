@@ -1,7 +1,8 @@
 package view.servlet;
 
-import controller.account_service.AccountService;
-import controller.api_service.ApiService;
+import com.google.inject.Inject;
+import controller.account_service.IAccountService;
+import controller.api_service.IApiService;
 import model.user.User;
 import model.user.UserInfo;
 
@@ -13,10 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class LoginServlet extends HttpServlet {
-    private ApiService apiService;
-    private AccountService accountService;
+    private IApiService apiService;
+    private IAccountService accountService;
 
-    public LoginServlet(ApiService apiService, AccountService accountService) {
+    @Inject
+    public LoginServlet(IApiService apiService, IAccountService accountService) {
         this.apiService = apiService;
         this.accountService = accountService;
     }

@@ -3,7 +3,8 @@ package controller.cookies_service;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
-public class CookiesService {
+public class CookiesServiceImpl implements ICookiesService {
+    @Override
     public String getCookie(HttpServletRequest req, String name) {
         Cookie[] cookies = req.getCookies();
         String value = null;

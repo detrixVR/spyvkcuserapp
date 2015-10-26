@@ -1,10 +1,11 @@
 package view.servlet;
 
-import controller.account_service.AccountService;
-import controller.api_service.ApiService;
-import controller.cookies_service.CookiesService;
+import com.google.inject.Inject;
+import controller.account_service.IAccountService;
+import controller.api_service.IApiService;
+import controller.cookies_service.ICookiesService;
 import model.group.GroupInfo;
-import view.templater.PageGenerator;
+import view.templater.IPageGenerator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,13 +17,14 @@ import java.util.List;
 import java.util.Map;
 
 public class GetGroupsServlet extends HttpServlet {
-    private ApiService apiService;
-    private AccountService accountService;
-    private CookiesService cookiesService;
-    private PageGenerator pageGenerator;
+    private IApiService apiService;
+    private IAccountService accountService;
+    private ICookiesService cookiesService;
+    private IPageGenerator pageGenerator;
 
-    public GetGroupsServlet(ApiService apiService, AccountService accountService, CookiesService cookiesService,
-                            PageGenerator pageGenerator) {
+    @Inject
+    public GetGroupsServlet(IApiService apiService, IAccountService accountService, ICookiesService cookiesService,
+                            IPageGenerator pageGenerator) {
         this.apiService = apiService;
         this.accountService = accountService;
         this.cookiesService = cookiesService;

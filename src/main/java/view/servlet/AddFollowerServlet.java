@@ -1,8 +1,9 @@
 package view.servlet;
 
-import controller.account_service.AccountService;
-import controller.api_service.ApiService;
-import controller.cookies_service.CookiesService;
+import com.google.inject.Inject;
+import controller.account_service.IAccountService;
+import controller.api_service.IApiService;
+import controller.cookies_service.ICookiesService;
 import model.user.User;
 
 import javax.servlet.ServletException;
@@ -12,11 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class AddFollowerServlet extends HttpServlet {
-    private ApiService apiService;
-    private AccountService accountService;
-    private CookiesService cookiesService;
+    private IApiService apiService;
+    private IAccountService accountService;
+    private ICookiesService cookiesService;
 
-    public AddFollowerServlet(ApiService apiService, AccountService accountService, CookiesService cookiesService) {
+    @Inject
+    public AddFollowerServlet(IApiService apiService, IAccountService accountService, ICookiesService cookiesService) {
         this.apiService = apiService;
         this.accountService = accountService;
         this.cookiesService = cookiesService;

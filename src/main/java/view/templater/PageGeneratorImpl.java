@@ -8,10 +8,11 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Map;
 
-public class PageGenerator {
+public class PageGeneratorImpl implements IPageGenerator {
     private static final String HTML_DIR = "c:\\Users\\aminought\\IdeaProjects\\VKChase\\public_tml";
     private final Configuration CFG = new Configuration(Configuration.VERSION_2_3_23);
 
+    @Override
     public String getPage(String filename, Map<String, Object> data) {
         try {
             CFG.setDirectoryForTemplateLoading(new File(HTML_DIR));

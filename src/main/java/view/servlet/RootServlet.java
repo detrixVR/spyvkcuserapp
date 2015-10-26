@@ -1,9 +1,10 @@
 package view.servlet;
 
-import controller.account_service.AccountService;
-import controller.cookies_service.CookiesService;
+import com.google.inject.Inject;
+import controller.account_service.IAccountService;
+import controller.cookies_service.ICookiesService;
 import model.user.User;
-import view.templater.PageGenerator;
+import view.templater.IPageGenerator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,11 +15,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RootServlet extends HttpServlet {
-    AccountService accountService;
-    private CookiesService cookiesService;
-    private PageGenerator pageGenerator;
+    IAccountService accountService;
+    private ICookiesService cookiesService;
+    private IPageGenerator pageGenerator;
 
-    public RootServlet(AccountService accountService, CookiesService cookiesService, PageGenerator pageGenerator) {
+    @Inject
+    public RootServlet(IAccountService accountService, ICookiesService cookiesService, IPageGenerator pageGenerator) {
         this.accountService = accountService;
         this.cookiesService = cookiesService;
         this.pageGenerator = pageGenerator;

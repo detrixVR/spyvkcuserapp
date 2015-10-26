@@ -12,22 +12,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ApiService {
+public class ApiServiceImpl implements IApiService {
     private ILinkBuilder linkBuilder;
     private IJsonService jsonService;
     private IRequest request;
 
     @Inject
-    public ApiService(IRequest request, ILinkBuilder linkBuilder, IJsonService jsonService) {
+    public ApiServiceImpl(IRequest request, ILinkBuilder linkBuilder, IJsonService jsonService) {
         this.request = request;
         this.linkBuilder = linkBuilder;
         this.jsonService = jsonService;
     }
 
+    @Override
     public String getRequestCodeLink() {
         return linkBuilder.getRequestCodeLink();
     }
 
+    @Override
     public String requestAccessToken(String code) {
         String requestAccessTokenLink = linkBuilder.getRequestAccessTokenLink(code);
         String answer = null;
@@ -40,6 +42,7 @@ public class ApiService {
         return accessToken;
     }
 
+    @Override
     public UserInfo getUserInfo(Long userId, String accessToken) {
         String getUserInfoLink = linkBuilder.getUserInfoLink(userId, accessToken);
         String userInfoString = null;
@@ -51,6 +54,7 @@ public class ApiService {
         return jsonService.getUserInfo(userInfoString);
     }
 
+    @Override
     public Long resolveScreenName(String userLink) {
         String screenName = userLink.replace("https://vk.com/", "");
         String resolveScreenNameLink = linkBuilder.getResolveScreenNameLink(screenName);
@@ -63,6 +67,7 @@ public class ApiService {
         return jsonService.getFollowerId(answer);
     }
 
+    @Override
     public ArrayList<Long> requestGroupIds(long followerId, String accessToken) {
         String requestGroupIdsLink = linkBuilder.getRequestGroupIdsLink(followerId, accessToken);
         String answer = null;
@@ -74,6 +79,7 @@ public class ApiService {
         return jsonService.getGroupsIds(answer);
     }
 
+    @Override
     public List<GroupInfo> requestGroupsInfo(List<Long> groupIds) {
         String requestGroupsLink = linkBuilder.getRequestGroupsLink(groupIds);
         String answer = null;
@@ -85,6 +91,7 @@ public class ApiService {
         return jsonService.getGroupsInfo(answer);
     }
 
+    @Override
     public ArrayList<Post> requestPosts(Long groupId, int count, String accessToken) {
         String requestPostsLink = linkBuilder.getRequestPostsLink(groupId, count, accessToken);
         String answer = null;
@@ -96,6 +103,7 @@ public class ApiService {
         return jsonService.getPosts(answer);
     }
 
+    @Override
     public ArrayList<Long> requestLikedUserIds(Long groupId, Long postId, String accessToken) {
         String requestLikedUserIdsLink = linkBuilder.getRequestLikedUserIdsLink(groupId, postId, accessToken);
         String answer = null;

@@ -1,4 +1,5 @@
-import controller.logic.AppLogic;
+import controller.logic.AppLogicImpl;
+import controller.logic.IAppLogic;
 import model.group.Group;
 import model.group.GroupInfo;
 import model.post.Post;
@@ -10,8 +11,8 @@ import java.util.Arrays;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class AppLogicTest {
-    private AppLogic logic = new AppLogic();
+public class AppLogicImplTest {
+    private IAppLogic logic = new AppLogicImpl();
 
     @Test
     public void testFormGroupsFromSources() throws Exception {
