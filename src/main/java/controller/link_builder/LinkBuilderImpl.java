@@ -3,6 +3,8 @@ package controller.link_builder;
 import controller.json_service.JsonServiceImpl;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -10,15 +12,17 @@ import java.util.List;
 
 public class LinkBuilderImpl implements ILinkBuilder {
     private int clientId = 5103937;
-    private String redirectUri = "http://localhost:8080/vkchase/login";
+    private String redirectUri;
+
     private String clientSecret = null;
 
     public LinkBuilderImpl() {
-        String path = getClass().getResource("/values.json").getPath();
-        path = path.substring(1);
+        redirectUri = "http://"+getLocalIpAddress()+":8080/vkchase/login";
+        String pathToValuesJson = getClass().getResource("/values.json").getPath();
+        pathToValuesJson = pathToValuesJson.substring(1);
         List<String> lines = new ArrayList<>();
         try {
-            lines = Files.readAllLines(Paths.get(path));
+            lines = Files.readAllLines(Paths.get(pathToValuesJson));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -142,5 +146,21 @@ public class LinkBuilderImpl implements ILinkBuilder {
                 .append("&access_token=")
                 .append(accessToken);
         return requestLikedUserIdsLink.toString();
+    }
+
+    private String getLocalIpAddress() {
+        String localIpAddress = "localhost";
+        try {
+            InetAddress addr = InetAddress.getLocalHost();
+            byte[] ipAddr = addr.getAddress();
+            int[] ip= new int[4];
+            for (int i = 0; i < ipAddr.length; i++) {
+                ip[i] = Byte.toUnsignedInt(ipAddr[i]);
+            }
+            localIpAddress = String.format("%d.%d.%d.%d", ip[0], ip[1], ip[2], ip[3]);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        return localIpAddress;
     }
 }
