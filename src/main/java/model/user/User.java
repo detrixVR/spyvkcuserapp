@@ -1,8 +1,6 @@
-package model;
+package model.user;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 public class User {
     private UserInfo userInfo;

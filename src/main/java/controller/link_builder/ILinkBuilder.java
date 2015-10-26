@@ -1,4 +1,4 @@
-package controller;
+package controller.link_builder;
 
 import java.util.List;
 

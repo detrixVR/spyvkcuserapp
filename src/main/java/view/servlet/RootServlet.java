@@ -1,8 +1,8 @@
-package view;
+package view.servlet;
 
-import controller.AccountService;
-import controller.CookiesService;
-import model.User;
+import controller.account_service.AccountService;
+import controller.cookies_service.CookiesService;
+import model.user.User;
 import view.templater.PageGenerator;
 
 import javax.servlet.ServletException;

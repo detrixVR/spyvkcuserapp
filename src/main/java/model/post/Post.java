@@ -1,4 +1,4 @@
-package model;
+package model.post;
 
 import java.util.ArrayList;
 

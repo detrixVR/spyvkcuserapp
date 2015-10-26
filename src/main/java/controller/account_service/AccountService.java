@@ -1,6 +1,6 @@
-package controller;
+package controller.account_service;
 
-import model.User;
+import model.user.User;
 
 import java.util.HashMap;
 import java.util.Map;

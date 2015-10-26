@@ -1,13 +1,17 @@
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import controller.*;
+import controller.account_service.AccountService;
+import controller.api_service.ApiService;
+import controller.api_service.ApiServiceModule;
+import controller.cookies_service.CookiesService;
+import controller.logic.AppLogic;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import view.*;
+import view.servlet.*;
 import view.templater.PageGenerator;
 
 import javax.servlet.Servlet;
@@ -20,7 +24,7 @@ public class Main {
 
         Injector injector = Guice.createInjector(new ApiServiceModule());
         ApiService apiService = injector.getInstance(ApiService.class);
-        Logic logic = new Logic();
+        AppLogic logic = new AppLogic();
 
         Servlet rootServlet = new RootServlet(accountService, cookiesService, pageGenerator);
         Servlet loginServlet = new LoginServlet(apiService, accountService);

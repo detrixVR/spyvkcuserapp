@@ -1,8 +1,8 @@
-package controller;
+package controller.json_service;
 
-import model.GroupInfo;
-import model.Post;
-import model.UserInfo;
+import model.group.GroupInfo;
+import model.post.Post;
+import model.user.UserInfo;
 
 import java.util.ArrayList;
 

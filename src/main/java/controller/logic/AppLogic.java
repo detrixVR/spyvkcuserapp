@@ -1,12 +1,12 @@
-package controller;
+package controller.logic;
 
-import model.Group;
-import model.GroupInfo;
-import model.Post;
+import model.group.Group;
+import model.group.GroupInfo;
+import model.post.Post;
 
 import java.util.ArrayList;
 
-public class Logic {
+public class AppLogic {
     public ArrayList<GroupInfo> formGroupsInfoFromSources(String[] ids, String[] names, String[] screenNames) {
         ArrayList<GroupInfo> groupsInfo = new ArrayList<>();
         for(int i=0; i<ids.length; i++) {

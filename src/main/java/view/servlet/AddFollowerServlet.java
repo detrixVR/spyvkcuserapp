@@ -1,9 +1,9 @@
-package view;
+package view.servlet;
 
-import controller.AccountService;
-import controller.ApiService;
-import controller.CookiesService;
-import model.User;
+import controller.account_service.AccountService;
+import controller.api_service.ApiService;
+import controller.cookies_service.CookiesService;
+import model.user.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

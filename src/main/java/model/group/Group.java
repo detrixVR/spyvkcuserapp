@@ -1,4 +1,6 @@
-package model;
+package model.group;
+
+import model.post.Post;
 
 import java.util.ArrayList;
 

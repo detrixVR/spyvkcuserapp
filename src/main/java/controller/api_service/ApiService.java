@@ -1,9 +1,12 @@
-package controller;
+package controller.api_service;
 
 import com.google.inject.Inject;
-import model.GroupInfo;
-import model.Post;
-import model.UserInfo;
+import controller.link_builder.ILinkBuilder;
+import controller.json_service.IJsonService;
+import controller.request.IRequest;
+import model.group.GroupInfo;
+import model.post.Post;
+import model.user.UserInfo;
 
 import java.io.IOException;
 import java.util.ArrayList;

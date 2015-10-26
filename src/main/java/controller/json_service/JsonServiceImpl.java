@@ -1,15 +1,13 @@
-package controller;
+package controller.json_service;
 
-import model.Group;
-import model.GroupInfo;
-import model.Post;
-import model.UserInfo;
+import model.group.GroupInfo;
+import model.post.Post;
+import model.user.UserInfo;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class JsonServiceImpl implements IJsonService {
     @Override

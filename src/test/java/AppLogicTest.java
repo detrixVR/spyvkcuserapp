@@ -1,7 +1,7 @@
-import controller.Logic;
-import model.Group;
-import model.GroupInfo;
-import model.Post;
+import controller.logic.AppLogic;
+import model.group.Group;
+import model.group.GroupInfo;
+import model.post.Post;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -10,8 +10,8 @@ import java.util.Arrays;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class LogicTest {
-    private Logic logic = new Logic();
+public class AppLogicTest {
+    private AppLogic logic = new AppLogic();
 
     @Test
     public void testFormGroupsFromSources() throws Exception {

@@ -1,13 +1,13 @@
-package view;
+package view.servlet;
 
-import controller.AccountService;
-import controller.ApiService;
-import controller.CookiesService;
-import controller.Logic;
-import model.Group;
-import model.GroupInfo;
-import model.Post;
-import model.User;
+import controller.account_service.AccountService;
+import controller.api_service.ApiService;
+import controller.cookies_service.CookiesService;
+import controller.logic.AppLogic;
+import model.group.Group;
+import model.group.GroupInfo;
+import model.post.Post;
+import model.user.User;
 import view.templater.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -23,11 +23,11 @@ public class LikesInGroupsServlet extends HttpServlet {
     private ApiService apiService;
     private AccountService accountService;
     private CookiesService cookiesService;
-    private Logic logic;
+    private AppLogic logic;
     private PageGenerator pageGenerator;
 
     public LikesInGroupsServlet(ApiService apiService, AccountService accountService, CookiesService cookiesService,
-                                Logic logic, PageGenerator pageGenerator) {
+                                AppLogic logic, PageGenerator pageGenerator) {
         this.apiService = apiService;
         this.accountService = accountService;
         this.cookiesService = cookiesService;

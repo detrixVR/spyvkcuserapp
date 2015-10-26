@@ -1,4 +1,4 @@
-package model;
+package model.group;
 
 public class GroupInfo {
     private Long id = 0L;
