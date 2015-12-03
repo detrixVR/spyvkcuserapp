@@ -1,4 +1,4 @@
-package serverdaemon.controller.api_service;
+package shared.controller.api_service;
 
 import shared.model.group.GroupInfo;
 import shared.model.post.Post;
@@ -6,6 +6,7 @@ import shared.model.user.UserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public interface IApiService {
     String getRequestCodeLink();
@@ -20,7 +21,7 @@ public interface IApiService {
 
     List<GroupInfo> requestGroupsInfo(List<Long> groupIds);
 
-    ArrayList<Post> requestPosts(Long groupId, int count, String accessToken);
+    Set<Post> requestPosts(Long groupId, int count, String accessToken);
 
-    ArrayList<Long> requestLikedUserIds(Long groupId, Long postId, String accessToken);
+    Set<Long> requestLikedUserIds(Long groupId, Long postId, String accessToken);
 }

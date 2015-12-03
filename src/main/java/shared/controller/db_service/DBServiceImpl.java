@@ -1,6 +1,7 @@
 package shared.controller.db_service;
 
-import shared.model.dao.UserDAO;
+import shared.model.dao.FollowerDAO;
+import shared.model.dao.FollowingDAO;
 import shared.model.group.Group;
 import shared.model.group.GroupInfo;
 import shared.model.post.Post;
@@ -32,6 +33,7 @@ public class DBServiceImpl implements IDBService {
         configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/vkchase");
         configuration.setProperty("hibernate.connection.username", "root");
         configuration.setProperty("hibernate.connection.password", "root");
+        configuration.setProperty("hibernate.connection.characterEncoding", "utf8");
         configuration.setProperty("hibernate.show_sql", "true");
         configuration.setProperty("hibernate.hbm2ddl.auto", "create");
         configuration.setProperty("hibernate.connection.autocommit", "false");
@@ -46,9 +48,23 @@ public class DBServiceImpl implements IDBService {
         return configuration.buildSessionFactory(serviceRegistry);
     }
 
-    public void saveUser(Follower user) {
+    public void saveFollower(Follower follower) {
         Session session = sessionFactory.openSession();
-        UserDAO dao = new UserDAO(session);
-        dao.save(user);
+        FollowerDAO dao = new FollowerDAO(session);
+        dao.save(follower);
+    }
+
+    @Override
+    public void saveFollowing(Following following) {
+        Session session = sessionFactory.openSession();
+        FollowingDAO dao = new FollowingDAO(session);
+        dao.save(following);
+    }
+
+    @Override
+    public void updateFollower(Follower follower) {
+        Session session = sessionFactory.openSession();
+        FollowerDAO dao = new FollowerDAO(session);
+        dao.update(follower);
     }
 }

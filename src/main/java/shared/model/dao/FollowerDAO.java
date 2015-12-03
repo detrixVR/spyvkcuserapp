@@ -3,10 +3,10 @@ package shared.model.dao;
 import shared.model.user.Follower;
 import org.hibernate.Session;
 
-public class UserDAO {
+public class FollowerDAO {
     private Session session;
 
-    public UserDAO(Session session) {
+    public FollowerDAO(Session session) {
         this.session = session;
     }
 
@@ -19,5 +19,12 @@ public class UserDAO {
 
     public Follower read(long id) {
         return session.load(Follower.class, id);
+    }
+
+    public void update(Follower follower) {
+        session.beginTransaction();
+        session.update(follower);
+        session.getTransaction().commit();
+        session.close();
     }
 }

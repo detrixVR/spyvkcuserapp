@@ -1,11 +1,9 @@
-package serverdaemon.controller.request;
+package shared.controller.request;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 //import java.net.InetSocketAddress;
 //import java.net.Proxy;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.net.URL;
 
 public class RequestImpl implements IRequest {

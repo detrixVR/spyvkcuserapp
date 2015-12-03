@@ -1,6 +1,6 @@
-package serverdaemon.controller.link_builder;
+package shared.controller.link_builder;
 
-import serverdaemon.controller.json_service.JsonServiceImpl;
+import shared.controller.json_service.JsonServiceImpl;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -67,6 +67,7 @@ public class LinkBuilderImpl implements ILinkBuilder {
         StringBuilder userInfoLink = new StringBuilder();
         userInfoLink
                 .append("https://api.vk.com/method/users.get?")
+                .append(userId != null ? ("user_ids=" + userId + "&") : "")
                 .append("v=5.37")
                 .append("&access_token=")
                 .append(accessToken);

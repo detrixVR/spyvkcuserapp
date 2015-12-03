@@ -4,36 +4,47 @@ import shared.model.group.Group;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Entity
 @Table(name = "following")
 public class Following extends User implements Serializable { // those who followed by users
-    @ManyToMany(mappedBy = "following", fetch = FetchType.LAZY)
-    private List<Group> groups;
+    @ElementCollection
+    @CollectionTable(name = "following_group", joinColumns = @JoinColumn(name = "following_id"))
+    @MapKeyJoinColumn(name = "group_id")
+    @Column(name = "count")
+    private Map<Group, Integer> groups = new HashMap<>();
 
-    @ManyToMany(mappedBy = "following", fetch = FetchType.LAZY)
-    private List<Follower> followers;
+    @ManyToMany(mappedBy = "following", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Follower> followers = new HashSet<>();
 
-    public Following() {}
-
-    public Following(List<Follower> followers) {
-        this.followers = followers;
+    public Following() {
     }
 
-    public List<Follower> getFollowers() {
+    public Following(UserInfo userInfo) {
+        this.userInfo = userInfo;
+    }
+
+    public Set<Follower> getFollowers() {
         return followers;
     }
 
-    public void setFollowers(List<Follower> followers) {
+    public void setFollowers(Set<Follower> followers) {
         this.followers = followers;
     }
 
-    public List<Group> getGroups() {
+    public Map<Group, Integer> getGroups() {
         return groups;
     }
 
-    public void setGroups(List<Group> groups) {
+    public void setGroups(Map<Group, Integer> groups) {
         this.groups = groups;
+    }
+
+    public void addFollower(Follower follower) {
+        followers.add(follower);
     }
 }

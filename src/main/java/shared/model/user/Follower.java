@@ -2,30 +2,31 @@ package shared.model.user;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "followers")
 public class Follower extends User implements Serializable { // those who follow for users
     @Column(name = "accessToken")
-    private String accessToken;
+    private String accessToken = "";
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Following> following;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Following> following = new HashSet<>();
 
-    public Follower() {}
+    public Follower() {
+    }
 
     public Follower(UserInfo userInfo, String accessToken) {
         this.userInfo = userInfo;
         this.accessToken = accessToken;
     }
 
-    public List<Following> getFollowing() {
+    public Set<Following> getFollowing() {
         return following;
     }
 
-    public void setFollowing(ArrayList<Following> following) {
+    public void setFollowing(HashSet<Following> following) {
         this.following = following;
     }
 

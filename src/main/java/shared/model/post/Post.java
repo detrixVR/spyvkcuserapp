@@ -3,8 +3,8 @@ package shared.model.post;
 import shared.model.group.Group;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "post")
@@ -16,7 +16,7 @@ public class Post {
     private String text = "";
 
     @ElementCollection(fetch = FetchType.LAZY, targetClass = Long.class)
-    private List<Long> likedUserIds = new ArrayList<>();
+    private Set<Long> likedUserIds = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Group group;
@@ -29,11 +29,11 @@ public class Post {
         this.id = id;
     }
 
-    public List<Long> getLikedUserIds() {
+    public Set<Long> getLikedUserIds() {
         return likedUserIds;
     }
 
-    public void setLikedUserIds(List<Long> likedUserIds) {
+    public void setLikedUserIds(Set<Long> likedUserIds) {
         this.likedUserIds = likedUserIds;
     }
 
@@ -42,7 +42,7 @@ public class Post {
     }
 
     public void setText(String text) {
-       this.text = text;
+        this.text = text;
     }
 
     @Override

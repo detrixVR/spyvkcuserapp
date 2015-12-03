@@ -1,4 +1,4 @@
-package serverdaemon.controller.cookies_service;
+package websever.controller.cookies_service;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

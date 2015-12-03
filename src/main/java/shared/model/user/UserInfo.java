@@ -7,8 +7,12 @@ import java.io.Serializable;
 @Table(name = "userinfo")
 public class UserInfo implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
+
+    @Column(name = "vk_id")
+    private Long vkId;
 
     @Column(name = "firstName")
     private String firstName;
@@ -40,5 +44,13 @@ public class UserInfo implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Long getVkId() {
+        return vkId;
+    }
+
+    public void setVkId(Long vkId) {
+        this.vkId = vkId;
     }
 }

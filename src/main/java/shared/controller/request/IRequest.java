@@ -1,4 +1,4 @@
-package serverdaemon.controller.request;
+package shared.controller.request;
 
 import java.io.IOException;
 

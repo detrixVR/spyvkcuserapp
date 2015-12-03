@@ -1,8 +1,8 @@
 package websever.view.servlet;
 
 import com.google.inject.Inject;
-import serverdaemon.controller.account_service.IAccountService;
-import serverdaemon.controller.api_service.IApiService;
+import shared.controller.account_service.IAccountService;
+import shared.controller.api_service.IApiService;
 import shared.model.user.Follower;
 import shared.model.user.UserInfo;
 
@@ -29,9 +29,9 @@ public class LoginServlet extends HttpServlet {
             String code = req.getParameter("code");
             String accessToken = apiService.requestAccessToken(code);
             UserInfo userInfo = apiService.getUserInfo(null, accessToken);
-            Follower user = new Follower(userInfo, accessToken);
-            accountService.addUser(userInfo.getId(), user);
-            resp.addCookie(new Cookie("id", String.valueOf(userInfo.getId())));
+            Follower follower = new Follower(userInfo, accessToken);
+            accountService.addFollower(userInfo.getVkId(), follower);
+            resp.addCookie(new Cookie("id", String.valueOf(userInfo.getVkId())));
             resp.sendRedirect("");
         } else {
             String requestCodeLink = apiService.getRequestCodeLink();

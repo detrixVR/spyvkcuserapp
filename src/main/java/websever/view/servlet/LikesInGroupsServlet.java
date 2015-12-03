@@ -1,9 +1,9 @@
 package websever.view.servlet;
 
 import com.google.inject.Inject;
-import serverdaemon.controller.account_service.IAccountService;
-import serverdaemon.controller.api_service.IApiService;
-import serverdaemon.controller.cookies_service.ICookiesService;
+import shared.controller.account_service.IAccountService;
+import shared.controller.api_service.IApiService;
+import websever.controller.cookies_service.ICookiesService;
 import serverdaemon.controller.logic.IAppLogic;
 import shared.model.group.Group;
 import shared.model.group.GroupInfo;
@@ -16,9 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class LikesInGroupsServlet extends HttpServlet {
     private IApiService apiService;
@@ -38,7 +36,7 @@ public class LikesInGroupsServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Follower user = accountService.getUser(Long.valueOf(cookiesService.getCookie(req, "id")));
 
         String[] groupIds = req.getParameterValues("id");
@@ -46,13 +44,14 @@ public class LikesInGroupsServlet extends HttpServlet {
         String[] groupScreenNames = req.getParameterValues("screenName");
         String[] count = req.getParameterValues("count");
         ArrayList<GroupInfo> groupsInfo = logic.formGroupsInfoFromSources(groupIds, groupNames, groupScreenNames);
-        ArrayList<Group> groups = new ArrayList<>();
+        Set<Group> groups = new HashSet<>();
+        groupsInfo.forEach((info) -> groups.add(new Group(info)));
 
         for (int i = 0; i < groupsInfo.size(); i++) {
-            ArrayList<Post> posts = apiService.requestPosts(Long.valueOf(groupIds[i]), Integer.valueOf(count[i]),
+            Set<Post> posts = apiService.requestPosts(Long.valueOf(groupIds[i]), Integer.valueOf(count[i]),
                     user.getAccessToken());
             for (Post post : posts) {
-                ArrayList<Long> userIds = apiService.requestLikedUserIds(Long.valueOf(groupIds[i]), post.getId()
+                Set<Long> userIds = apiService.requestLikedUserIds(Long.valueOf(groupIds[i]), post.getId()
                         , user.getAccessToken());
                 post.setLikedUserIds(userIds);
             }
@@ -61,7 +60,7 @@ public class LikesInGroupsServlet extends HttpServlet {
 
 //        Long follower = user.getFollowerIds().get(0);
         Long following = 1L;
-        ArrayList<Group> groupsWithPostsLikedByUser = logic.filterGroupsByFollowingLike(groups, following);
+        Set<Group> groupsWithPostsLikedByUser = logic.filterGroupsByFollowingLike(groups, following);
 
         Map<String, Object> pageVariables = new HashMap<>();
         pageVariables.put("groups", groupsWithPostsLikedByUser);

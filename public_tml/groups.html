@@ -23,7 +23,7 @@
             document.getElementById(checkboxId).appendChild(screenNameInput);
         }
     </script>
-    <form action="http://localhost:8080/vkchase/grouplikes" method="get">
+    <form action="http://localhost:8080/vkchase/grouplikes" method="post">
         <#list groupsInfo as groupInfo>
             <div id="${groupInfo.id?c}">
                 <input type="checkbox" name="id" value="${groupInfo.id?c}"
@@ -32,7 +32,7 @@
             </div>
             <br>
         </#list>
-        <button type="submit">Ok</button>
+        <button type="submit">Add to queue</button>
     </form>
 </body>
 </html>

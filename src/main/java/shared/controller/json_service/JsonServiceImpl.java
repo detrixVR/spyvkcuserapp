@@ -1,4 +1,4 @@
-package serverdaemon.controller.json_service;
+package shared.controller.json_service;
 
 import shared.model.group.GroupInfo;
 import shared.model.post.Post;
@@ -8,6 +8,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class JsonServiceImpl implements IJsonService {
     @Override
@@ -21,7 +24,7 @@ public class JsonServiceImpl implements IJsonService {
         JSONObject responseObject = new JSONObject(userInfoString);
         JSONObject userObject = responseObject.getJSONArray("response").getJSONObject(0);
         UserInfo userInfo = new UserInfo();
-        userInfo.setId(userObject.getInt("id"));
+        userInfo.setVkId(userObject.getLong("id"));
         userInfo.setFirstName(userObject.getString("first_name"));
         userInfo.setLastName(userObject.getString("last_name"));
         return userInfo;
@@ -61,8 +64,8 @@ public class JsonServiceImpl implements IJsonService {
     }
 
     @Override
-    public ArrayList<Post> getPosts(String answer) {
-        ArrayList<Post> posts = new ArrayList<>();
+    public Set<Post> getPosts(String answer) {
+        Set<Post> posts = new LinkedHashSet<>();
         JSONObject jsonObject = new JSONObject(answer);
         System.out.println(answer);
         JSONArray itemsArray = jsonObject.getJSONObject("response").getJSONArray("items");
@@ -77,8 +80,8 @@ public class JsonServiceImpl implements IJsonService {
     }
 
     @Override
-    public ArrayList<Long> getLikedUserIds(String answer) {
-        ArrayList<Long> userIDs = new ArrayList<>();
+    public Set<Long> getLikedUserIds(String answer) {
+        Set<Long> userIDs = new HashSet<>();
         try {
             JSONObject jsonObject = new JSONObject(answer);
             System.out.println(answer);

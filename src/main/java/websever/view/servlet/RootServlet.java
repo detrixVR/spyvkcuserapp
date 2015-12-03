@@ -1,8 +1,8 @@
 package websever.view.servlet;
 
 import com.google.inject.Inject;
-import serverdaemon.controller.account_service.IAccountService;
-import serverdaemon.controller.cookies_service.ICookiesService;
+import shared.controller.account_service.IAccountService;
+import websever.controller.cookies_service.ICookiesService;
 import shared.model.user.Follower;
 import websever.view.templater.IPageGenerator;
 

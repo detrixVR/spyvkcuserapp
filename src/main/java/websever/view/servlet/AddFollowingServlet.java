@@ -1,9 +1,11 @@
 package websever.view.servlet;
 
 import com.google.inject.Inject;
-import serverdaemon.controller.account_service.IAccountService;
-import serverdaemon.controller.api_service.IApiService;
-import serverdaemon.controller.cookies_service.ICookiesService;
+import shared.controller.account_service.IAccountService;
+import shared.controller.api_service.IApiService;
+import shared.model.user.Following;
+import shared.model.user.UserInfo;
+import websever.controller.cookies_service.ICookiesService;
 import shared.model.user.Follower;
 
 import javax.servlet.ServletException;
@@ -28,9 +30,13 @@ public class AddFollowingServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String userLink = req.getParameter("link");
         Long id = Long.valueOf(cookiesService.getCookie(req, "id"));
-        Follower user = accountService.getUser(id);
-        Long followerId = apiService.resolveScreenName(userLink);
-//        user.addFollowerId(followerId);
-        resp.sendRedirect("groups?follower=" + followerId);
+        Follower follower = accountService.getUser(id);
+
+        Long followingId = apiService.resolveScreenName(userLink);
+        UserInfo userInfo = apiService.getUserInfo(followingId, follower.getAccessToken());
+        Following following = new Following(userInfo);
+
+        accountService.addFollowing(follower, following);
+        resp.sendRedirect("groups?following=" + userInfo.getVkId());
     }
 }

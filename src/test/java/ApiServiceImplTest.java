@@ -1,15 +1,14 @@
-import serverdaemon.controller.api_service.ApiServiceImpl;
-import serverdaemon.controller.api_service.IApiService;
-import serverdaemon.controller.json_service.IJsonService;
-import serverdaemon.controller.link_builder.ILinkBuilder;
-import serverdaemon.controller.request.IRequest;
+import shared.controller.api_service.ApiServiceImpl;
+import shared.controller.api_service.IApiService;
+import shared.controller.json_service.IJsonService;
+import shared.controller.link_builder.ILinkBuilder;
+import shared.controller.request.IRequest;
+import shared.model.post.Post;
 import shared.model.user.UserInfo;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -131,7 +130,7 @@ public class ApiServiceImplTest {
         when(linkBuilder.getRequestPostsLink(groupId, count, accessToken)).thenReturn(requestPostsLink);
         String answer = "answer";
         when(request.get(requestPostsLink)).thenReturn(answer);
-        when(jsonService.getPosts(answer)).thenReturn(new ArrayList<>());
+        when(jsonService.getPosts(answer)).thenReturn(new LinkedHashSet<>());
 
         apiService.requestPosts(groupId, count, accessToken);
 
@@ -149,7 +148,7 @@ public class ApiServiceImplTest {
         when(linkBuilder.getRequestLikedUserIdsLink(groupId, postId, accessToken)).thenReturn(requestLikedUserIdsLink);
         String answer = "answer";
         when(request.get(requestLikedUserIdsLink)).thenReturn(answer);
-        when(jsonService.getLikedUserIds(answer)).thenReturn(new ArrayList<>());
+        when(jsonService.getLikedUserIds(answer)).thenReturn(new HashSet<>());
 
         apiService.requestLikedUserIds(groupId, postId, accessToken);
 

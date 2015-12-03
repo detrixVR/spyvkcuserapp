@@ -4,11 +4,10 @@ import shared.model.post.Post;
 import shared.model.user.Following;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
-@Table(name = "group")
+@Table(name = "groups")
 public class Group {
     @Id
     private Long id;
@@ -17,15 +16,24 @@ public class Group {
     private GroupInfo groupInfo;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "group")
-    private List<Post> posts = new ArrayList<>();
+    private Set<Post> posts = new LinkedHashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Following> following;
+    @ElementCollection
+    @CollectionTable(name = "following_group", joinColumns = @JoinColumn(name = "group_id"))
+    @MapKeyJoinColumn(name = "following_id")
+    @Column(name = "count")
+    private Map<Following, Integer> following = new HashMap<>();
 
-    public Group(GroupInfo groupInfo, ArrayList<Post> posts) {
+    public Group(GroupInfo groupInfo, Set<Post> posts) {
         this.groupInfo = groupInfo;
         this.posts = posts;
     }
+
+    public Group(GroupInfo info) {
+        this.groupInfo = info;
+    }
+
+    public Group() {}
 
     public Long getId() {
         return id;
@@ -43,19 +51,19 @@ public class Group {
         this.groupInfo = groupInfo;
     }
 
-    public List<Post> getPosts() {
+    public Set<Post> getPosts() {
         return posts;
     }
 
-    public void setPosts(List<Post> posts) {
+    public void setPosts(Set<Post> posts) {
         this.posts = posts;
     }
 
-    public List<Following> getFollowing() {
+    public Map<Following, Integer> getFollowing() {
         return following;
     }
 
-    public void setFollowing(List<Following> following) {
+    public void setFollowing(Map<Following, Integer> following) {
         this.following = following;
     }
 

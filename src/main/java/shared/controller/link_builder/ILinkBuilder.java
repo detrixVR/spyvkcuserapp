@@ -1,4 +1,4 @@
-package serverdaemon.controller.link_builder;
+package shared.controller.link_builder;
 
 import java.util.List;
 

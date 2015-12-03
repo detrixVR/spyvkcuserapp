@@ -1,9 +1,9 @@
-package serverdaemon.controller.api_service;
+package shared.controller.api_service;
 
 import com.google.inject.Inject;
-import serverdaemon.controller.link_builder.ILinkBuilder;
-import serverdaemon.controller.json_service.IJsonService;
-import serverdaemon.controller.request.IRequest;
+import shared.controller.link_builder.ILinkBuilder;
+import shared.controller.json_service.IJsonService;
+import shared.controller.request.IRequest;
 import shared.model.group.GroupInfo;
 import shared.model.post.Post;
 import shared.model.user.UserInfo;
@@ -11,6 +11,7 @@ import shared.model.user.UserInfo;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class ApiServiceImpl implements IApiService {
     private ILinkBuilder linkBuilder;
@@ -92,7 +93,7 @@ public class ApiServiceImpl implements IApiService {
     }
 
     @Override
-    public ArrayList<Post> requestPosts(Long groupId, int count, String accessToken) {
+    public Set<Post> requestPosts(Long groupId, int count, String accessToken) {
         String requestPostsLink = linkBuilder.getRequestPostsLink(groupId, count, accessToken);
         String answer = null;
         try {
@@ -104,7 +105,7 @@ public class ApiServiceImpl implements IApiService {
     }
 
     @Override
-    public ArrayList<Long> requestLikedUserIds(Long groupId, Long postId, String accessToken) {
+    public Set<Long> requestLikedUserIds(Long groupId, Long postId, String accessToken) {
         String requestLikedUserIdsLink = linkBuilder.getRequestLikedUserIdsLink(groupId, postId, accessToken);
         String answer = null;
         try {
