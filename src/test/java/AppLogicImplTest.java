@@ -1,8 +1,8 @@
-import controller.logic.AppLogicImpl;
-import controller.logic.IAppLogic;
-import model.group.Group;
-import model.group.GroupInfo;
-import model.post.Post;
+import serverdaemon.controller.logic.AppLogicImpl;
+import serverdaemon.controller.logic.IAppLogic;
+import shared.model.group.Group;
+import shared.model.group.GroupInfo;
+import shared.model.post.Post;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class AppLogicImplTest {
         groups.add(group1);
         groups.add(group2);
 
-        ArrayList<Group> filteredGroups = logic.filterGroupsByFollowerLike(groups, 1L);
+        ArrayList<Group> filteredGroups = logic.filterGroupsByFollowingLike(groups, 1L);
 
         assertEquals(1, filteredGroups.size());
         assertEquals(1, filteredGroups.get(0).getPosts().size());

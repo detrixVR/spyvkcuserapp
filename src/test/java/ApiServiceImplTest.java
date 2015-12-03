@@ -1,9 +1,9 @@
-import controller.api_service.ApiServiceImpl;
-import controller.api_service.IApiService;
-import controller.json_service.IJsonService;
-import controller.link_builder.ILinkBuilder;
-import controller.request.IRequest;
-import model.user.UserInfo;
+import serverdaemon.controller.api_service.ApiServiceImpl;
+import serverdaemon.controller.api_service.IApiService;
+import serverdaemon.controller.json_service.IJsonService;
+import serverdaemon.controller.link_builder.ILinkBuilder;
+import serverdaemon.controller.request.IRequest;
+import shared.model.user.UserInfo;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -79,13 +79,13 @@ public class ApiServiceImplTest {
         String answer = "answer";
         when(request.get(resolveScreenNameLink)).thenReturn(answer);
         Long id = 1L;
-        when(jsonService.getFollowerId(answer)).thenReturn(id);
+        when(jsonService.getFollowingId(answer)).thenReturn(id);
 
         Long actualId = apiService.resolveScreenName(userLink);
 
         verify(linkBuilder, times(1)).getResolveScreenNameLink(screenName);
         verify(request, times(1)).get(resolveScreenNameLink);
-        verify(jsonService, times(1)).getFollowerId(answer);
+        verify(jsonService, times(1)).getFollowingId(answer);
         assertEquals(id, actualId);
     }
 
