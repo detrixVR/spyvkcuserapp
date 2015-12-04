@@ -1,6 +1,7 @@
 package shared.controller.account_service;
 
 import shared.model.group.Group;
+import shared.model.post.Post;
 import shared.model.user.Follower;
 import shared.model.user.Following;
 
@@ -25,4 +26,8 @@ public interface IAccountService {
     void addGroupsToFollowing(Following following, Set<Group> groups, Follower follower, List<Integer> count);
 
     Set<Group> getAllGroups();
+
+    void updateGroup(Group group);
+
+    Set<Post> getAllPosts();
 }

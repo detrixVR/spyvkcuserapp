@@ -1,9 +1,6 @@
 package shared.controller.db_service;
 
-import shared.model.dao.FollowerCountDAO;
-import shared.model.dao.FollowerDAO;
-import shared.model.dao.FollowingDAO;
-import shared.model.dao.GroupDAO;
+import shared.model.dao.*;
 import shared.model.group.Group;
 import shared.model.group.GroupInfo;
 import shared.model.post.Post;
@@ -40,7 +37,7 @@ public class DBServiceImpl implements IDBService {
         configuration.setProperty("hibernate.connection.password", "root");
         configuration.setProperty("hibernate.connection.characterEncoding", "utf8");
         configuration.setProperty("hibernate.show_sql", "true");
-        configuration.setProperty("hibernate.hbm2ddl.auto", "create");
+        configuration.setProperty("hibernate.hbm2ddl.auto", "update");
         configuration.setProperty("hibernate.connection.autocommit", "false");
 
         sessionFactory = createSessionFactory(configuration);
@@ -121,6 +118,18 @@ public class DBServiceImpl implements IDBService {
         FollowerCountDAO dao = new FollowerCountDAO(session);
         dao.save(followerCount);
 //        session.close();
+    }
+
+    @Override
+    public void updateGroup(Group group) {
+        GroupDAO dao = new GroupDAO(session);
+        dao.update(group);
+    }
+
+    @Override
+    public Set<Post> getAllPosts() {
+        PostDAO dao = new PostDAO(session);
+        return dao.getAll();
     }
 
     @Override

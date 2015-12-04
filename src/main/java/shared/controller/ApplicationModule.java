@@ -1,4 +1,4 @@
-package webserver.view.servlet;
+package shared.controller;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
@@ -18,7 +18,7 @@ import serverdaemon.controller.logic.IAppLogic;
 import webserver.view.templater.IPageGenerator;
 import webserver.view.templater.PageGeneratorImpl;
 
-public class ServletsModule extends AbstractModule {
+public class ApplicationModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(IAccountService.class).to(AccountServiceImpl.class).in(Singleton.class);

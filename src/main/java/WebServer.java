@@ -6,13 +6,14 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import shared.controller.ApplicationModule;
 import webserver.view.servlet.*;
 
 import javax.servlet.Servlet;
 
 public class WebServer {
     public static void main(String[] args) throws Exception {
-        Injector servletsInjector = Guice.createInjector(new ServletsModule());
+        Injector servletsInjector = Guice.createInjector(new ApplicationModule());
 
         Servlet rootServlet = servletsInjector.getInstance(RootServlet.class);
         Servlet loginServlet = servletsInjector.getInstance(LoginServlet.class);

@@ -16,7 +16,7 @@ public class Post {
     @Column(name = "vk_id")
     private Long vkId = 0L;
 
-    @Column(name = "text")
+    @Column(name = "text", length = 10000)
     private String text = "";
 
     @ElementCollection(fetch = FetchType.LAZY, targetClass = Long.class)

@@ -3,6 +3,7 @@ package shared.controller.account_service;
 import com.google.inject.Inject;
 import shared.controller.db_service.IDBService;
 import shared.model.group.Group;
+import shared.model.post.Post;
 import shared.model.user.Follower;
 import shared.model.user.FollowerCount;
 import shared.model.user.Following;
@@ -82,6 +83,16 @@ public class AccountServiceImpl implements IAccountService {
     @Override
     public Set<Group> getAllGroups() {
         return dbService.getAllGroups();
+    }
+
+    @Override
+    public void updateGroup(Group group) {
+        dbService.updateGroup(group);
+    }
+
+    @Override
+    public Set<Post> getAllPosts() {
+        return dbService.getAllPosts();
     }
 
 }

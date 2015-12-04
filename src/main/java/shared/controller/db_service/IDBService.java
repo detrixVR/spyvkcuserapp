@@ -1,6 +1,7 @@
 package shared.controller.db_service;
 
 import shared.model.group.Group;
+import shared.model.post.Post;
 import shared.model.user.Follower;
 import shared.model.user.FollowerCount;
 import shared.model.user.Following;
@@ -26,4 +27,8 @@ public interface IDBService {
     Map<Long,Follower> getAllFollowers();
 
     void saveFollowerCount(FollowerCount followerCount);
+
+    void updateGroup(Group group);
+
+    Set<Post> getAllPosts();
 }
