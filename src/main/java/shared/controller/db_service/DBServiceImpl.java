@@ -2,6 +2,7 @@ package shared.controller.db_service;
 
 import shared.model.dao.FollowerDAO;
 import shared.model.dao.FollowingDAO;
+import shared.model.dao.GroupDAO;
 import shared.model.group.Group;
 import shared.model.group.GroupInfo;
 import shared.model.post.Post;
@@ -52,6 +53,7 @@ public class DBServiceImpl implements IDBService {
         Session session = sessionFactory.openSession();
         FollowerDAO dao = new FollowerDAO(session);
         dao.save(follower);
+        session.close();
     }
 
     @Override
@@ -59,6 +61,7 @@ public class DBServiceImpl implements IDBService {
         Session session = sessionFactory.openSession();
         FollowingDAO dao = new FollowingDAO(session);
         dao.save(following);
+        session.close();
     }
 
     @Override
@@ -66,5 +69,31 @@ public class DBServiceImpl implements IDBService {
         Session session = sessionFactory.openSession();
         FollowerDAO dao = new FollowerDAO(session);
         dao.update(follower);
+        session.close();
+    }
+
+    @Override
+    public Following getFollowingByVkId(Long id) {
+        Session session = sessionFactory.openSession();
+        FollowingDAO dao = new FollowingDAO(session);
+        Following following= dao.getByVkId(id);
+        session.close();
+        return following;
+    }
+
+    @Override
+    public void saveGroup(Group group) {
+        Session session = sessionFactory.openSession();
+        GroupDAO dao = new GroupDAO(session);
+        dao.save(group);
+        session.close();
+    }
+
+    @Override
+    public void updateFollowing(Following following) {
+        Session session = sessionFactory.openSession();
+        FollowingDAO dao = new FollowingDAO(session);
+        dao.update(following);
+        session.close();
     }
 }

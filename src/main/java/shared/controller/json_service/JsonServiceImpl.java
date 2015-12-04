@@ -55,7 +55,7 @@ public class JsonServiceImpl implements IJsonService {
         for(int i=0; !jsonArray.isNull(i); i++) {
             JSONObject groupObject = jsonArray.getJSONObject(i);
             GroupInfo groupInfo = new GroupInfo();
-            groupInfo.setId(groupObject.getLong("id"));
+            groupInfo.setVkId(groupObject.getLong("id"));
             groupInfo.setName(groupObject.getString("name"));
             groupInfo.setScreenName(groupObject.getString("screen_name"));
             groupsInfo.add(groupInfo);
@@ -72,7 +72,7 @@ public class JsonServiceImpl implements IJsonService {
         for (int i = 0; !itemsArray.isNull(i); i++) {
             Post post = new Post();
             JSONObject item = itemsArray.getJSONObject(i);
-            post.setId(item.getLong("id"));
+            post.setVkId(item.getLong("id"));
             post.setText(item.getString("text"));
             posts.add(post);
         }

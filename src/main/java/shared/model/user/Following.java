@@ -1,8 +1,12 @@
 package shared.model.user;
 
+import org.hibernate.annotations.*;
 import shared.model.group.Group;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,12 +17,13 @@ import java.util.Set;
 @Table(name = "following")
 public class Following extends User implements Serializable { // those who followed by users
     @ElementCollection
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @CollectionTable(name = "following_group", joinColumns = @JoinColumn(name = "following_id"))
     @MapKeyJoinColumn(name = "group_id")
     @Column(name = "count")
     private Map<Group, Integer> groups = new HashMap<>();
 
-    @ManyToMany(mappedBy = "following", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "following", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Follower> followers = new HashSet<>();
 
     public Following() {

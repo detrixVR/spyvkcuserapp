@@ -33,7 +33,7 @@ public class RootServlet extends HttpServlet {
         } else {
             Map<String, Object> pageVariables = new HashMap<>();
             Long id = Long.valueOf(cookiesService.getCookie(req, "id"));
-            Follower user = accountService.getUser(id);
+            Follower user = accountService.getFollower(id);
             pageVariables.put("firstName", user.getUserInfo().getFirstName());
             pageVariables.put("lastName", user.getUserInfo().getLastName());
             resp.setContentType("text/html; charset=utf-8");

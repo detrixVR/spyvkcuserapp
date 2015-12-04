@@ -1,15 +1,16 @@
 package shared.model.group;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "groupinfo")
 public class GroupInfo {
     @Id
-    private Long id = 0L;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "vk_id")
+    private Long vkId = 0L;
 
     @Column(name = "name")
     private String name = "";
@@ -17,8 +18,8 @@ public class GroupInfo {
     @Column(name = "screenname")
     private String screenName = "";
 
-    public GroupInfo(Long id, String name, String screenName) {
-        this.id = id;
+    public GroupInfo(Long vkId, String name, String screenName) {
+        this.vkId= vkId;
         this.name = name;
         this.screenName = screenName;
     }
@@ -55,5 +56,13 @@ public class GroupInfo {
     public boolean equals(Object obj) {
         GroupInfo groupInfo = (GroupInfo) obj;
         return this.id == groupInfo.id && this.name.equals(groupInfo.name) && this.screenName.equals(groupInfo.screenName);
+    }
+
+    public Long getVkId() {
+        return vkId;
+    }
+
+    public void setVkId(Long vkId) {
+        this.vkId = vkId;
     }
 }

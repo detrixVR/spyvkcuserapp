@@ -10,7 +10,11 @@ import java.util.Set;
 @Table(name = "post")
 public class Post {
     @Id
-    private Long id = 0L;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "vk_id")
+    private Long vkId = 0L;
 
     @Column(name = "text")
     private String text = "";
@@ -57,5 +61,13 @@ public class Post {
 
     public void setGroup(Group group) {
         this.group = group;
+    }
+
+    public Long getVkId() {
+        return vkId;
+    }
+
+    public void setVkId(Long vkId) {
+        this.vkId = vkId;
     }
 }

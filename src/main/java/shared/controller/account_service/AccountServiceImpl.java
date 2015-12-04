@@ -2,11 +2,11 @@ package shared.controller.account_service;
 
 import com.google.inject.Inject;
 import shared.controller.db_service.IDBService;
+import shared.model.group.Group;
 import shared.model.user.Follower;
 import shared.model.user.Following;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class AccountServiceImpl implements IAccountService {
     private Map<Long, Follower> users = new HashMap<>();
@@ -36,8 +36,13 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     @Override
-    public Follower getUser(Long id) {
+    public Follower getFollower(Long id) {
         return users.get(id);
+    }
+
+    @Override
+    public Following getFollowing(Long id) {
+        return dbService.getFollowingByVkId(id);
     }
 
     @Override
@@ -50,6 +55,23 @@ public class AccountServiceImpl implements IAccountService {
         follower.addFollowing(following);
         following.addFollower(follower);
         dbService.updateFollower(follower);
+    }
+
+    @Override
+    public void addGroupsToFollowing(Following following, Set<Group> groups, List<Integer> counts) {
+        Map<Group, Integer> groupCountMap = new HashMap<>();
+        Iterator<Group> groupIterator= groups.iterator();
+        Iterator<Integer> countIterator = counts.iterator();
+        while(groupIterator.hasNext() || countIterator.hasNext()) {
+            Group group= groupIterator.next();
+            Integer count = countIterator.next();
+            group.addFollowing(following, count);
+            groupCountMap.put(group, count);
+            dbService.saveGroup(group);
+        }
+        following.setGroups(groupCountMap);
+
+        dbService.updateFollowing(following);
     }
 
 }

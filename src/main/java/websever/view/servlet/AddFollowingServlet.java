@@ -30,7 +30,7 @@ public class AddFollowingServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String userLink = req.getParameter("link");
         Long id = Long.valueOf(cookiesService.getCookie(req, "id"));
-        Follower follower = accountService.getUser(id);
+        Follower follower = accountService.getFollower(id);
 
         Long followingId = apiService.resolveScreenName(userLink);
         UserInfo userInfo = apiService.getUserInfo(followingId, follower.getAccessToken());

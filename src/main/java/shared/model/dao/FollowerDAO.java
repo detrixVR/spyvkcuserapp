@@ -14,7 +14,6 @@ public class FollowerDAO {
         session.beginTransaction();
         session.save(user);
         session.getTransaction().commit();
-        session.close();
     }
 
     public Follower read(long id) {
@@ -25,6 +24,5 @@ public class FollowerDAO {
         session.beginTransaction();
         session.update(follower);
         session.getTransaction().commit();
-        session.close();
     }
 }

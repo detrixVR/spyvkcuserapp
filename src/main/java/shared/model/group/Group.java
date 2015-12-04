@@ -1,15 +1,23 @@
 package shared.model.group;
 
+import org.hibernate.annotations.*;
 import shared.model.post.Post;
 import shared.model.user.Following;
 
 import javax.persistence.*;
-import java.util.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Entity
 @Table(name = "groups")
 public class Group {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -19,6 +27,7 @@ public class Group {
     private Set<Post> posts = new LinkedHashSet<>();
 
     @ElementCollection
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @CollectionTable(name = "following_group", joinColumns = @JoinColumn(name = "group_id"))
     @MapKeyJoinColumn(name = "following_id")
     @Column(name = "count")
@@ -33,7 +42,8 @@ public class Group {
         this.groupInfo = info;
     }
 
-    public Group() {}
+    public Group() {
+    }
 
     public Long getId() {
         return id;
@@ -67,6 +77,9 @@ public class Group {
         this.following = following;
     }
 
+    public void addFollowing(Following following, Integer count) {
+        this.following.put(following, count);
+    }
 //    @Override
 //    public boolean equals(Object obj) {
 //        Group group = (Group) obj;

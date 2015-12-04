@@ -35,7 +35,7 @@ public class GetGroupsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Long followingId = Long.valueOf(req.getParameter("following"));
         Long followerId = Long.valueOf(cookiesService.getCookie(req, "id"));
-        String accessToken = accountService.getUser(followerId).getAccessToken();
+        String accessToken = accountService.getFollower(followerId).getAccessToken();
         List<Long> groupIds = apiService.requestGroupIds(followingId, accessToken);
         List<GroupInfo> groupsInfo = apiService.requestGroupsInfo(groupIds);
 

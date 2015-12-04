@@ -11,7 +11,7 @@ public class Follower extends User implements Serializable { // those who follow
     @Column(name = "accessToken")
     private String accessToken = "";
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Following> following = new HashSet<>();
 
     public Follower() {
