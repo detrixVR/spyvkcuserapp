@@ -1,7 +1,5 @@
 package shared.controller.db_service;
 
-import org.hibernate.Hibernate;
-import org.hibernate.proxy.HibernateProxy;
 import shared.model.dao.FollowerCountDAO;
 import shared.model.dao.FollowerDAO;
 import shared.model.dao.FollowingDAO;
@@ -42,7 +40,7 @@ public class DBServiceImpl implements IDBService {
         configuration.setProperty("hibernate.connection.password", "root");
         configuration.setProperty("hibernate.connection.characterEncoding", "utf8");
         configuration.setProperty("hibernate.show_sql", "true");
-        configuration.setProperty("hibernate.hbm2ddl.auto", "update");
+        configuration.setProperty("hibernate.hbm2ddl.auto", "create");
         configuration.setProperty("hibernate.connection.autocommit", "false");
 
         sessionFactory = createSessionFactory(configuration);

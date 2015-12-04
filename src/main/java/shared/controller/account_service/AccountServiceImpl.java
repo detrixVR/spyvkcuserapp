@@ -1,7 +1,6 @@
 package shared.controller.account_service;
 
 import com.google.inject.Inject;
-import org.hibernate.Hibernate;
 import shared.controller.db_service.IDBService;
 import shared.model.group.Group;
 import shared.model.user.Follower;
@@ -72,6 +71,7 @@ public class AccountServiceImpl implements IAccountService {
             FollowerCount followerCount = new FollowerCount(follower, count);
             dbService.saveFollowerCount(followerCount);
 
+            group.addFollowing(following);
             dbService.saveGroup(group);
 
             following.addGroup(group, followerCount);

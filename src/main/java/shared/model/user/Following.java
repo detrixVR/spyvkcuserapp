@@ -1,6 +1,5 @@
 package shared.model.user;
 
-import org.hibernate.Hibernate;
 import org.hibernate.annotations.*;
 import shared.model.group.Group;
 
@@ -17,16 +16,12 @@ import java.util.Set;
 @Entity
 @Table(name = "following")
 public class Following extends User implements Serializable { // those who followed by users
-//    @ElementCollection
-//    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-//    @CollectionTable(name = "following_group")
-//    @MapKeyClass(FollowerCount.class)
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "following_group_followercount",
-            joinColumns = @JoinColumn(name = "following_id"),
-            inverseJoinColumns = @JoinColumn(name = "followercount_id"))
+            joinColumns = @JoinColumn(name = "following_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"))
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    @MapKeyJoinColumn(name = "group_id")
+    @MapKeyJoinColumn(name = "followercount_id")
     private Map<Group, FollowerCount> groups = new HashMap<>();
 
     @ManyToMany(mappedBy = "following", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
