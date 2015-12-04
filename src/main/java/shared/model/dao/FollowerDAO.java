@@ -3,6 +3,9 @@ package shared.model.dao;
 import shared.model.user.Follower;
 import org.hibernate.Session;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class FollowerDAO {
     private Session session;
 
@@ -24,5 +27,11 @@ public class FollowerDAO {
         session.beginTransaction();
         session.update(follower);
         session.getTransaction().commit();
+    }
+
+    public Set<Follower> getAll() {
+        session.beginTransaction();
+        Set<Follower> followers = new HashSet<>(session.createCriteria(Follower.class).list());
+        return followers;
     }
 }

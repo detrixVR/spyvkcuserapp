@@ -1,16 +1,9 @@
 package shared.model.group;
 
-import org.hibernate.annotations.*;
 import shared.model.post.Post;
-import shared.model.user.Following;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -26,12 +19,17 @@ public class Group {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "group")
     private Set<Post> posts = new LinkedHashSet<>();
 
-    @ElementCollection
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    @CollectionTable(name = "following_group", joinColumns = @JoinColumn(name = "group_id"))
-    @MapKeyJoinColumn(name = "following_id")
-    @Column(name = "count")
-    private Map<Following, Integer> following = new HashMap<>();
+//    @ElementCollection
+//    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+//    @CollectionTable(name = "following_group")
+//    @MapKeyJoinColumn(name = "following_id")
+//    @MapKeyClass(FollowerCount.class)
+//    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @JoinTable(name = "following_group_followercount",
+//            joinColumns = @JoinColumn(name = "group_id", table = "groups"),
+//            inverseJoinColumns = @JoinColumn(name = "following_id", table = "following"))
+//    @MapKeyJoinColumn(name = "followercount_id", table = "follower_count")
+//    private Map<Following, FollowerCount> following = new HashMap<>();
 
     public Group(GroupInfo groupInfo, Set<Post> posts) {
         this.groupInfo = groupInfo;
@@ -69,17 +67,17 @@ public class Group {
         this.posts = posts;
     }
 
-    public Map<Following, Integer> getFollowing() {
-        return following;
-    }
+//    public Map<Following, FollowerCount> getFollowing() {
+//        return following;
+//    }
 
-    public void setFollowing(Map<Following, Integer> following) {
-        this.following = following;
-    }
+//    public void setFollowing(Map<Following, FollowerCount> following) {
+//        this.following = following;
+//    }
 
-    public void addFollowing(Following following, Integer count) {
-        this.following.put(following, count);
-    }
+//    public void addFollowing(Following following, FollowerCount followerCount) {
+//        this.following.put(following, followerCount);
+//    }
 //    @Override
 //    public boolean equals(Object obj) {
 //        Group group = (Group) obj;

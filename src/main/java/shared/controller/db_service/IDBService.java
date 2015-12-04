@@ -2,7 +2,11 @@ package shared.controller.db_service;
 
 import shared.model.group.Group;
 import shared.model.user.Follower;
+import shared.model.user.FollowerCount;
 import shared.model.user.Following;
+
+import java.util.Map;
+import java.util.Set;
 
 public interface IDBService {
     void saveFollower(Follower follower);
@@ -16,4 +20,10 @@ public interface IDBService {
     Following getFollowingByVkId(Long id);
 
     void saveGroup(Group group);
+
+    Set<Group> getAllGroups();
+
+    Map<Long,Follower> getAllFollowers();
+
+    void saveFollowerCount(FollowerCount followerCount);
 }

@@ -1,4 +1,4 @@
-package websever.view.servlet;
+package webserver.view.servlet;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
@@ -9,14 +9,14 @@ import shared.controller.account_service.IAccountService;
 import shared.controller.api_service.ApiServiceImpl;
 import shared.controller.api_service.ApiServiceModule;
 import shared.controller.api_service.IApiService;
-import websever.controller.cookies_service.CookiesServiceImpl;
-import websever.controller.cookies_service.ICookiesService;
+import webserver.controller.cookies_service.CookiesServiceImpl;
+import webserver.controller.cookies_service.ICookiesService;
 import shared.controller.db_service.DBServiceImpl;
 import shared.controller.db_service.IDBService;
 import serverdaemon.controller.logic.AppLogicImpl;
 import serverdaemon.controller.logic.IAppLogic;
-import websever.view.templater.IPageGenerator;
-import websever.view.templater.PageGeneratorImpl;
+import webserver.view.templater.IPageGenerator;
+import webserver.view.templater.PageGeneratorImpl;
 
 public class ServletsModule extends AbstractModule {
     @Override

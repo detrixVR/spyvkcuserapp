@@ -1,5 +1,7 @@
 package shared.model.user;
 
+import shared.model.group.Group;
+
 import javax.persistence.*;
 import java.io.Serializable;
 

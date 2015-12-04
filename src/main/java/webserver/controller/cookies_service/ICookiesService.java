@@ -1,4 +1,4 @@
-package websever.controller.cookies_service;
+package webserver.controller.cookies_service;
 
 import javax.servlet.http.HttpServletRequest;
 

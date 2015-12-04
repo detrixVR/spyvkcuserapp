@@ -1,26 +1,29 @@
 package shared.controller.account_service;
 
 import com.google.inject.Inject;
+import org.hibernate.Hibernate;
 import shared.controller.db_service.IDBService;
 import shared.model.group.Group;
 import shared.model.user.Follower;
+import shared.model.user.FollowerCount;
 import shared.model.user.Following;
 
 import java.util.*;
 
 public class AccountServiceImpl implements IAccountService {
-    private Map<Long, Follower> users = new HashMap<>();
+    private Map<Long, Follower> followers = new HashMap<>();
     private Map<String, Follower> sessions = new HashMap<>();
     private IDBService dbService;
 
     @Inject
     public AccountServiceImpl(IDBService dbService) {
         this.dbService = dbService;
+        followers = dbService.getAllFollowers();
     }
 
     @Override
     public boolean addFollower(Long id, Follower user) {
-        users.put(id, user);
+        followers.put(id, user);
         dbService.saveFollower(user);
         return true;
     }
@@ -37,7 +40,7 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public Follower getFollower(Long id) {
-        return users.get(id);
+        return followers.get(id);
     }
 
     @Override
@@ -47,31 +50,38 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public int getUsersCount() {
-        return users.size();
+        return followers.size();
     }
 
     @Override
     public void addFollowing(Follower follower, Following following) {
         follower.addFollowing(following);
         following.addFollower(follower);
+        dbService.saveFollowing(following);
         dbService.updateFollower(follower);
     }
 
     @Override
-    public void addGroupsToFollowing(Following following, Set<Group> groups, List<Integer> counts) {
-        Map<Group, Integer> groupCountMap = new HashMap<>();
+    public void addGroupsToFollowing(Following following, Set<Group> groups, Follower follower, List<Integer> counts) {
         Iterator<Group> groupIterator= groups.iterator();
         Iterator<Integer> countIterator = counts.iterator();
         while(groupIterator.hasNext() || countIterator.hasNext()) {
-            Group group= groupIterator.next();
+            Group group = groupIterator.next();
             Integer count = countIterator.next();
-            group.addFollowing(following, count);
-            groupCountMap.put(group, count);
-            dbService.saveGroup(group);
-        }
-        following.setGroups(groupCountMap);
 
-        dbService.updateFollowing(following);
+            FollowerCount followerCount = new FollowerCount(follower, count);
+            dbService.saveFollowerCount(followerCount);
+
+            dbService.saveGroup(group);
+
+            following.addGroup(group, followerCount);
+            dbService.updateFollowing(following);
+        }
+    }
+
+    @Override
+    public Set<Group> getAllGroups() {
+        return dbService.getAllGroups();
     }
 
 }

@@ -1,5 +1,6 @@
 package shared.model.user;
 
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.*;
 import shared.model.group.Group;
 
@@ -16,18 +17,22 @@ import java.util.Set;
 @Entity
 @Table(name = "following")
 public class Following extends User implements Serializable { // those who followed by users
-    @ElementCollection
+//    @ElementCollection
+//    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+//    @CollectionTable(name = "following_group")
+//    @MapKeyClass(FollowerCount.class)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "following_group_followercount",
+            joinColumns = @JoinColumn(name = "following_id"),
+            inverseJoinColumns = @JoinColumn(name = "followercount_id"))
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    @CollectionTable(name = "following_group", joinColumns = @JoinColumn(name = "following_id"))
     @MapKeyJoinColumn(name = "group_id")
-    @Column(name = "count")
-    private Map<Group, Integer> groups = new HashMap<>();
+    private Map<Group, FollowerCount> groups = new HashMap<>();
 
     @ManyToMany(mappedBy = "following", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Follower> followers = new HashSet<>();
 
-    public Following() {
-    }
+    public Following() { }
 
     public Following(UserInfo userInfo) {
         this.userInfo = userInfo;
@@ -41,15 +46,19 @@ public class Following extends User implements Serializable { // those who follo
         this.followers = followers;
     }
 
-    public Map<Group, Integer> getGroups() {
+    public Map<Group, FollowerCount> getGroups() {
         return groups;
     }
 
-    public void setGroups(Map<Group, Integer> groups) {
+    public void setGroups(Map<Group, FollowerCount> groups) {
         this.groups = groups;
     }
 
     public void addFollower(Follower follower) {
         followers.add(follower);
+    }
+
+    public void addGroup(Group group, FollowerCount followerCount) {
+        groups.put(group, followerCount);
     }
 }

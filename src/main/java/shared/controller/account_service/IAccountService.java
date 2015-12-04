@@ -22,5 +22,7 @@ public interface IAccountService {
 
     void addFollowing(Follower follower, Following following);
 
-    void addGroupsToFollowing(Following following, Set<Group> groups, List<Integer> count);
+    void addGroupsToFollowing(Following following, Set<Group> groups, Follower follower, List<Integer> count);
+
+    Set<Group> getAllGroups();
 }

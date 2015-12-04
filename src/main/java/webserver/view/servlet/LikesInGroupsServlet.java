@@ -1,4 +1,4 @@
-package websever.view.servlet;
+package webserver.view.servlet;
 
 import com.google.inject.Inject;
 import serverdaemon.controller.logic.IAppLogic;
@@ -8,8 +8,8 @@ import shared.model.group.Group;
 import shared.model.group.GroupInfo;
 import shared.model.user.Follower;
 import shared.model.user.Following;
-import websever.controller.cookies_service.ICookiesService;
-import websever.view.templater.IPageGenerator;
+import webserver.controller.cookies_service.ICookiesService;
+import webserver.view.templater.IPageGenerator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -38,7 +38,7 @@ public class LikesInGroupsServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Follower user = accountService.getFollower(Long.valueOf(cookiesService.getCookie(req, "id")));
+        Follower follower = accountService.getFollower(Long.valueOf(cookiesService.getCookie(req, "id")));
 
         Long followingId = Long.valueOf(req.getParameter("followingId"));
         List<Long> groupIds = Arrays
@@ -62,7 +62,7 @@ public class LikesInGroupsServlet extends HttpServlet {
         });
 
         Following following = accountService.getFollowing(followingId);
-        accountService.addGroupsToFollowing(following, groups, count);
+        accountService.addGroupsToFollowing(following, groups, follower, count);
         System.out.println("Ok");
 
 //        for (int i = 0; i < groupsInfo.size(); i++) {

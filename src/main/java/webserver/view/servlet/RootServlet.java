@@ -1,10 +1,10 @@
-package websever.view.servlet;
+package webserver.view.servlet;
 
 import com.google.inject.Inject;
 import shared.controller.account_service.IAccountService;
-import websever.controller.cookies_service.ICookiesService;
+import webserver.controller.cookies_service.ICookiesService;
 import shared.model.user.Follower;
-import websever.view.templater.IPageGenerator;
+import webserver.view.templater.IPageGenerator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

@@ -1,4 +1,4 @@
-package websever.view.templater;
+package webserver.view.templater;
 
 import java.util.Map;
 

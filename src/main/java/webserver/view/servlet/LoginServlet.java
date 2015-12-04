@@ -1,4 +1,4 @@
-package websever.view.servlet;
+package webserver.view.servlet;
 
 import com.google.inject.Inject;
 import shared.controller.account_service.IAccountService;
