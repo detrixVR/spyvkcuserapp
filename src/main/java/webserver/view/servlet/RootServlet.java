@@ -2,6 +2,7 @@ package webserver.view.servlet;
 
 import com.google.inject.Inject;
 import shared.controller.account_service.IAccountService;
+import shared.model.user.Following;
 import webserver.controller.cookies_service.ICookiesService;
 import shared.model.user.Follower;
 import webserver.view.templater.IPageGenerator;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class RootServlet extends HttpServlet {
     IAccountService accountService;
@@ -34,8 +36,11 @@ public class RootServlet extends HttpServlet {
             Map<String, Object> pageVariables = new HashMap<>();
             Long id = Long.valueOf(cookiesService.getCookie(req, "id"));
             Follower user = accountService.getFollower(id);
+            Set<Following> following = user.getFollowing();
+
             pageVariables.put("firstName", user.getUserInfo().getFirstName());
             pageVariables.put("lastName", user.getUserInfo().getLastName());
+            pageVariables.put("following", following);
             resp.setContentType("text/html; charset=utf-8");
             resp.getWriter().println(pageGenerator.getPage("index.html", pageVariables));
             resp.setStatus(HttpServletResponse.SC_OK);

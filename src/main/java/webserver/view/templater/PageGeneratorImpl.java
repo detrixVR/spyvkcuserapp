@@ -1,5 +1,6 @@
 package webserver.view.templater;
 
+import freemarker.ext.beans.BeansWrapper;
 import freemarker.template.*;
 
 import java.io.File;
@@ -16,6 +17,7 @@ public class PageGeneratorImpl implements IPageGenerator {
     public String getPage(String filename, Map<String, Object> data) {
         try {
             CFG.setDirectoryForTemplateLoading(new File(HTML_DIR));
+            CFG.setAPIBuiltinEnabled(true);
         } catch (IOException e) {
             e.printStackTrace();
         }

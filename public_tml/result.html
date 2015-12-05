@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Результаты</title>
+</head>
+<body>
+    <#list groupPostMap?keys as group>
+        <div id="group">
+            <h2>${group}:</h2>
+            <#list groupPostMap?api.get(group) as post>
+                <li>
+                <div id="post">
+                    <p>
+                        Id: ${post.vkId?c}<br>
+                        Text: ${post.text}<br>
+                    <p/>
+                </div>
+                </li>
+            </#list>
+        </div>
+        <br>
+    </#list>
+</body>
+</html>

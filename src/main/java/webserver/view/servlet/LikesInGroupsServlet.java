@@ -84,6 +84,7 @@ public class LikesInGroupsServlet extends HttpServlet {
 //        pageVariables.put("groups", groupsWithPostsLikedByUser);
 //        resp.setContentType("text/html; charset=utf-8");
 //        resp.getWriter().println(pageGenerator.getPage("likedposts.html", pageVariables));
-        resp.setStatus(HttpServletResponse.SC_OK);
+//        resp.setStatus(HttpServletResponse.SC_OK);
+        resp.sendRedirect("result?following=" + followingId);
     }
 }
