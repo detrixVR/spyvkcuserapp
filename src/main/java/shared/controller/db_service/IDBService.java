@@ -31,4 +31,6 @@ public interface IDBService {
     void updateGroup(Group group);
 
     Set<Post> getAllPosts();
+
+    Set<Following> getAllFollowings();
 }

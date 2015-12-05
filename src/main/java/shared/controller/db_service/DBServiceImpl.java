@@ -133,6 +133,12 @@ public class DBServiceImpl implements IDBService {
     }
 
     @Override
+    public Set<Following> getAllFollowings() {
+        FollowingDAO dao = new FollowingDAO(session);
+        return dao.getAll();
+    }
+
+    @Override
     public void updateFollowing(Following following) {
 //        Session session = sessionFactory.openSession();
         FollowingDAO dao = new FollowingDAO(session);

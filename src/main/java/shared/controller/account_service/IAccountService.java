@@ -30,4 +30,8 @@ public interface IAccountService {
     void updateGroup(Group group);
 
     Set<Post> getAllPosts();
+
+    Set<Following> getAllFollowing();
+
+    void updateFollowing(Following followingOne);
 }

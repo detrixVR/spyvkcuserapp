@@ -95,4 +95,14 @@ public class AccountServiceImpl implements IAccountService {
         return dbService.getAllPosts();
     }
 
+    @Override
+    public Set<Following> getAllFollowing() {
+        return dbService.getAllFollowings();
+    }
+
+    @Override
+    public void updateFollowing(Following following) {
+        dbService.updateFollowing(following);
+    }
+
 }

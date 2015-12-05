@@ -6,6 +6,9 @@ import org.hibernate.sql.JoinType;
 import shared.model.user.Follower;
 import shared.model.user.Following;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class FollowingDAO {
     private Session session;
 
@@ -35,5 +38,12 @@ public class FollowingDAO {
                 .createAlias("following.userInfo", "userInfo")
                 .add(Restrictions.eq("userInfo.vkId", id))
                 .uniqueResult();
+    }
+
+    public Set<Following> getAll() {
+        session.beginTransaction();
+        HashSet following = new HashSet(session.createCriteria(Following.class).list());
+        session.getTransaction().commit();
+        return following;
     }
 }

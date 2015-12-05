@@ -2,6 +2,7 @@ package shared.model.user;
 
 import org.hibernate.annotations.*;
 import shared.model.group.Group;
+import shared.model.post.Post;
 
 import javax.persistence.*;
 import javax.persistence.CascadeType;
@@ -26,6 +27,9 @@ public class Following extends User implements Serializable { // those who follo
 
     @ManyToMany(mappedBy = "following", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Follower> followers = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Post> likedPosts = new HashSet<>();
 
     public Following() { }
 
@@ -55,5 +59,13 @@ public class Following extends User implements Serializable { // those who follo
 
     public void addGroup(Group group, FollowerCount followerCount) {
         groups.put(group, followerCount);
+    }
+
+    public Set<Post> getLikedPosts() {
+        return likedPosts;
+    }
+
+    public void setLikedPosts(Set<Post> likedPosts) {
+        this.likedPosts = likedPosts;
     }
 }
