@@ -15,7 +15,7 @@ public class LinkBuilderImpl implements ILinkBuilder {
     private String clientSecret = null;
 
     public LinkBuilderImpl() {
-        redirectUri = "http://"+getLocalIpAddress()+":8080/vkchase/login";
+        redirectUri = "http://localhost8080/vkchase/login";
         String pathToValuesJson = getClass().getResource("/values.json").getPath();
         pathToValuesJson = pathToValuesJson.substring(1);
         List<String> lines = new ArrayList<>();
@@ -145,21 +145,5 @@ public class LinkBuilderImpl implements ILinkBuilder {
                 .append("&access_token=")
                 .append(accessToken);
         return requestLikedUserIdsLink.toString();
-    }
-
-    private String getLocalIpAddress() {
-        String localIpAddress = "localhost";
-//        try {
-//            InetAddress addr = InetAddress.getLocalHost();
-//            byte[] ipAddr = addr.getAddress();
-//            int[] ip= new int[4];
-//            for (int i = 0; i < ipAddr.length; i++) {
-//                ip[i] = Byte.toUnsignedInt(ipAddr[i]);
-//            }
-//            localIpAddress = String.format("%d.%d.%d.%d", ip[0], ip[1], ip[2], ip[3]);
-//        } catch (UnknownHostException e) {
-//            e.printStackTrace();
-//        }
-        return localIpAddress;
     }
 }

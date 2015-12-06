@@ -53,7 +53,7 @@ public class RefreshGroupsTask extends TimerTask {
             accountService.updateGroup(group);
         }
 
-        Set<Following> following =  accountService.getAllFollowing();
+        Set<Following> following = accountService.getAllFollowing();
         for (Following followingOne : following) {
             Set<Group> groupsOfFollowing = followingOne.getGroups().keySet();
             Set<Group> groupsWithLikedPosts = appLogic.filterGroupsByFollowingLike(

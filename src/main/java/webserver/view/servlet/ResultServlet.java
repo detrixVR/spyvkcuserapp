@@ -1,7 +1,6 @@
 package webserver.view.servlet;
 
 import com.google.inject.Inject;
-import freemarker.template.Configuration;
 import shared.controller.account_service.IAccountService;
 import shared.model.group.Group;
 import shared.model.post.Post;
@@ -38,10 +37,10 @@ public class ResultServlet extends HttpServlet {
 
         Map<Group, List<Post>> groupPostMap = new LinkedHashMap<>();
         for (Post likedPost : likedPosts) {
-            if(!groupPostMap.containsKey(likedPost.getGroup())) {
+            if (!groupPostMap.containsKey(likedPost.getGroup())) {
                 groupPostMap.put(
                         likedPost.getGroup(),
-                        new LinkedList<>(Arrays.asList(new Post[] {likedPost}))
+                        new LinkedList<>(Arrays.asList(new Post[]{likedPost}))
                 );
             } else {
                 groupPostMap.get(likedPost.getGroup()).add(likedPost);

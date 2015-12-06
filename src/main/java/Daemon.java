@@ -12,7 +12,6 @@ public class Daemon {
 
         Timer time = new Timer();
         int sixHours = 1000 * 60 * 60 * 6;
-        int threeSeconds = 1000 * 3;
         time.schedule(refreshGroupsTask, 0, sixHours);
     }
 }

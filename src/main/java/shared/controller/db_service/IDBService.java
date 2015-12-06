@@ -24,7 +24,7 @@ public interface IDBService {
 
     Set<Group> getAllGroups();
 
-    Map<Long,Follower> getAllFollowers();
+    Map<Long, Follower> getAllFollowers();
 
     void saveFollowerCount(FollowerCount followerCount);
 

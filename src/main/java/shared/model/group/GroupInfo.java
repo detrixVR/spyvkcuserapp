@@ -19,7 +19,7 @@ public class GroupInfo {
     private String screenName = "";
 
     public GroupInfo(Long vkId, String name, String screenName) {
-        this.vkId= vkId;
+        this.vkId = vkId;
         this.name = name;
         this.screenName = screenName;
     }

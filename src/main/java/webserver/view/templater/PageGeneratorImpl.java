@@ -1,7 +1,8 @@
 package webserver.view.templater;
 
-import freemarker.ext.beans.BeansWrapper;
-import freemarker.template.*;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 
 import java.io.File;
 import java.io.IOException;

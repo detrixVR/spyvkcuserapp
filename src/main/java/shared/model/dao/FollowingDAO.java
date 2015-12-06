@@ -2,8 +2,6 @@ package shared.model.dao;
 
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.sql.JoinType;
-import shared.model.user.Follower;
 import shared.model.user.Following;
 
 import java.util.HashSet;

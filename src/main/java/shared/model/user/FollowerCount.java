@@ -16,7 +16,8 @@ public class FollowerCount implements Serializable {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Follower follower;
 
-    public FollowerCount() {}
+    public FollowerCount() {
+    }
 
     public FollowerCount(Follower follower, Integer count) {
         this.count = count;

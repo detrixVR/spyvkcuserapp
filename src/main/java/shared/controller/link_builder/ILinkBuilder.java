@@ -2,9 +2,6 @@ package shared.controller.link_builder;
 
 import java.util.List;
 
-/**
- * Created by aminought on 27.10.2015.
- */
 public interface ILinkBuilder {
     String getRequestCodeLink();
 

@@ -2,9 +2,9 @@ package webserver.view.servlet;
 
 import com.google.inject.Inject;
 import shared.controller.account_service.IAccountService;
+import shared.model.user.Follower;
 import shared.model.user.Following;
 import webserver.controller.cookies_service.ICookiesService;
-import shared.model.user.Follower;
 import webserver.view.templater.IPageGenerator;
 
 import javax.servlet.ServletException;
@@ -30,7 +30,7 @@ public class RootServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if(accountService.getUsersCount() == 0) {
+        if (accountService.getUsersCount() == 0) {
             resp.sendRedirect("login");
         } else {
             Map<String, Object> pageVariables = new HashMap<>();

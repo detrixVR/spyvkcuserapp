@@ -1,15 +1,15 @@
 package shared.controller.db_service;
 
-import shared.model.dao.*;
-import shared.model.group.Group;
-import shared.model.group.GroupInfo;
-import shared.model.post.Post;
-import shared.model.user.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
+import shared.model.dao.*;
+import shared.model.group.Group;
+import shared.model.group.GroupInfo;
+import shared.model.post.Post;
+import shared.model.user.*;
 
 import java.util.HashMap;
 import java.util.Map;

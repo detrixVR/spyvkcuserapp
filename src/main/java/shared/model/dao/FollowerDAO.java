@@ -1,7 +1,7 @@
 package shared.model.dao;
 
-import shared.model.user.Follower;
 import org.hibernate.Session;
+import shared.model.user.Follower;
 
 import java.util.HashSet;
 import java.util.Set;

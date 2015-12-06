@@ -1,8 +1,8 @@
 package shared.controller.api_service;
 
 import com.google.inject.Inject;
-import shared.controller.link_builder.ILinkBuilder;
 import shared.controller.json_service.IJsonService;
+import shared.controller.link_builder.ILinkBuilder;
 import shared.controller.request.IRequest;
 import shared.model.group.GroupInfo;
 import shared.model.post.Post;

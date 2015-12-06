@@ -1,11 +1,11 @@
 package shared.controller.json_service;
 
-import shared.model.group.GroupInfo;
-import shared.model.post.Post;
-import shared.model.user.UserInfo;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import shared.model.group.GroupInfo;
+import shared.model.post.Post;
+import shared.model.user.UserInfo;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -41,7 +41,7 @@ public class JsonServiceImpl implements IJsonService {
         JSONObject jsonObject = new JSONObject(answer);
         JSONArray jsonArray = jsonObject.getJSONObject("response").getJSONArray("items");
         ArrayList<Long> groupIDs = new ArrayList<>();
-        for(int i=0; !jsonArray.isNull(i); i++) {
+        for (int i = 0; !jsonArray.isNull(i); i++) {
             groupIDs.add(jsonArray.getLong(i));
         }
         return groupIDs;
@@ -52,7 +52,7 @@ public class JsonServiceImpl implements IJsonService {
         ArrayList<GroupInfo> groupsInfo = new ArrayList<>();
         JSONObject jsonObject = new JSONObject(answer);
         JSONArray jsonArray = jsonObject.getJSONArray("response");
-        for(int i=0; !jsonArray.isNull(i); i++) {
+        for (int i = 0; !jsonArray.isNull(i); i++) {
             JSONObject groupObject = jsonArray.getJSONObject(i);
             GroupInfo groupInfo = new GroupInfo();
             groupInfo.setVkId(groupObject.getLong("id"));

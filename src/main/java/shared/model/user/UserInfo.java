@@ -20,7 +20,8 @@ public class UserInfo implements Serializable {
     @Column(name = "lastName")
     private String lastName;
 
-    public UserInfo() {}
+    public UserInfo() {
+    }
 
     public long getId() {
         return id;

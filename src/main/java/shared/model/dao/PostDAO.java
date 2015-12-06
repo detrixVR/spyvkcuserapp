@@ -1,7 +1,6 @@
 package shared.model.dao;
 
 import org.hibernate.Session;
-import shared.model.group.Group;
 import shared.model.post.Post;
 
 import java.util.HashSet;

@@ -63,9 +63,9 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public void addGroupsToFollowing(Following following, Set<Group> groups, Follower follower, List<Integer> counts) {
-        Iterator<Group> groupIterator= groups.iterator();
+        Iterator<Group> groupIterator = groups.iterator();
         Iterator<Integer> countIterator = counts.iterator();
-        while(groupIterator.hasNext() || countIterator.hasNext()) {
+        while (groupIterator.hasNext() || countIterator.hasNext()) {
             Group group = groupIterator.next();
             Integer count = countIterator.next();
 

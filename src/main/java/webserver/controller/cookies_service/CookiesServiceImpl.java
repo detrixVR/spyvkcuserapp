@@ -9,7 +9,7 @@ public class CookiesServiceImpl implements ICookiesService {
         Cookie[] cookies = req.getCookies();
         String value = null;
         for (Cookie cookie : cookies) {
-            if(cookie.getName().equals("id")) {
+            if (cookie.getName().equals("id")) {
                 value = cookie.getValue();
                 break;
             }

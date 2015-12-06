@@ -25,7 +25,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if(req.getParameter("code") != null) {
+        if (req.getParameter("code") != null) {
             String code = req.getParameter("code");
             String accessToken = apiService.requestAccessToken(code);
             UserInfo userInfo = apiService.getUserInfo(null, accessToken);
