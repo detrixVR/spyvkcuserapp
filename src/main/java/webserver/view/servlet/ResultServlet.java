@@ -2,6 +2,7 @@ package webserver.view.servlet;
 
 import com.google.inject.Inject;
 import shared.controller.account_service.IAccountService;
+import shared.controller.db_service.IDBService;
 import shared.model.group.Group;
 import shared.model.post.Post;
 import shared.model.user.Follower;
@@ -20,19 +21,25 @@ public class ResultServlet extends HttpServlet {
     IAccountService accountService;
     private ICookiesService cookiesService;
     private IPageGenerator pageGenerator;
+    private IDBService dbService;
 
     @Inject
-    public ResultServlet(IAccountService accountService, ICookiesService cookiesService, IPageGenerator pageGenerator) {
+    public ResultServlet(IAccountService accountService,
+                         ICookiesService cookiesService,
+                         IPageGenerator pageGenerator,
+                         IDBService dbService) {
         this.accountService = accountService;
         this.cookiesService = cookiesService;
         this.pageGenerator = pageGenerator;
+        this.dbService = dbService;
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Follower follower = accountService.getFollower(Long.valueOf(cookiesService.getCookie(req, "id")));
         Long followingId = Long.valueOf(req.getParameter("following"));
-        Following following = accountService.getFollowing(followingId);
+
+        Following following = dbService.getFollowingByVkId(followingId);
         Set<Post> likedPosts = following.getLikedPosts();
 
         Map<Group, List<Post>> groupPostMap = new LinkedHashMap<>();

@@ -3,6 +3,7 @@ package webserver.view.servlet;
 import com.google.inject.Inject;
 import shared.controller.account_service.IAccountService;
 import shared.controller.api_service.IApiService;
+import shared.controller.db_service.IDBService;
 import shared.model.user.Follower;
 import shared.model.user.Following;
 import shared.model.user.UserInfo;
@@ -18,12 +19,17 @@ public class AddFollowingServlet extends HttpServlet {
     private IApiService apiService;
     private IAccountService accountService;
     private ICookiesService cookiesService;
+    private IDBService dbService;
 
     @Inject
-    public AddFollowingServlet(IApiService apiService, IAccountService accountService, ICookiesService cookiesService) {
+    public AddFollowingServlet(IApiService apiService,
+                               IAccountService accountService,
+                               ICookiesService cookiesService,
+                               IDBService dbService) {
         this.apiService = apiService;
         this.accountService = accountService;
         this.cookiesService = cookiesService;
+        this.dbService = dbService;
     }
 
     @Override
@@ -36,7 +42,11 @@ public class AddFollowingServlet extends HttpServlet {
         UserInfo userInfo = apiService.getUserInfo(followingId, follower.getAccessToken());
         Following following = new Following(userInfo);
 
-        accountService.addFollowing(follower, following);
+        follower.addFollowing(following);
+        following.addFollower(follower);
+        dbService.saveFollowing(following);
+        dbService.updateFollower(follower);
+
         resp.sendRedirect("groups?following=" + userInfo.getVkId());
     }
 }

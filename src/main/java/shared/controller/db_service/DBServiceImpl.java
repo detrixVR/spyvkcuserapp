@@ -51,6 +51,7 @@ public class DBServiceImpl implements IDBService {
         return configuration.buildSessionFactory(serviceRegistry);
     }
 
+    @Override
     public void saveFollower(Follower follower) {
 //        Session session = sessionFactory.openSession();
         FollowerDAO dao = new FollowerDAO(session);
