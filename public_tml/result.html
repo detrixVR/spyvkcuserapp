@@ -7,13 +7,14 @@
 <body>
     <#list groupPostMap?keys as group>
         <div id="group">
-            <h2>${group}:</h2>
+            <h2>${group.groupInfo.name}:</h2>
             <#list groupPostMap?api.get(group) as post>
                 <li>
                 <div id="post">
                     <p>
                         Id: ${post.vkId?c}<br>
                         Text: ${post.text}<br>
+                        <a href="http://vk.com/wall-${group.groupInfo.vkId?c}_${post.vkId?c}">Link</a>
                     <p/>
                 </div>
                 </li>

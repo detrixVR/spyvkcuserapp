@@ -36,15 +36,15 @@ public class ResultServlet extends HttpServlet {
         Following following = accountService.getFollowing(followingId);
         Set<Post> likedPosts = following.getLikedPosts();
 
-        Map<String, List<Post>> groupPostMap = new LinkedHashMap<>();
+        Map<Group, List<Post>> groupPostMap = new LinkedHashMap<>();
         for (Post likedPost : likedPosts) {
-            if(!groupPostMap.containsKey(likedPost.getGroup().getGroupInfo().getName())) {
+            if(!groupPostMap.containsKey(likedPost.getGroup())) {
                 groupPostMap.put(
-                        likedPost.getGroup().getGroupInfo().getName(),
+                        likedPost.getGroup(),
                         new LinkedList<>(Arrays.asList(new Post[] {likedPost}))
                 );
             } else {
-                groupPostMap.get(likedPost.getGroup().getGroupInfo().getName()).add(likedPost);
+                groupPostMap.get(likedPost.getGroup()).add(likedPost);
             }
         }
 

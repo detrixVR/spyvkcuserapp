@@ -79,7 +79,6 @@ public class DBServiceImpl implements IDBService {
 //        Session session = sessionFactory.openSession();
         FollowingDAO dao = new FollowingDAO(session);
         Following following = dao.getByVkId(id);
-        session.refresh(following);
 //        session.close();
         return following;
     }
