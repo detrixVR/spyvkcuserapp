@@ -30,11 +30,12 @@ public class RootServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (accountService.getUsersCount() == 0) {
+        String idStr = cookiesService.getCookie(req, "id");
+        if (idStr == null) {
             resp.sendRedirect("login");
         } else {
+            Long id = Long.parseLong(idStr);
             Map<String, Object> pageVariables = new HashMap<>();
-            Long id = Long.valueOf(cookiesService.getCookie(req, "id"));
             Follower user = accountService.getFollower(id);
             Set<Following> following = user.getFollowing();
 
