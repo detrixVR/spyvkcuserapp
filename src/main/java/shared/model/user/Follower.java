@@ -30,6 +30,17 @@ public class Follower extends User implements Serializable { // those who follow
         this.following = following;
     }
 
+    public Following getFollowingByVkId(Long id) {
+        Following retFollowing = null;
+        for (Following followingOne : following) {
+            if (followingOne.getUserInfo().getVkId().longValue() == id.longValue()) {
+                retFollowing = followingOne;
+                break;
+            }
+        }
+        return retFollowing;
+    }
+
     public void addFollowing(Following following) {
         this.following.add(following);
     }

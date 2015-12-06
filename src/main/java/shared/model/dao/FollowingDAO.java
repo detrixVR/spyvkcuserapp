@@ -12,10 +12,12 @@ public class FollowingDAO extends DAO<Following> {
 
     public Following getByVkId(Long id) {
         session.beginTransaction();
-        return (Following) session.createCriteria(Following.class, "following")
+        Following following = (Following) session.createCriteria(Following.class, "following")
                 .createAlias("following.userInfo", "userInfo")
                 .add(Restrictions.eq("userInfo.vkId", id))
                 .uniqueResult();
+        session.getTransaction().commit();
+        return following;
     }
 
 }

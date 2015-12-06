@@ -33,4 +33,6 @@ public interface IDBService {
     Set<Post> getAllPosts();
 
     Set<Following> getAllFollowings();
+
+    Follower getFollowerByVkId(Long id);
 }

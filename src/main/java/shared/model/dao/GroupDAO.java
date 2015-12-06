@@ -8,4 +8,5 @@ public class GroupDAO extends DAO<Group> {
     public GroupDAO(Session session) {
         super(session, Group.class);
     }
+
 }

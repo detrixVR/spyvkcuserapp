@@ -36,10 +36,10 @@ public class ResultServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Follower follower = accountService.getFollower(Long.valueOf(cookiesService.getCookie(req, "id")));
+        Follower follower = dbService.getFollowerByVkId(Long.valueOf(cookiesService.getCookie(req, "id")));
         Long followingId = Long.valueOf(req.getParameter("following"));
 
-        Following following = dbService.getFollowingByVkId(followingId);
+        Following following = follower.getFollowingByVkId(followingId);
         Set<Post> likedPosts = following.getLikedPosts();
 
         Map<Group, List<Post>> groupPostMap = new LinkedHashMap<>();

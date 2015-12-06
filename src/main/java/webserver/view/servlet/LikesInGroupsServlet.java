@@ -77,7 +77,7 @@ public class LikesInGroupsServlet extends HttpServlet {
             groups.add(group);
         });
 
-        Following following = dbService.getFollowingByVkId(followingId);
+        Following following = follower.getFollowingByVkId(followingId);
         addGroupsToFollowing(following, groups, follower, count);
 
         System.out.println("Ok");

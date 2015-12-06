@@ -1,5 +1,6 @@
 package shared.controller.db_service;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -17,7 +18,6 @@ import java.util.Set;
 
 public class DBServiceImpl implements IDBService {
     private SessionFactory sessionFactory;
-    private Session session; // dirty hack
 
     public DBServiceImpl() {
         Configuration configuration = new Configuration();
@@ -41,7 +41,6 @@ public class DBServiceImpl implements IDBService {
         configuration.setProperty("hibernate.connection.autocommit", "false");
 
         sessionFactory = createSessionFactory(configuration);
-        session = sessionFactory.openSession(); // dirty hack
     }
 
     private SessionFactory createSessionFactory(Configuration configuration) {
@@ -53,97 +52,141 @@ public class DBServiceImpl implements IDBService {
 
     @Override
     public void saveFollower(Follower follower) {
-//        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.openSession();
         FollowerDAO dao = new FollowerDAO(session);
         dao.save(follower);
-//        session.close();
+        session.close();
     }
 
     @Override
     public void saveFollowing(Following following) {
-//        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.openSession();
         FollowingDAO dao = new FollowingDAO(session);
         dao.save(following);
-//        session.close();
+        session.close();
     }
 
     @Override
     public void updateFollower(Follower follower) {
-//        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.openSession();
         FollowerDAO dao = new FollowerDAO(session);
         dao.update(follower);
-//        session.close();
+        session.close();
     }
 
     @Override
     public Following getFollowingByVkId(Long id) {
-//        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.openSession();
         FollowingDAO dao = new FollowingDAO(session);
         Following following = dao.getByVkId(id);
-//        session.close();
+        session.close();
         return following;
     }
 
     @Override
     public void saveGroup(Group group) {
-//        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.openSession();
         GroupDAO dao = new GroupDAO(session);
         dao.save(group);
-//        session.close();
+        session.close();
     }
 
     @Override
     public Set<Group> getAllGroups() {
-//        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.openSession();
         GroupDAO dao = new GroupDAO(session);
         Set<Group> groups = dao.getAll();
-//        session.close();
+        for (Group group : groups) {
+            Hibernate.initialize(group.getFollowing());
+            Hibernate.initialize(group.getGroupInfo());
+            for (Following following : group.getFollowing()) {
+                Hibernate.initialize(following.getGroups());
+                Hibernate.initialize(following.getFollowers());
+            }
+        }
+        session.close();
         return groups;
     }
 
     @Override
     public Map<Long, Follower> getAllFollowers() {
-//        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.openSession();
         FollowerDAO dao = new FollowerDAO(session);
         Map<Long, Follower> idFollowerMap = new HashMap<>();
         Set<Follower> followers = dao.getAll();
         for (Follower follower : followers) {
             idFollowerMap.put(follower.getUserInfo().getVkId(), follower);
         }
+        session.close();
         return idFollowerMap;
     }
 
     @Override
     public void saveFollowerCount(FollowerCount followerCount) {
-//        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.openSession();
         FollowerCountDAO dao = new FollowerCountDAO(session);
         dao.save(followerCount);
-//        session.close();
+        session.close();
     }
 
     @Override
     public void updateGroup(Group group) {
+        Session session = sessionFactory.openSession();
         GroupDAO dao = new GroupDAO(session);
         dao.update(group);
+        session.close();
     }
 
     @Override
     public Set<Post> getAllPosts() {
+        Session session = sessionFactory.openSession();
         PostDAO dao = new PostDAO(session);
+        session.close();
         return dao.getAll();
     }
 
     @Override
     public Set<Following> getAllFollowings() {
+        Session session = sessionFactory.openSession();
         FollowingDAO dao = new FollowingDAO(session);
-        return dao.getAll();
+        Set<Following> following = dao.getAll();
+        for (Following followingOne : following) {
+            Hibernate.initialize(followingOne.getGroups());
+            for (Group group : followingOne.getGroups().keySet()) {
+                Hibernate.initialize(group.getPosts());
+                for (Post post : group.getPosts()) {
+                    Hibernate.initialize(post.getLikedUserIds());
+                }
+            }
+            Hibernate.initialize(followingOne.getUserInfo());
+        }
+        session.close();
+        return following;
+    }
+
+    @Override
+    public Follower getFollowerByVkId(Long id) {
+        Session session = sessionFactory.openSession();
+        FollowerDAO dao = new FollowerDAO(session);
+        Follower follower = dao.getByVkId(id);
+        Hibernate.initialize(follower.getFollowing());
+        for (Following following : follower.getFollowing()) {
+            Hibernate.initialize(following.getLikedPosts());
+            for (Post post : following.getLikedPosts()) {
+                Hibernate.initialize(post);
+                Hibernate.initialize(post.getGroup().getGroupInfo());
+            }
+            Hibernate.initialize(following.getUserInfo());
+        }
+        session.close();
+        return follower;
     }
 
     @Override
     public void updateFollowing(Following following) {
-//        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.openSession();
         FollowingDAO dao = new FollowingDAO(session);
         dao.update(following);
-//        session.close();
+        session.close();
     }
 }
