@@ -31,16 +31,16 @@ public class RootServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idStr = cookiesService.getCookie(req, "id");
-        if (idStr == null) {
+        if (idStr == null || accountService.getUsersCount() == 0) {
             resp.sendRedirect("login");
         } else {
             Long id = Long.parseLong(idStr);
             Map<String, Object> pageVariables = new HashMap<>();
-            Follower user = accountService.getFollower(id);
-            Set<Following> following = user.getFollowing();
+            Follower follower = accountService.getFollower(id);
+            Set<Following> following = follower.getFollowing();
 
-            pageVariables.put("firstName", user.getUserInfo().getFirstName());
-            pageVariables.put("lastName", user.getUserInfo().getLastName());
+            pageVariables.put("firstName", follower.getUserInfo().getFirstName());
+            pageVariables.put("lastName", follower.getUserInfo().getLastName());
             pageVariables.put("following", following);
             resp.setContentType("text/html; charset=utf-8");
             resp.getWriter().println(pageGenerator.getPage("index.html", pageVariables));
