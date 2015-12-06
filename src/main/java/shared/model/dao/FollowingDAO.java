@@ -4,30 +4,10 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import shared.model.user.Following;
 
-import java.util.HashSet;
-import java.util.Set;
-
-public class FollowingDAO {
-    private Session session;
+public class FollowingDAO extends DAO<Following> {
 
     public FollowingDAO(Session session) {
-        this.session = session;
-    }
-
-    public void save(Following user) {
-        session.beginTransaction();
-        session.save(user);
-        session.getTransaction().commit();
-    }
-
-    public Following getById(long id) {
-        return session.load(Following.class, id);
-    }
-
-    public void update(Following following) {
-        session.beginTransaction();
-        session.update(following);
-        session.getTransaction().commit();
+        super(session, Following.class);
     }
 
     public Following getByVkId(Long id) {
@@ -38,10 +18,4 @@ public class FollowingDAO {
                 .uniqueResult();
     }
 
-    public Set<Following> getAll() {
-        session.beginTransaction();
-        HashSet following = new HashSet(session.createCriteria(Following.class).list());
-        session.getTransaction().commit();
-        return following;
-    }
 }
