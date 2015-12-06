@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class RootServlet extends HttpServlet {
-    IAccountService accountService;
+    private IAccountService accountService;
     private ICookiesService cookiesService;
     private IPageGenerator pageGenerator;
 
