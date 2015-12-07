@@ -5,8 +5,8 @@ import shared.model.group.GroupSnapshot;
 
 public class GroupSnapshotDAO extends DAO<GroupSnapshot> {
 
-    public GroupSnapshotDAO(Session session, Class<GroupSnapshot> typeClass) {
-        super(session, typeClass);
+    public GroupSnapshotDAO(Session session) {
+        super(session, GroupSnapshot.class);
     }
 
 }

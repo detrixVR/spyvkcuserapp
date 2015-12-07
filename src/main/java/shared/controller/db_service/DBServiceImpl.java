@@ -205,6 +205,14 @@ public class DBServiceImpl implements IDBService {
     }
 
     @Override
+    public void saveGroupSnapshot(GroupSnapshot groupSnapshot) {
+        Session session = sessionFactory.openSession();
+        GroupSnapshotDAO dao = new GroupSnapshotDAO(session);
+        dao.save(groupSnapshot);
+        session.close();
+    }
+
+    @Override
     public void updateFollowing(Following following) {
         Session session = sessionFactory.openSession();
         FollowingDAO dao = new FollowingDAO(session);

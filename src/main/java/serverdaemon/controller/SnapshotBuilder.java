@@ -1,5 +1,5 @@
 package serverdaemon.controller;
 
-public class SnapshotBuilder {
-
+public interface SnapshotBuilder<Snapshot, Building> {
+    Snapshot build(Building building);
 }

@@ -1,6 +1,7 @@
 package shared.controller.db_service;
 
 import shared.model.group.Group;
+import shared.model.group.GroupSnapshot;
 import shared.model.post.Post;
 import shared.model.user.Follower;
 import shared.model.user.FollowerCount;
@@ -35,4 +36,6 @@ public interface IDBService {
     Set<Following> getAllFollowings();
 
     Follower getFollowerByVkId(Long id);
+
+    void saveGroupSnapshot(GroupSnapshot groupSnapshot);
 }

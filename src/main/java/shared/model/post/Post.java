@@ -3,8 +3,6 @@ package shared.model.post;
 import shared.model.group.Group;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 

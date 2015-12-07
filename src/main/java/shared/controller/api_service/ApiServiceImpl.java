@@ -36,7 +36,9 @@ public class ApiServiceImpl implements IApiService {
         String answer;
         String accessToken;
         do {
-            answer = request.get(requestAccessTokenLink, 0);
+            do {
+                answer = request.get(requestAccessTokenLink, 0);
+            } while(answer == null);
             accessToken = jsonService.getAccessToken(answer);
         } while (accessToken == null);
         return accessToken;

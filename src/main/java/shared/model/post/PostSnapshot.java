@@ -3,6 +3,7 @@ package shared.model.post;
 import shared.model.group.GroupSnapshot;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -23,7 +24,7 @@ public class PostSnapshot {
     private long vkId;
 
     @ElementCollection(fetch = FetchType.LAZY, targetClass = Long.class)
-    private Set<Long> likedUserIds;
+    private Set<Long> likedUserIds = new HashSet<>();
 
     @Column(name = "date")
     private Long date;
