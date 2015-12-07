@@ -9,26 +9,15 @@ import java.util.Map;
 
 public class AccountServiceImpl implements IAccountService {
     private Map<Long, Follower> followers = new HashMap<>();
-    private Map<String, Follower> sessions = new HashMap<>();
 
     @Inject
     public AccountServiceImpl(IDBService dbService) {
-        dbService.getAllFollowers();
+        followers = dbService.getAllFollowers();
     }
 
     @Override
     public void saveFollower(Long id, Follower user) {
         followers.put(id, user);
-    }
-
-    @Override
-    public void addSession(String sessionId, Follower user) {
-        sessions.put(sessionId, user);
-    }
-
-    @Override
-    public Follower getSessions(String sessionId) {
-        return sessions.get(sessionId);
     }
 
     @Override

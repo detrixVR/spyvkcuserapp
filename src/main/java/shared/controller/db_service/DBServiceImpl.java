@@ -129,6 +129,10 @@ public class DBServiceImpl implements IDBService {
         Map<Long, Follower> idFollowerMap = new HashMap<>();
         Set<Follower> followers = dao.getAll();
         for (Follower follower : followers) {
+            Hibernate.initialize(follower.getFollowing());
+            for (Following following : follower.getFollowing()) {
+                Hibernate.initialize(following.getUserInfo());
+            }
             idFollowerMap.put(follower.getUserInfo().getVkId(), follower);
         }
         session.close();

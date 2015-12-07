@@ -29,8 +29,8 @@ public abstract class DAO<T> {
     @SuppressWarnings("unchecked")
     public Set<T> getAll() {
         session.beginTransaction();
-        HashSet following = new HashSet(session.createCriteria(typeClass).list());
+        Set set = new HashSet(session.createCriteria(typeClass).list());
         session.getTransaction().commit();
-        return following;
+        return set;
     }
 }

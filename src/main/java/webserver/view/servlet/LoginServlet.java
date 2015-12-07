@@ -32,10 +32,15 @@ public class LoginServlet extends HttpServlet {
             String code = req.getParameter("code");
             String accessToken = apiService.requestAccessToken(code);
             UserInfo userInfo = apiService.getUserInfo(null, accessToken);
-            Follower follower = new Follower(userInfo, accessToken);
 
-            accountService.saveFollower(userInfo.getVkId(), follower);
-            dbService.saveFollower(follower);
+            Follower existedFollower = accountService.getFollower(userInfo.getVkId());
+            if(existedFollower != null) {
+                existedFollower.setAccessToken(accessToken);
+            } else {
+                Follower follower = new Follower(userInfo, accessToken);
+                accountService.saveFollower(userInfo.getVkId(), follower);
+                dbService.saveFollower(follower);
+            }
 
             resp.addCookie(new Cookie("id", String.valueOf(userInfo.getVkId())));
             resp.sendRedirect("");
