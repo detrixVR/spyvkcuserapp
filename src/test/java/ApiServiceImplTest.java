@@ -40,14 +40,14 @@ public class ApiServiceImplTest {
         String requestAccessTokenLink = "accessTokenLink";
         when(linkBuilder.getRequestAccessTokenLink(code)).thenReturn(requestAccessTokenLink);
         String answer = "answer";
-        when(request.get(requestAccessTokenLink)).thenReturn(answer);
+        when(request.get(requestAccessTokenLink, 0)).thenReturn(answer);
         String accessToken = "accessToken";
         when(jsonService.getAccessToken(answer)).thenReturn(accessToken);
 
         String actualAccessToken = apiService.requestAccessToken(code);
 
         verify(linkBuilder, times(1)).getRequestAccessTokenLink(code);
-        verify(request, times(1)).get(requestAccessTokenLink);
+        verify(request, times(1)).get(requestAccessTokenLink, 0);
         verify(jsonService, times(1)).getAccessToken(answer);
         assertEquals(accessToken, actualAccessToken);
     }
@@ -59,13 +59,13 @@ public class ApiServiceImplTest {
         String userInfoLink = "userInfoLink";
         when(linkBuilder.getUserInfoLink(userId, accessToken)).thenReturn(userInfoLink);
         String userInfoString = "userInfoString";
-        when(request.get(userInfoLink)).thenReturn(userInfoString);
+        when(request.get(userInfoLink, 0)).thenReturn(userInfoString);
         when(jsonService.getUserInfo(userInfoString)).thenReturn(new UserInfo());
 
         apiService.getUserInfo(userId, accessToken);
 
         verify(linkBuilder, times(1)).getUserInfoLink(userId, accessToken);
-        verify(request, times(1)).get(userInfoLink);
+        verify(request, times(1)).get(userInfoLink, 0);
         verify(jsonService, times(1)).getUserInfo(userInfoString);
     }
 
@@ -76,14 +76,14 @@ public class ApiServiceImplTest {
         String screenName = "durov";
         when(linkBuilder.getResolveScreenNameLink(screenName)).thenReturn(resolveScreenNameLink);
         String answer = "answer";
-        when(request.get(resolveScreenNameLink)).thenReturn(answer);
+        when(request.get(resolveScreenNameLink, 0)).thenReturn(answer);
         Long id = 1L;
         when(jsonService.getFollowingId(answer)).thenReturn(id);
 
         Long actualId = apiService.resolveScreenName(userLink);
 
         verify(linkBuilder, times(1)).getResolveScreenNameLink(screenName);
-        verify(request, times(1)).get(resolveScreenNameLink);
+        verify(request, times(1)).get(resolveScreenNameLink, 0);
         verify(jsonService, times(1)).getFollowingId(answer);
         assertEquals(id, actualId);
     }
@@ -95,13 +95,13 @@ public class ApiServiceImplTest {
         String requestGroupIdsLink = "requestGroupIdsLink";
         when(linkBuilder.getRequestGroupIdsLink(followerId, accessToken)).thenReturn(requestGroupIdsLink);
         String answer = "answer";
-        when(request.get(requestGroupIdsLink)).thenReturn(answer);
+        when(request.get(requestGroupIdsLink, 0)).thenReturn(answer);
         when(jsonService.getGroupsIds(answer)).thenReturn(new ArrayList<>());
 
         apiService.requestGroupIds(followerId, accessToken);
 
         verify(linkBuilder, times(1)).getRequestGroupIdsLink(followerId, accessToken);
-        verify(request, times(1)).get(requestGroupIdsLink);
+        verify(request, times(1)).get(requestGroupIdsLink, 0);
         verify(jsonService, times(1)).getGroupsIds(answer);
     }
 
@@ -111,13 +111,13 @@ public class ApiServiceImplTest {
         String requestGroupsLink = "requestGroupsLink";
         when(linkBuilder.getRequestGroupsLink(groupIds)).thenReturn(requestGroupsLink);
         String answer = "answer";
-        when(request.get(requestGroupsLink)).thenReturn(answer);
+        when(request.get(requestGroupsLink, 0)).thenReturn(answer);
         when(jsonService.getGroupsInfo(answer)).thenReturn(new ArrayList<>());
 
         apiService.requestGroupsInfo(groupIds);
 
         verify(linkBuilder, times(1)).getRequestGroupsLink(groupIds);
-        verify(request, times(1)).get(requestGroupsLink);
+        verify(request, times(1)).get(requestGroupsLink, 0);
         verify(jsonService, times(1)).getGroupsInfo(answer);
     }
 
@@ -130,13 +130,13 @@ public class ApiServiceImplTest {
         String requestPostsLink = "requestPostsLink";
         when(linkBuilder.getRequestPostsLink(groupId, count, offset, accessToken)).thenReturn(requestPostsLink);
         String answer = "answer";
-        when(request.get(requestPostsLink)).thenReturn(answer);
+        when(request.get(requestPostsLink, 200)).thenReturn(answer);
         when(jsonService.getPosts(answer)).thenReturn(new LinkedHashSet<>());
 
         apiService.requestPosts(groupId, count, accessToken);
 
         verify(linkBuilder, times(1)).getRequestPostsLink(groupId, count, offset, accessToken);
-        verify(request, times(1)).get(requestPostsLink);
+        verify(request, times(1)).get(requestPostsLink, 200);
         verify(jsonService, times(1)).getPosts(answer);
     }
 
@@ -150,13 +150,13 @@ public class ApiServiceImplTest {
         String requestLikedUserIdsLink = "requestLikedUserIdsLink";
         when(linkBuilder.getRequestLikedUserIdsLink(groupId, postId, offset, accessToken)).thenReturn(requestLikedUserIdsLink);
         String answer = "answer";
-        when(request.get(requestLikedUserIdsLink)).thenReturn(answer);
+        when(request.get(requestLikedUserIdsLink, 200)).thenReturn(answer);
         when(jsonService.getLikedUserIds(answer)).thenReturn(new HashSet<>());
 
         apiService.requestLikedUserIds(groupId, postId, count, accessToken);
 
         verify(linkBuilder, times(1)).getRequestLikedUserIdsLink(groupId, postId, offset, accessToken);
-        verify(request, times(1)).get(requestLikedUserIdsLink);
+        verify(request, times(1)).get(requestLikedUserIdsLink, 200);
         verify(jsonService, times(1)).getLikedUserIds(answer);
     }
 }

@@ -1,15 +1,15 @@
 package shared.controller.request;
 
 import java.io.*;
-import java.net.ConnectException;
 import java.net.HttpURLConnection;
 //import java.net.InetSocketAddress;
 //import java.net.Proxy;
 import java.net.URL;
+import java.net.UnknownHostException;
 
 public class RequestImpl implements IRequest {
     @Override
-    public String get(String request) throws IOException {
+    public String get(String request, int waitSeconds) {
         StringBuilder result = new StringBuilder();
         try {
             URL url = new URL(request);
@@ -23,13 +23,16 @@ public class RequestImpl implements IRequest {
             }
             rd.close();
             try {
-                Thread.sleep(250L);
+                Thread.sleep(waitSeconds);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        } catch (ConnectException e) {
-            e.printStackTrace();
-            get(request);
+        } catch (UnknownHostException e) {
+            System.out.println(e.getMessage());
+            System.exit(1);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            return null;
         }
         return result.toString();
     }

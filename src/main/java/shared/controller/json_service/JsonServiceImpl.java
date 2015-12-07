@@ -66,17 +66,23 @@ public class JsonServiceImpl implements IJsonService {
     @Override
     public Set<Post> getPosts(String answer) {
         Set<Post> posts = new LinkedHashSet<>();
-        JSONObject jsonObject = new JSONObject(answer);
-        System.out.println(answer);
-        JSONArray itemsArray = jsonObject.getJSONObject("response").getJSONArray("items");
-        for (int i = 0; !itemsArray.isNull(i); i++) {
-            Post post = new Post();
-            JSONObject item = itemsArray.getJSONObject(i);
-            post.setVkId(item.getLong("id"));
-            post.setText(item.getString("text"));
-            JSONObject likes = item.getJSONObject("likes");
-            post.setLikesCount(likes.getInt("count"));
-            posts.add(post);
+        try {
+            JSONObject jsonObject = new JSONObject(answer);
+            System.out.println(answer);
+            JSONArray itemsArray = jsonObject.getJSONObject("response").getJSONArray("items");
+            for (int i = 0; !itemsArray.isNull(i); i++) {
+                Post post = new Post();
+                JSONObject item = itemsArray.getJSONObject(i);
+                post.setVkId(item.getLong("id"));
+                post.setText(item.getString("text"));
+                JSONObject likes = item.getJSONObject("likes");
+                post.setLikesCount(likes.getInt("count"));
+                posts.add(post);
+            }
+        } catch (JSONException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Too many requests per second");
+            return null;
         }
         return posts;
     }
@@ -92,8 +98,9 @@ public class JsonServiceImpl implements IJsonService {
                 userIDs.add(userArray.getLong(i));
             }
         } catch (JSONException ex) {
-            ex.printStackTrace();
-            return userIDs;
+            System.out.println(ex.getMessage());
+            System.out.println("Too many requests per second");
+            return null;
         }
         return userIDs;
     }

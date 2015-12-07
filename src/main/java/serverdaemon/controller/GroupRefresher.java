@@ -34,6 +34,7 @@ public class GroupRefresher implements Refreshable<Group> {
 
             String accessToken = follower.getAccessToken();
             Set<Post> posts = apiService.requestPosts(group.getGroupInfo().getVkId(), count, accessToken);
+            long l = System.currentTimeMillis();
             posts.forEach((v) -> {
                 v.setGroup(group);
                 Set<Long> likedUserIds = apiService.requestLikedUserIds(
@@ -44,6 +45,7 @@ public class GroupRefresher implements Refreshable<Group> {
                 );
                 v.setLikedUserIds(likedUserIds);
             });
+            System.out.println((System.currentTimeMillis() - l)/1000);
 
             group.setPosts(posts);
             dbService.updateGroup(group);

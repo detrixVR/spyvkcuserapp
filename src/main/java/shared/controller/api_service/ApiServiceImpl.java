@@ -8,7 +8,6 @@ import shared.model.group.GroupInfo;
 import shared.model.post.Post;
 import shared.model.user.UserInfo;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -34,63 +33,62 @@ public class ApiServiceImpl implements IApiService {
     @Override
     public String requestAccessToken(String code) {
         String requestAccessTokenLink = linkBuilder.getRequestAccessTokenLink(code);
-        String answer = null;
-        try {
-            answer = request.get(requestAccessTokenLink);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String accessToken = jsonService.getAccessToken(answer);
+        String answer;
+        String accessToken;
+        do {
+            answer = request.get(requestAccessTokenLink, 0);
+            accessToken = jsonService.getAccessToken(answer);
+        } while (accessToken == null);
         return accessToken;
     }
 
     @Override
     public UserInfo getUserInfo(Long userId, String accessToken) {
         String getUserInfoLink = linkBuilder.getUserInfoLink(userId, accessToken);
-        String userInfoString = null;
-        try {
-            userInfoString = request.get(getUserInfoLink);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return jsonService.getUserInfo(userInfoString);
+        String userInfoString;
+        UserInfo userInfo;
+        do {
+            userInfoString = request.get(getUserInfoLink, 0);
+            userInfo = jsonService.getUserInfo(userInfoString);
+        } while(userInfo == null);
+        return userInfo;
     }
 
     @Override
     public Long resolveScreenName(String userLink) {
         String screenName = userLink.replace("https://vk.com/", "");
         String resolveScreenNameLink = linkBuilder.getResolveScreenNameLink(screenName);
-        String answer = null;
-        try {
-            answer = request.get(resolveScreenNameLink);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return jsonService.getFollowingId(answer);
+        String answer;
+        Long followingId;
+        do {
+            answer = request.get(resolveScreenNameLink, 0);
+            followingId = jsonService.getFollowingId(answer);
+        } while(followingId == null);
+        return followingId;
     }
 
     @Override
     public ArrayList<Long> requestGroupIds(long followingId, String accessToken) {
         String requestGroupIdsLink = linkBuilder.getRequestGroupIdsLink(followingId, accessToken);
-        String answer = null;
-        try {
-            answer = request.get(requestGroupIdsLink);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return jsonService.getGroupsIds(answer);
+        String answer;
+        ArrayList<Long> groupsIds;
+        do {
+            answer = request.get(requestGroupIdsLink, 0);
+            groupsIds = jsonService.getGroupsIds(answer);
+        } while(groupsIds == null);
+        return groupsIds;
     }
 
     @Override
     public List<GroupInfo> requestGroupsInfo(List<Long> groupIds) {
         String requestGroupsLink = linkBuilder.getRequestGroupsLink(groupIds);
-        String answer = null;
-        try {
-            answer = request.get(requestGroupsLink);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return jsonService.getGroupsInfo(answer);
+        String answer;
+        ArrayList<GroupInfo> groupsInfo;
+        do {
+            answer = request.get(requestGroupsLink, 0);
+            groupsInfo = jsonService.getGroupsInfo(answer);
+        } while(groupsInfo == null);
+        return groupsInfo;
     }
 
     @Override
@@ -99,13 +97,13 @@ public class ApiServiceImpl implements IApiService {
         final int maxCount = 100;
         for(int i=0; i < (int) Math.ceil((((double)count)/((double)maxCount))); ++i) {
             String requestPostsLink = linkBuilder.getRequestPostsLink(groupId, count, i*maxCount, accessToken);
-            String answer = null;
-            try {
-                answer = request.get(requestPostsLink);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            posts.addAll(jsonService.getPosts(answer));
+            String answer;
+            Set<Post> result;
+            do {
+                answer = request.get(requestPostsLink, 200);
+                result = jsonService.getPosts(answer);
+            } while(result == null);
+            posts.addAll(result);
         }
         return posts;
     }
@@ -116,13 +114,13 @@ public class ApiServiceImpl implements IApiService {
         final int maxCount = 1000;
         for(int i=0; i < (int) Math.ceil((((double)count)/((double)maxCount))); ++i) {
             String requestLikedUserIdsLink = linkBuilder.getRequestLikedUserIdsLink(groupId, postId, i*maxCount, accessToken);
-            String answer = null;
-            try {
-                answer = request.get(requestLikedUserIdsLink);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            likedUserIds.addAll(jsonService.getLikedUserIds(answer));
+            String answer;
+            Set<Long> result;
+            do {
+                answer = request.get(requestLikedUserIdsLink, 200);
+                result = jsonService.getLikedUserIds(answer);
+            } while(result == null);
+            likedUserIds.addAll(result);
         }
         return likedUserIds;
     }
