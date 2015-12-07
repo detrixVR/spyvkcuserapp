@@ -19,6 +19,9 @@ public class Post {
     @Column(name = "text", length = 10000)
     private String text = "";
 
+    @Column(name = "likes_count")
+    private Integer likesCount = 0;
+
     @ElementCollection(fetch = FetchType.LAZY, targetClass = Long.class)
     private Set<Long> likedUserIds = new HashSet<>();
 
@@ -69,5 +72,13 @@ public class Post {
 
     public void setVkId(Long vkId) {
         this.vkId = vkId;
+    }
+
+    public Integer getLikesCount() {
+        return likesCount;
+    }
+
+    public void setLikesCount(Integer likesCount) {
+        this.likesCount = likesCount;
     }
 }

@@ -114,13 +114,14 @@ public class LinkBuilderImpl implements ILinkBuilder {
     }
 
     @Override
-    public String getRequestPostsLink(Long groupId, int count, String accessToken) {
+    public String getRequestPostsLink(Long groupId, int count, int offset, String accessToken) {
         StringBuilder requestPostsLink = new StringBuilder();
         requestPostsLink
                 .append("https://api.vk.com/method/wall.get?")
                 .append("owner_id=-")
                 .append(groupId)
-                .append("&offset=0")
+                .append("&offset=")
+                .append(offset)
                 .append("&count=")
                 .append(count)
                 .append("&v=5.37")
@@ -130,7 +131,7 @@ public class LinkBuilderImpl implements ILinkBuilder {
     }
 
     @Override
-    public String getRequestLikedUserIdsLink(Long groupId, Long postId, String accessToken) {
+    public String getRequestLikedUserIdsLink(Long groupId, Long postId, int offset, String accessToken) {
         StringBuilder requestLikedUserIdsLink = new StringBuilder();
         requestLikedUserIdsLink
                 .append("https://api.vk.com/method/likes.getList?")
@@ -139,7 +140,8 @@ public class LinkBuilderImpl implements ILinkBuilder {
                 .append(groupId)
                 .append("&item_id=")
                 .append(postId)
-                .append("&offset=0")
+                .append("&offset=")
+                .append(offset)
                 .append("&count=1000")
                 .append("&v=5.37")
                 .append("&access_token=")

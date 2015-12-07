@@ -10,6 +10,7 @@ import shared.model.user.UserInfo;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -94,25 +95,35 @@ public class ApiServiceImpl implements IApiService {
 
     @Override
     public Set<Post> requestPosts(Long groupId, int count, String accessToken) {
-        String requestPostsLink = linkBuilder.getRequestPostsLink(groupId, count, accessToken);
-        String answer = null;
-        try {
-            answer = request.get(requestPostsLink);
-        } catch (IOException e) {
-            e.printStackTrace();
+        Set<Post> posts = new HashSet<>();
+        final int maxCount = 100;
+        for(int i=0; i < (int) Math.ceil((((double)count)/((double)maxCount))); ++i) {
+            String requestPostsLink = linkBuilder.getRequestPostsLink(groupId, count, i*maxCount, accessToken);
+            String answer = null;
+            try {
+                answer = request.get(requestPostsLink);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            posts.addAll(jsonService.getPosts(answer));
         }
-        return jsonService.getPosts(answer);
+        return posts;
     }
 
     @Override
-    public Set<Long> requestLikedUserIds(Long groupId, Long postId, String accessToken) {
-        String requestLikedUserIdsLink = linkBuilder.getRequestLikedUserIdsLink(groupId, postId, accessToken);
-        String answer = null;
-        try {
-            answer = request.get(requestLikedUserIdsLink);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public Set<Long> requestLikedUserIds(Long groupId, Long postId, int count, String accessToken) {
+        Set<Long> likedUserIds = new HashSet<>();
+        final int maxCount = 1000;
+        for(int i=0; i < (int) Math.ceil((((double)count)/((double)maxCount))); ++i) {
+            String requestLikedUserIdsLink = linkBuilder.getRequestLikedUserIdsLink(groupId, postId, i*maxCount, accessToken);
+            String answer = null;
+            try {
+                answer = request.get(requestLikedUserIdsLink);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            likedUserIds.addAll(jsonService.getLikedUserIds(answer));
         }
-        return jsonService.getLikedUserIds(answer);
+        return likedUserIds;
     }
 }

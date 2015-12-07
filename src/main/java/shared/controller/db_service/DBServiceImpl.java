@@ -12,6 +12,7 @@ import shared.model.group.GroupInfo;
 import shared.model.post.Post;
 import shared.model.user.*;
 
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -35,12 +36,25 @@ public class DBServiceImpl implements IDBService {
         configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/vkchase");
         configuration.setProperty("hibernate.connection.username", "root");
         configuration.setProperty("hibernate.connection.password", "root");
+        configuration.setProperty("hibernate.connection.CharSet", "utf8mb4");
         configuration.setProperty("hibernate.connection.characterEncoding", "utf8");
-        configuration.setProperty("hibernate.show_sql", "true");
+//        configuration.setProperty("hibernate.show_sql", "true");
         configuration.setProperty("hibernate.hbm2ddl.auto", "update");
         configuration.setProperty("hibernate.connection.autocommit", "false");
 
         sessionFactory = createSessionFactory(configuration);
+        setUTF8MB4();
+    }
+
+    private void setUTF8MB4() {
+        Session session = sessionFactory.openSession();
+        session.doReturningWork(conn -> {
+            try(Statement stmt = conn.createStatement()) {
+                stmt.executeQuery("SET NAMES utf8mb4");
+            }
+            return null;
+        });
+        session.close();
     }
 
     private SessionFactory createSessionFactory(Configuration configuration) {

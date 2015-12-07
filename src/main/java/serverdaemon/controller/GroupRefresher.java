@@ -39,6 +39,7 @@ public class GroupRefresher implements Refreshable<Group> {
                 Set<Long> likedUserIds = apiService.requestLikedUserIds(
                         group.getGroupInfo().getVkId(),
                         v.getVkId(),
+                        v.getLikesCount(),
                         accessToken
                 );
                 v.setLikedUserIds(likedUserIds);

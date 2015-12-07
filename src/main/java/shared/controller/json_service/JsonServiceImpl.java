@@ -74,6 +74,8 @@ public class JsonServiceImpl implements IJsonService {
             JSONObject item = itemsArray.getJSONObject(i);
             post.setVkId(item.getLong("id"));
             post.setText(item.getString("text"));
+            JSONObject likes = item.getJSONObject("likes");
+            post.setLikesCount(likes.getInt("count"));
             posts.add(post);
         }
         return posts;

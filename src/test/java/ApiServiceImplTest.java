@@ -125,16 +125,17 @@ public class ApiServiceImplTest {
     public void testRequestPosts() throws Exception {
         Long groupId = 1L;
         int count = 1;
+        int offset = 0;
         String accessToken = "accessToken";
         String requestPostsLink = "requestPostsLink";
-        when(linkBuilder.getRequestPostsLink(groupId, count, accessToken)).thenReturn(requestPostsLink);
+        when(linkBuilder.getRequestPostsLink(groupId, count, offset, accessToken)).thenReturn(requestPostsLink);
         String answer = "answer";
         when(request.get(requestPostsLink)).thenReturn(answer);
         when(jsonService.getPosts(answer)).thenReturn(new LinkedHashSet<>());
 
         apiService.requestPosts(groupId, count, accessToken);
 
-        verify(linkBuilder, times(1)).getRequestPostsLink(groupId, count, accessToken);
+        verify(linkBuilder, times(1)).getRequestPostsLink(groupId, count, offset, accessToken);
         verify(request, times(1)).get(requestPostsLink);
         verify(jsonService, times(1)).getPosts(answer);
     }
@@ -143,16 +144,18 @@ public class ApiServiceImplTest {
     public void testRequestLikedUserIds() throws Exception {
         Long groupId = 1L;
         Long postId = 1L;
+        int count = 1;
+        int offset = 0;
         String accessToken = "accessToken";
         String requestLikedUserIdsLink = "requestLikedUserIdsLink";
-        when(linkBuilder.getRequestLikedUserIdsLink(groupId, postId, accessToken)).thenReturn(requestLikedUserIdsLink);
+        when(linkBuilder.getRequestLikedUserIdsLink(groupId, postId, offset, accessToken)).thenReturn(requestLikedUserIdsLink);
         String answer = "answer";
         when(request.get(requestLikedUserIdsLink)).thenReturn(answer);
         when(jsonService.getLikedUserIds(answer)).thenReturn(new HashSet<>());
 
-        apiService.requestLikedUserIds(groupId, postId, accessToken);
+        apiService.requestLikedUserIds(groupId, postId, count, accessToken);
 
-        verify(linkBuilder, times(1)).getRequestLikedUserIdsLink(groupId, postId, accessToken);
+        verify(linkBuilder, times(1)).getRequestLikedUserIdsLink(groupId, postId, offset, accessToken);
         verify(request, times(1)).get(requestLikedUserIdsLink);
         verify(jsonService, times(1)).getLikedUserIds(answer);
     }
