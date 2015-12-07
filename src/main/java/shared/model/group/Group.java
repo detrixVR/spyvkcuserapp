@@ -24,6 +24,9 @@ public class Group {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "groups")
     private Set<Following> following = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "group")
+    private Set<GroupSnapshot> groupSnapshots = new HashSet<>();
+
     public Group(GroupInfo groupInfo, Set<Post> posts) {
         this.groupInfo = groupInfo;
         this.posts = posts;
@@ -70,5 +73,13 @@ public class Group {
 
     public void addFollowing(Following following) {
         this.following.add(following);
+    }
+
+    public Set<GroupSnapshot> getGroupSnapshots() {
+        return groupSnapshots;
+    }
+
+    public void setGroupSnapshots(Set<GroupSnapshot> groupSnapshots) {
+        this.groupSnapshots = groupSnapshots;
     }
 }
