@@ -4,6 +4,24 @@
     <meta charset="UTF-8">
     <title>Результаты</title>
 </head>
+<script>
+    function timeConverter(UNIX_timestamp){
+        var a = new Date(UNIX_timestamp * 1000);
+        var months = ['Янв','Фев','Мар','Апр','Мая','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'];
+        var year = a.getFullYear();
+        var month = months[a.getMonth()];
+        var date = a.getDate();
+        var hour = a.getHours();
+        var min = a.getMinutes();
+        var sec = a.getSeconds();
+        var time = date + ' ' + month + ' ' + year + ' ' + fillZero(hour) + ':' + fillZero(min) + ':' + fillZero(sec);
+        return time;
+    }
+
+    function fillZero(unit) {
+        return ((unit.toString().length == 1) ? ('0' + unit) : unit);
+    }
+</script>
 <body>
     <#list groupPostMap?keys as group>
         <div id="group">
@@ -14,6 +32,8 @@
                     <p>
                         Id: ${post.vkId?c}<br>
                         Text: ${post.text}<br>
+                        Date:
+                        <script>document.write(timeConverter(${post.date?c}))</script><br>
                         <a href="http://vk.com/wall-${group.groupInfo.vkId?c}_${post.vkId?c}">Link</a>
                     <p/>
                 </div>

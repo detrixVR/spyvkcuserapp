@@ -7,10 +7,8 @@ import shared.model.group.GroupInfo;
 import shared.model.post.Post;
 import shared.model.user.UserInfo;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.sql.Timestamp;
+import java.util.*;
 
 public class JsonServiceImpl implements IJsonService {
     @Override
@@ -75,6 +73,7 @@ public class JsonServiceImpl implements IJsonService {
                 JSONObject item = itemsArray.getJSONObject(i);
                 post.setVkId(item.getLong("id"));
                 post.setText(item.getString("text"));
+                post.setDate(item.getLong("date"));
                 JSONObject likes = item.getJSONObject("likes");
                 post.setLikesCount(likes.getInt("count"));
                 posts.add(post);

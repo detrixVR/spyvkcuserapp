@@ -3,6 +3,8 @@ package shared.model.post;
 import shared.model.group.Group;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,6 +20,9 @@ public class Post {
 
     @Column(name = "text", length = 10000)
     private String text = "";
+
+    @Column(name = "date")
+    private Long date = 0L;
 
     @Column(name = "likes_count")
     private Integer likesCount = 0;
@@ -80,5 +85,13 @@ public class Post {
 
     public void setLikesCount(Integer likesCount) {
         this.likesCount = likesCount;
+    }
+
+    public Long getDate() {
+        return date;
+    }
+
+    public void setDate(Long date) {
+        this.date = date;
     }
 }
