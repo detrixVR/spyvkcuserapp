@@ -4,15 +4,15 @@
 <title>VKChase</title>
 <body>
     <h4>Добро пожаловать на  VKChase, ${firstName} ${lastName}!</h4>
-    <form action="http://localhost:8080/vkchase/following" method="GET">
+    <form action="http://localhost:8080/vkchase/following" method="post">
         <label>За кем будем следить?</label>
         <input type="text" name="link"/><br>
-        <input type="checkbox" name="event" value="friend">Друзья<br>
-        <input type="checkbox" name="event" value="audio">Аудиозаписи<br>
-        <input type="checkbox" name="event" value="video">Видеозаписи<br>
-        <input type="checkbox" name="event" value="group">Группы<br>
-        <input type="checkbox" name="event" value="post">Посты на стене<br>
-        <input type="checkbox" name="event" value="grouppost">Лайки в группах<br>
+        <input type="checkbox" name="event" value="FRIEND">Друзья<br>
+        <input type="checkbox" name="event" value="AUDIO">Аудиозаписи<br>
+        <input type="checkbox" name="event" value="VIDEO">Видеозаписи<br>
+        <input type="checkbox" name="event" value="GROUP">Группы<br>
+        <input type="checkbox" name="event" value="POST">Посты на стене<br>
+        <input type="checkbox" name="event" value="GROUPLIKE">Лайки в группах<br>
         <button type="submit">Добавить</button>
     </form>
     <h4>Подписки:</h4>

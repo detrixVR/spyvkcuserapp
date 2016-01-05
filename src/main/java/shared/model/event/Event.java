@@ -1,6 +1,7 @@
 package shared.model.event;
 
 public abstract class Event {
+
     private TypeOfEvent typeOfEvent;
 
     public TypeOfEvent getTypeOfEvent() {

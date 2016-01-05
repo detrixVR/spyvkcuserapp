@@ -1,15 +1,13 @@
 package shared.model.user;
 
 import org.hibernate.annotations.Cascade;
+import shared.model.event.FollowerListOfEvents;
 import shared.model.group.Group;
 import shared.model.post.Post;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "following")
@@ -24,6 +22,9 @@ public class Following extends User implements Serializable { // those who follo
 
     @ManyToMany(mappedBy = "following", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Follower> followers = new HashSet<>();
+
+    @Transient
+    private List<FollowerListOfEvents> followerListOfEventsList = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Post> likedPosts = new HashSet<>();
@@ -65,5 +66,17 @@ public class Following extends User implements Serializable { // those who follo
 
     public void setLikedPosts(Set<Post> likedPosts) {
         this.likedPosts = likedPosts;
+    }
+
+    public List<FollowerListOfEvents> getFollowerListOfEventsList() {
+        return followerListOfEventsList;
+    }
+
+    public void setFollowerListOfEventsList(List<FollowerListOfEvents> followerListOfEventsList) {
+        this.followerListOfEventsList = followerListOfEventsList;
+    }
+
+    public void addFollowerListOfEvents(FollowerListOfEvents followerListOfEvents) {
+        this.followerListOfEventsList.add(followerListOfEvents);
     }
 }
