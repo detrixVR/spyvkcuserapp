@@ -2,13 +2,13 @@ package shared.model.event;
 
 public abstract class Event {
 
-    private TypeOfEvent typeOfEvent;
+    private EventType eventType;
 
-    public TypeOfEvent getTypeOfEvent() {
-        return typeOfEvent;
+    public EventType getEventType() {
+        return eventType;
     }
 
-    public void setTypeOfEvent(TypeOfEvent typeOfEvent) {
-        this.typeOfEvent = typeOfEvent;
+    public void setEventType(EventType eventType) {
+        this.eventType = eventType;
     }
 }

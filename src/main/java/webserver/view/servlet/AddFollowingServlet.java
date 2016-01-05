@@ -4,9 +4,8 @@ import com.google.inject.Inject;
 import shared.controller.account_service.IAccountService;
 import shared.controller.api_service.IApiService;
 import shared.controller.db_service.IDBService;
-import shared.model.event.FollowerListOfEvents;
-import shared.model.event.ListOfEvents;
-import shared.model.event.TypeOfEvent;
+import shared.model.event.Follower_EventTypes;
+import shared.model.event.EventType;
 import shared.model.user.Follower;
 import shared.model.user.Following;
 import shared.model.user.UserInfo;
@@ -17,8 +16,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class AddFollowingServlet extends HttpServlet {
     private IApiService apiService;
@@ -49,20 +49,19 @@ public class AddFollowingServlet extends HttpServlet {
         UserInfo userInfo = apiService.getUserInfo(followingId, follower.getAccessToken());
         Following following = new Following(userInfo);
 
-        ListOfEvents listOfEvents = new ListOfEvents();
+        List<EventType> eventTypes = new ArrayList<>();
         for (String event : events) {
-            listOfEvents.add(
-                    Arrays.stream(TypeOfEvent.values())
+            eventTypes.add(
+                    Arrays.stream(EventType.values())
                             .filter(type -> type.name().equals(event))
                             .findFirst()
                             .get());
         }
-        FollowerListOfEvents followerListOfEvents = new FollowerListOfEvents(follower);
-        followerListOfEvents.setListOfEvents(listOfEvents);
+        Follower_EventTypes follower_eventTypes = new Follower_EventTypes(follower, eventTypes);
 
         follower.addFollowing(following);
         following.addFollower(follower);
-        following.addFollowerListOfEvents(followerListOfEvents);
+        following.addFollower_EventTypes(follower_eventTypes);
         dbService.saveFollowing(following);
         dbService.updateFollower(follower);
 

@@ -1,6 +1,6 @@
 package shared.model.event;
 
-public enum TypeOfEvent {
+public enum EventType {
     FRIEND,
     AUDIO,
     VIDEO,

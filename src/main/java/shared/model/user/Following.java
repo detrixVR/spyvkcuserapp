@@ -1,7 +1,8 @@
 package shared.model.user;
 
 import org.hibernate.annotations.Cascade;
-import shared.model.event.FollowerListOfEvents;
+import shared.model.event.Follower_EventTypes;
+import shared.model.event.Follower_Events;
 import shared.model.group.Group;
 import shared.model.post.Post;
 
@@ -24,7 +25,10 @@ public class Following extends User implements Serializable { // those who follo
     private Set<Follower> followers = new HashSet<>();
 
     @Transient
-    private List<FollowerListOfEvents> followerListOfEventsList = new ArrayList<>();
+    private List<Follower_EventTypes> follower_EventTypesList = new ArrayList<>();
+
+    @Transient
+    private List<Follower_Events> follower_EventsList = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Post> likedPosts = new HashSet<>();
@@ -68,15 +72,11 @@ public class Following extends User implements Serializable { // those who follo
         this.likedPosts = likedPosts;
     }
 
-    public List<FollowerListOfEvents> getFollowerListOfEventsList() {
-        return followerListOfEventsList;
+    public void addFollower_EventTypes(Follower_EventTypes follower_eventTypes) {
+        follower_EventTypesList.add(follower_eventTypes);
     }
 
-    public void setFollowerListOfEventsList(List<FollowerListOfEvents> followerListOfEventsList) {
-        this.followerListOfEventsList = followerListOfEventsList;
-    }
-
-    public void addFollowerListOfEvents(FollowerListOfEvents followerListOfEvents) {
-        this.followerListOfEventsList.add(followerListOfEvents);
+    public void addFollower_Events(Follower_Events follower_events) {
+        follower_EventsList.add(follower_events);
     }
 }
