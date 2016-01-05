@@ -15,7 +15,7 @@ public class LinkBuilderImpl implements ILinkBuilder {
     private String clientSecret = null;
 
     public LinkBuilderImpl() {
-        redirectUri = "http://localhost:8080/vkchase/login";
+        redirectUri = "http://localhost:8080/login";
         String pathToValuesJson = getClass().getResource("/values.json").getPath();
         pathToValuesJson = pathToValuesJson.substring(1);
         List<String> lines = new ArrayList<>();

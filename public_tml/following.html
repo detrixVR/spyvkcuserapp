@@ -23,7 +23,7 @@
             document.getElementById(checkboxId).appendChild(screenNameInput);
         }
     </script>
-    <form action="http://localhost:8080/vkchase/grouplikes" method="post">
+    <form action="http://localhost:8080/grouplikes" method="post">
         <input type="hidden" name="followingId" value="${followingId?c}"/>
         <#list groupsInfo as groupInfo>
             <div id="${groupInfo.vkId?c}">

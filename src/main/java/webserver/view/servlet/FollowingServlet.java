@@ -16,14 +16,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GetGroupsServlet extends HttpServlet {
+public class FollowingServlet extends HttpServlet {
     private IApiService apiService;
     private IAccountService accountService;
     private ICookiesService cookiesService;
     private IPageGenerator pageGenerator;
 
     @Inject
-    public GetGroupsServlet(IApiService apiService, IAccountService accountService, ICookiesService cookiesService,
+    public FollowingServlet(IApiService apiService, IAccountService accountService, ICookiesService cookiesService,
                             IPageGenerator pageGenerator) {
         this.apiService = apiService;
         this.accountService = accountService;
@@ -44,7 +44,7 @@ public class GetGroupsServlet extends HttpServlet {
         pageVariables.put("followingId", followingId);
         pageVariables.put("groupsInfo", groupsInfo);
         resp.setContentType("text/html; charset=utf-8");
-        resp.getWriter().println(pageGenerator.getPage("groups.html", pageVariables));
+        resp.getWriter().println(pageGenerator.getPage("following.html", pageVariables));
         resp.setStatus(HttpServletResponse.SC_OK);
     }
 }
