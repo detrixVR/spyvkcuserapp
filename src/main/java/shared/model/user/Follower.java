@@ -1,8 +1,12 @@
 package shared.model.user;
 
+import shared.model.event.Following_EventTypes;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -13,6 +17,9 @@ public class Follower extends User implements Serializable { // those who follow
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Following> following = new HashSet<>();
+
+    @Transient
+    private List<Following_EventTypes> following_EventTypesList = new ArrayList<>();
 
     public Follower() {
     }
@@ -51,5 +58,9 @@ public class Follower extends User implements Serializable { // those who follow
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    public void addFollowing_EventTypes(Following_EventTypes following_eventTypes) {
+        following_EventTypesList.add(following_eventTypes);
     }
 }

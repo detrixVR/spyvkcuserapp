@@ -1,21 +1,21 @@
 package shared.model.event;
 
-import shared.model.user.Follower;
+import shared.model.user.Following;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Follower_EventTypes {
-    private Follower follower;
+public class Following_EventTypes {
+    private Following following;
     private List<EventType> eventTypes = new ArrayList<>();
 
-    public Follower_EventTypes(Follower follower, List<EventType> eventTypes) {
-        this.follower = follower;
+    public Following_EventTypes(Following following, List<EventType> eventTypes) {
+        this.following = following;
         this.eventTypes = eventTypes;
     }
 
-    public void setFollower(Follower follower) {
-        this.follower = follower;
+    public void setFollowing(Following following) {
+        this.following = following;
     }
 
     public List<EventType> getEventTypes() {
