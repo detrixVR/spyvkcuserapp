@@ -17,7 +17,7 @@ public class PostSnapshot {
     @JoinColumn(name = "group_snapshot")
     private GroupSnapshot groupSnapshot;
 
-    @Column(name = "text")
+    @Column(name = "text", length = 10000)
     private String text;
 
     @Column(name = "vk_id")
