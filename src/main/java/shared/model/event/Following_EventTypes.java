@@ -1,5 +1,6 @@
 package shared.model.event;
 
+import shared.model.snapshots.Snapshot;
 import shared.model.user.Following;
 
 import javax.persistence.*;
@@ -39,5 +40,9 @@ public class Following_EventTypes {
 
     public void setEventTypes(List<EventType> eventTypes) {
         this.eventTypes = eventTypes;
+    }
+
+    public Following getFollowing() {
+        return following;
     }
 }

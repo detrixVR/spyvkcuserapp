@@ -133,7 +133,7 @@ public class ApiServiceImplTest {
         when(request.get(requestPostsLink, 200)).thenReturn(answer);
         when(jsonService.getPosts(answer)).thenReturn(new LinkedHashSet<>());
 
-        apiService.requestPosts(groupId, count, accessToken);
+//        apiService.requestPosts(groupId, count, accessToken);
 
         verify(linkBuilder, times(1)).getRequestPostsLink(groupId, count, offset, accessToken);
         verify(request, times(1)).get(requestPostsLink, 200);

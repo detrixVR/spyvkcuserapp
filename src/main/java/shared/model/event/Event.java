@@ -12,6 +12,8 @@ public abstract class Event {
     @Enumerated(EnumType.STRING)
     private EventType eventType;
 
+    private Long eventDate;
+
     public EventType getEventType() {
         return eventType;
     }

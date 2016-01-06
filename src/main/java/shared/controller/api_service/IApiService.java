@@ -21,7 +21,7 @@ public interface IApiService {
 
     List<GroupInfo> requestGroupsInfo(List<Long> groupIds);
 
-    Set<Post> requestPosts(Long groupId, int count, String accessToken);
+    Set<Post> requestPosts(Long groupId, Long addingDate, String accessToken);
 
     Set<Long> requestLikedUserIds(Long groupId, Long postId, int count, String accessToken);
 }

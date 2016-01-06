@@ -1,7 +1,7 @@
 package shared.model.dao;
 
 import org.hibernate.Session;
-import shared.model.group.GroupSnapshot;
+import shared.model.snapshots.GroupSnapshot;
 
 public class GroupSnapshotDAO extends DAO<GroupSnapshot> {
 

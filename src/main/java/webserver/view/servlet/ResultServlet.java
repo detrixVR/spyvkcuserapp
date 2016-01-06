@@ -36,28 +36,28 @@ public class ResultServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Follower follower = dbService.getFollowerByVkId(Long.valueOf(cookiesService.getCookie(req, "id")));
-        Long followingId = Long.valueOf(req.getParameter("following"));
-
-        Following following = follower.getFollowingByVkId(followingId);
-        Set<Post> likedPosts = following.getLikedPosts();
-
-        Map<Group, List<Post>> groupPostMap = new LinkedHashMap<>();
-        for (Post likedPost : likedPosts) {
-            if (!groupPostMap.containsKey(likedPost.getGroup())) {
-                groupPostMap.put(
-                        likedPost.getGroup(),
-                        new LinkedList<>(Arrays.asList(new Post[]{likedPost}))
-                );
-            } else {
-                groupPostMap.get(likedPost.getGroup()).add(likedPost);
-            }
-        }
-
-        Map<String, Object> pageVariables = new HashMap<>();
-        pageVariables.put("groupPostMap", groupPostMap);
-        resp.setContentType("text/html; charset=utf-8");
-        resp.getWriter().println(pageGenerator.getPage("result.html", pageVariables));
-        resp.setStatus(HttpServletResponse.SC_OK);
+//        Follower follower = dbService.getFollowerByVkId(Long.valueOf(cookiesService.getCookie(req, "id")));
+//        Long followingId = Long.valueOf(req.getParameter("following"));
+//
+//        Following following = follower.getFollowingByVkId(followingId);
+//        Set<Post> likedPosts = following.getLikedPosts();
+//
+//        Map<Group, List<Post>> groupPostMap = new LinkedHashMap<>();
+//        for (Post likedPost : likedPosts) {
+//            if (!groupPostMap.containsKey(likedPost.getGroup())) {
+//                groupPostMap.put(
+//                        likedPost.getGroup(),
+//                        new LinkedList<>(Arrays.asList(new Post[]{likedPost}))
+//                );
+//            } else {
+//                groupPostMap.get(likedPost.getGroup()).add(likedPost);
+//            }
+//        }
+//
+//        Map<String, Object> pageVariables = new HashMap<>();
+//        pageVariables.put("groupPostMap", groupPostMap);
+//        resp.setContentType("text/html; charset=utf-8");
+//        resp.getWriter().println(pageGenerator.getPage("result.html", pageVariables));
+//        resp.setStatus(HttpServletResponse.SC_OK);
     }
 }

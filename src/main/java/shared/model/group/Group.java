@@ -1,6 +1,7 @@
 package shared.model.group;
 
 import shared.model.post.Post;
+import shared.model.snapshots.GroupSnapshot;
 import shared.model.user.Following;
 
 import javax.persistence.*;
@@ -21,8 +22,8 @@ public class Group {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "group")
     private Set<Post> posts = new LinkedHashSet<>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "groups")
-    private Set<Following> following = new HashSet<>();
+//    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "groups")
+//    private Set<Following> following = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "group")
     private Set<GroupSnapshot> groupSnapshots = new HashSet<>();
@@ -39,13 +40,13 @@ public class Group {
     public Group() {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
 
     public GroupInfo getGroupInfo() {
         return groupInfo;
@@ -63,17 +64,17 @@ public class Group {
         this.posts = posts;
     }
 
-    public Set<Following> getFollowing() {
-        return following;
-    }
+//    public Set<Following> getFollowing() {
+//        return following;
+//    }
 
-    public void setFollowing(Set<Following> following) {
-        this.following = following;
-    }
-
-    public void addFollowing(Following following) {
-        this.following.add(following);
-    }
+//    public void setFollowing(Set<Following> following) {
+//        this.following = following;
+//    }
+//
+//    public void addFollowing(Following following) {
+//        this.following.add(following);
+//    }
 
     public Set<GroupSnapshot> getGroupSnapshots() {
         return groupSnapshots;

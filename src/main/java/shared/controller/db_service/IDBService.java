@@ -1,7 +1,7 @@
 package shared.controller.db_service;
 
 import shared.model.group.Group;
-import shared.model.group.GroupSnapshot;
+import shared.model.snapshots.GroupSnapshot;
 import shared.model.post.Post;
 import shared.model.user.Follower;
 import shared.model.user.FollowerCount;

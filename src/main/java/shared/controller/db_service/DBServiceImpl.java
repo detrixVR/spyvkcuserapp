@@ -12,9 +12,11 @@ import shared.model.event.Follower_Events;
 import shared.model.event.Following_EventTypes;
 import shared.model.group.Group;
 import shared.model.group.GroupInfo;
-import shared.model.group.GroupSnapshot;
+import shared.model.snapshots.GroupListSnapshot;
+import shared.model.snapshots.GroupSnapshot;
 import shared.model.post.Post;
-import shared.model.post.PostSnapshot;
+import shared.model.snapshots.PostSnapshot;
+import shared.model.snapshots.Snapshot;
 import shared.model.user.*;
 
 import java.sql.Statement;
@@ -40,6 +42,8 @@ public class DBServiceImpl implements IDBService {
         configuration.addAnnotatedClass(Following_EventTypes.class);
         configuration.addAnnotatedClass(Event.class);
         configuration.addAnnotatedClass(Follower_Events.class);
+        configuration.addAnnotatedClass(Snapshot.class);
+        configuration.addAnnotatedClass(GroupListSnapshot.class);
 
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
         configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
@@ -121,12 +125,12 @@ public class DBServiceImpl implements IDBService {
         GroupDAO dao = new GroupDAO(session);
         Set<Group> groups = dao.getAll();
         for (Group group : groups) {
-            Hibernate.initialize(group.getFollowing());
+//            Hibernate.initialize(group.getFollowing());
             Hibernate.initialize(group.getGroupInfo());
-            for (Following following : group.getFollowing()) {
-                Hibernate.initialize(following.getGroups());
-                Hibernate.initialize(following.getFollowers());
-            }
+//            for (Following following : group.getFollowing()) {
+////                Hibernate.initialize(following.getGroups());
+//                Hibernate.initialize(following.getFollowers());
+//            }
         }
         session.close();
         return groups;
@@ -140,8 +144,18 @@ public class DBServiceImpl implements IDBService {
         Set<Follower> followers = dao.getAll();
         for (Follower follower : followers) {
             Hibernate.initialize(follower.getFollowing());
+            Hibernate.initialize(follower.getFollowing_EventTypesList());
             for (Following following : follower.getFollowing()) {
                 Hibernate.initialize(following.getUserInfo());
+                Hibernate.initialize(following.getFollower_EventsList());
+                Hibernate.initialize(following.getFollowers());
+                for (Follower_Events follower_events : following.getFollower_EventsList()) {
+                    Hibernate.initialize(follower_events.getFollower());
+                    Hibernate.initialize(follower_events.getSnapshots());
+                }
+            }
+            for (Following_EventTypes following_eventTypes : follower.getFollowing_EventTypesList()) {
+                Hibernate.initialize(following_eventTypes.getEventTypes());
             }
             idFollowerMap.put(follower.getUserInfo().getVkId(), follower);
         }
@@ -179,13 +193,13 @@ public class DBServiceImpl implements IDBService {
         FollowingDAO dao = new FollowingDAO(session);
         Set<Following> following = dao.getAll();
         for (Following followingOne : following) {
-            Hibernate.initialize(followingOne.getGroups());
-            for (Group group : followingOne.getGroups().keySet()) {
-                Hibernate.initialize(group.getPosts());
-                for (Post post : group.getPosts()) {
-                    Hibernate.initialize(post.getLikedUserIds());
-                }
-            }
+//            Hibernate.initialize(followingOne.getGroups());
+//            for (Group group : followingOne.getGroups().keySet()) {
+//                Hibernate.initialize(group.getPosts());
+//                for (Post post : group.getPosts()) {
+//                    Hibernate.initialize(post.getLikedUserIds());
+//                }
+//            }
             Hibernate.initialize(followingOne.getUserInfo());
         }
         session.close();
@@ -199,11 +213,11 @@ public class DBServiceImpl implements IDBService {
         Follower follower = dao.getByVkId(id);
         Hibernate.initialize(follower.getFollowing());
         for (Following following : follower.getFollowing()) {
-            Hibernate.initialize(following.getLikedPosts());
-            for (Post post : following.getLikedPosts()) {
-                Hibernate.initialize(post);
-                Hibernate.initialize(post.getGroup().getGroupInfo());
-            }
+//            Hibernate.initialize(following.getLikedPosts());
+//            for (Post post : following.getLikedPosts()) {
+//                Hibernate.initialize(post);
+//                Hibernate.initialize(post.getGroup().getGroupInfo());
+//            }
             Hibernate.initialize(following.getUserInfo());
         }
         session.close();

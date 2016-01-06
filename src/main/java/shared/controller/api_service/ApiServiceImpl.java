@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ApiServiceImpl implements IApiService {
     private ILinkBuilder linkBuilder;
@@ -94,19 +95,41 @@ public class ApiServiceImpl implements IApiService {
     }
 
     @Override
-    public Set<Post> requestPosts(Long groupId, int count, String accessToken) {
+    public Set<Post> requestPosts(Long groupId, Long addingDate, String accessToken) {
         Set<Post> posts = new HashSet<>();
-        final int maxCount = 100;
-        for(int i=0; i < (int) Math.ceil((((double)count)/((double)maxCount))); ++i) {
-            String requestPostsLink = linkBuilder.getRequestPostsLink(groupId, count, i*maxCount, accessToken);
+//        final int maxCount = 10;
+//        for(int i = 0; i < (int) Math.ceil((((double) addingDate)/((double)maxCount))); ++i) {
+//            String requestPostsLink = linkBuilder.getRequestPostsLink(groupId, addingDate, i*maxCount, accessToken);
+//            String answer;
+//            Set<Post> result;
+//            do {
+//                answer = request.get(requestPostsLink, 200);
+//                result = jsonService.getPosts(answer);
+//            } while(result == null);
+//            posts.addAll(result);
+//        }
+        final int count = 10;
+        int i=0;
+        final boolean[] isContinue = {true};
+        do {
+            String requestPostsLink = linkBuilder.getRequestPostsLink(groupId, count, i * count, accessToken);
             String answer;
             Set<Post> result;
+            Set<Post> filterPosts = new HashSet<>();
             do {
                 answer = request.get(requestPostsLink, 200);
                 result = jsonService.getPosts(answer);
             } while(result == null);
-            posts.addAll(result);
-        }
+            result.forEach(post -> {
+                if(post.getDate() >= addingDate) {
+                    filterPosts.add(post);
+                } else {
+                    isContinue[0] = false;
+                }
+            });
+            posts.addAll(filterPosts);
+            i++;
+        } while (isContinue[0]);
         return posts;
     }
 

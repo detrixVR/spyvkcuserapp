@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import shared.controller.account_service.IAccountService;
 import shared.controller.api_service.IApiService;
 import shared.controller.db_service.IDBService;
+import shared.model.event.Follower_Events;
 import shared.model.event.Following_EventTypes;
 import shared.model.event.EventType;
 import shared.model.user.Follower;
@@ -58,13 +59,16 @@ public class AddFollowingServlet extends HttpServlet {
                             .get());
         }
         Following_EventTypes following_eventTypes = new Following_EventTypes(following, eventTypes);
+        Follower_Events follower_events = new Follower_Events(follower, new ArrayList<>());
+        follower_events.setAddingDate(System.currentTimeMillis());
 
         follower.addFollowing(following);
         follower.addFollowing_EventTypes(following_eventTypes);
         following.addFollower(follower);
+        following.addFollower_Events(follower_events);
         dbService.saveFollowing(following);
         dbService.updateFollower(follower);
 
-        resp.sendRedirect("groups?following=" + userInfo.getVkId());
+        resp.sendRedirect("following?id=" + userInfo.getVkId());
     }
 }

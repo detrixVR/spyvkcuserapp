@@ -60,6 +60,14 @@ public class Follower extends User implements Serializable { // those who follow
         this.accessToken = accessToken;
     }
 
+    public List<Following_EventTypes> getFollowing_EventTypesList() {
+        return following_EventTypesList;
+    }
+
+    public void setFollowing_EventTypesList(List<Following_EventTypes> following_EventTypesList) {
+        this.following_EventTypesList = following_EventTypesList;
+    }
+
     public void addFollowing_EventTypes(Following_EventTypes following_eventTypes) {
         following_EventTypesList.add(following_eventTypes);
     }

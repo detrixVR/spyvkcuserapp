@@ -1,7 +1,8 @@
 package serverdaemon.controller;
 
-import java.util.Set;
+import shared.model.user.Follower;
+import shared.model.user.Following;
 
 public interface Refreshable<T> {
-    void refresh(Set<T> set);
+    T refresh(Following following, Follower follower);
 }
