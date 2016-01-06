@@ -23,7 +23,7 @@ public class Following extends User implements Serializable { // those who follo
     @ManyToMany(mappedBy = "following", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Follower> followers = new HashSet<>();
 
-    @Transient
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Follower_Events> follower_EventsList = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
