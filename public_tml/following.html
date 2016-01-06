@@ -2,38 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Groups</title>
+    <title>${followingInfo.firstName} ${followingInfo.lastName}</title>
 </head>
 <body>
-    <script>
-        function addTextInputAndInfo(checkboxId, name, screenName) {
-            var countInput = document.createElement('input');
-            countInput.type = "text";
-            countInput.name = "count";
-            var nameInput = document.createElement('input');
-            nameInput.type = "hidden";
-            nameInput.name = "name";
-            nameInput.value = name;
-            var screenNameInput = document.createElement('input');
-            screenNameInput.type = "hidden";
-            screenNameInput.name = "screenName";
-            screenNameInput.value = screenName;
-            document.getElementById(checkboxId).appendChild(countInput);
-            document.getElementById(checkboxId).appendChild(nameInput);
-            document.getElementById(checkboxId).appendChild(screenNameInput);
-        }
-    </script>
-    <form action="http://localhost:8080/grouplikes" method="post">
-        <input type="hidden" name="followingId" value="${followingId?c}"/>
-        <#list groupsInfo as groupInfo>
-            <div id="${groupInfo.vkId?c}">
-                <input type="checkbox" name="id" value="${groupInfo.vkId?c}"
-                       onclick='addTextInputAndInfo(${groupInfo.vkId?c}, "${groupInfo.name}", "${groupInfo.screenName}")'>
-                <a href="https://vk.com/${groupInfo.screenName}">${groupInfo.name}</a><br>
+    <#if events?size == 0>
+        На данный момент событий нет.
+    <#else>
+        <#list events as event>
+            <div id="event">
+                <p>event.toString()</p>
             </div>
-            <br>
         </#list>
-        <button type="submit">Добавить в очередь</button>
-    </form>
+    </#if>
 </body>
 </html>

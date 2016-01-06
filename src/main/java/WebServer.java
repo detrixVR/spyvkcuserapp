@@ -27,8 +27,8 @@ public class WebServer {
 
         context.addServlet(new ServletHolder(rootServlet), "/");
         context.addServlet(new ServletHolder(loginServlet), "/login");
-        context.addServlet(new ServletHolder(addFollowingServlet), "/following");
-        context.addServlet(new ServletHolder(followingServlet), "/groups");
+        context.addServlet(new ServletHolder(addFollowingServlet), "/addfollowing");
+        context.addServlet(new ServletHolder(followingServlet), "/following");
         context.addServlet(new ServletHolder(likesInGroupsServlet), "/grouplikes");
         context.addServlet(new ServletHolder(resultServlet), "/result");
 

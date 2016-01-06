@@ -4,7 +4,7 @@
 <title>VKChase</title>
 <body>
     <h4>Добро пожаловать на  VKChase, ${firstName} ${lastName}!</h4>
-    <form action="http://localhost:8080/following" method="post">
+    <form action="http://localhost:8080/addfollowing" method="post">
         <label>За кем будем следить?</label>
         <input type="text" name="link"/><br>
         <input type="checkbox" name="event" value="FRIEND">Друзья<br>
@@ -27,7 +27,7 @@
                 </a>
             </li>
             <li>
-                <a href="http://localhost:8080/result?following=${followingOne.userInfo.vkId?c}">
+                <a href="http://localhost:8080/following?id=${followingOne.userInfo.vkId?c}">
                     результаты
                 </a>
             </li>

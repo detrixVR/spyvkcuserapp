@@ -71,4 +71,8 @@ public class Following extends User implements Serializable { // those who follo
     public void addFollower_Events(Follower_Events follower_events) {
         follower_EventsList.add(follower_events);
     }
+
+    public List<Follower_Events> getFollower_EventsList() {
+        return follower_EventsList;
+    }
 }
