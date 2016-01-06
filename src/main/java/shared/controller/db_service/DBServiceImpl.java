@@ -7,6 +7,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import shared.model.dao.*;
+import shared.model.event.Following_EventTypes;
 import shared.model.group.Group;
 import shared.model.group.GroupInfo;
 import shared.model.group.GroupSnapshot;
@@ -34,6 +35,7 @@ public class DBServiceImpl implements IDBService {
         configuration.addAnnotatedClass(FollowerCount.class);
         configuration.addAnnotatedClass(GroupSnapshot.class);
         configuration.addAnnotatedClass(PostSnapshot.class);
+        configuration.addAnnotatedClass(Following_EventTypes.class);
 
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
         configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
