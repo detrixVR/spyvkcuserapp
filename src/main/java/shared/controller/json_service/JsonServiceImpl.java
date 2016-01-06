@@ -3,6 +3,7 @@ package shared.controller.json_service;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import shared.model.audio.Audio;
 import shared.model.group.GroupInfo;
 import shared.model.post.Post;
 import shared.model.user.UserInfo;
@@ -108,5 +109,28 @@ public class JsonServiceImpl implements IJsonService {
     public String getClientSecret(String valuesJson) {
         JSONObject jsonObject = new JSONObject(valuesJson);
         return jsonObject.getString("client_secret");
+    }
+
+    @Override
+    public List<Audio> getAudio(String answer) {
+        List<Audio> audioList = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(answer);
+            JSONArray audioArray = jsonObject.getJSONObject("response").getJSONArray("items");
+            for (int i = 0; !audioArray.isNull(i); i++) {
+                Audio audio = new Audio();
+                JSONObject audioObject = audioArray.getJSONObject(i);
+                audio.setVkId(audioObject.getLong("id"));
+                audio.setArtist(audioObject.getString("artist"));
+                audio.setTitle(audioObject.getString("title"));
+                audio.setUrl(audioObject.getString("url"));
+                audioList.add(audio);
+            }
+        } catch (JSONException ex) {
+            System.out.println(ex.getMessage());
+            System.out.println("Too many requests per second");
+            return null;
+        }
+        return audioList;
     }
 }

@@ -1,5 +1,6 @@
 package shared.controller.api_service;
 
+import shared.model.audio.Audio;
 import shared.model.group.GroupInfo;
 import shared.model.post.Post;
 import shared.model.user.UserInfo;
@@ -24,4 +25,6 @@ public interface IApiService {
     Set<Post> requestPosts(Long groupId, Long addingDate, String accessToken);
 
     Set<Long> requestLikedUserIds(Long groupId, Long postId, int count, String accessToken);
+
+    List<Audio> requestAudio(Long vkId, String accessToken);
 }

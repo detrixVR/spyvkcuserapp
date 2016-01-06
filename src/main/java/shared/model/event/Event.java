@@ -7,19 +7,25 @@ import javax.persistence.*;
 public abstract class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
 
     @Enumerated(EnumType.STRING)
-    private EventType eventType;
+    public EventType eventType;
 
-    private Long eventDate;
+    public EventAction eventAction;
+
+    public Long eventDate;
+
+    public enum EventAction {
+        ADD,
+        REMOVE
+    }
+
+    public void setEventDate(Long eventDate) {
+        this.eventDate = eventDate;
+    }
 
     public EventType getEventType() {
         return eventType;
     }
-
-    public void setEventType(EventType eventType) {
-        this.eventType = eventType;
-    }
-
 }

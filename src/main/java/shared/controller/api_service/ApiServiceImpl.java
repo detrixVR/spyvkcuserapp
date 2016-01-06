@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import shared.controller.json_service.IJsonService;
 import shared.controller.link_builder.ILinkBuilder;
 import shared.controller.request.IRequest;
+import shared.model.audio.Audio;
 import shared.model.group.GroupInfo;
 import shared.model.post.Post;
 import shared.model.user.UserInfo;
@@ -148,5 +149,17 @@ public class ApiServiceImpl implements IApiService {
             likedUserIds.addAll(result);
         }
         return likedUserIds;
+    }
+
+    @Override
+    public List<Audio> requestAudio(Long vkId, String accessToken) {
+        List<Audio> audio;
+        String requestAudioLink = linkBuilder.getRequestAudioLink(vkId, accessToken);
+        String answer;
+        do {
+            answer = request.get(requestAudioLink, 200);
+            audio = jsonService.getAudio(answer);
+        } while (audio == null);
+        return audio;
     }
 }

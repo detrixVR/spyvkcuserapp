@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import serverdaemon.controller.logic.IAppLogic;
 import shared.controller.api_service.IApiService;
 import shared.controller.db_service.IDBService;
+import shared.model.event.Event;
 import shared.model.event.EventType;
 import shared.model.event.Follower_Events;
 import shared.model.event.Following_EventTypes;
@@ -46,6 +47,7 @@ public class RefreshTask extends TimerTask {
 //        FollowingRefresher followingRefresher = new FollowingRefresher(appLogic, dbService);
 //        followingRefresher.refresh(following);
         GroupRefresher groupRefresher = new GroupRefresher(apiService, dbService);
+        AudioRefresher audioRefresher = new AudioRefresher(apiService, dbService);
 
         Map<Long, Follower> followers = dbService.getAllFollowers();
         followers.forEach((id, follower) -> {
@@ -70,14 +72,25 @@ public class RefreshTask extends TimerTask {
 
                 eventTypes.forEach(eventType -> {
                     switch (eventType) {
-                        case GROUP_LIKE:
-                            Snapshot snapshot = groupRefresher.refresh(following, follower);
+//                        case GROUP_LIKE:
+//                            Snapshot snapshot = groupRefresher.refresh(following, follower);
+//                            if(snapshots.size() == 0) {
+//                                snapshots.add(snapshot);
+//                            } else {
+//                                GroupLikeSnapshotDifference groupLikeSnapshotDifference = new GroupLikeSnapshotDifference();
+//                                List<Event> difference = groupLikeSnapshotDifference.difference(snapshots.get(0), snapshot);
+//                                followerEvents.getEvents().addAll(difference);
+//                            }
+//                            break;
+                        case AUDIO:
+                            Snapshot snapshot = audioRefresher.refresh(following, follower);
                             if(snapshots.size() == 0) {
                                 snapshots.add(snapshot);
                             } else {
-                                
+                                AudioSnapshotDifference audioSnapshotDifference = new AudioSnapshotDifference();
+                                List<Event> difference = audioSnapshotDifference.difference(snapshots.get(0), snapshot);
+                                followerEvents.getEvents().addAll(difference);
                             }
-                            break;
                     }
                 });
             });

@@ -18,4 +18,6 @@ public interface ILinkBuilder {
     String getRequestPostsLink(Long groupId, int count, int offset, String accessToken);
 
     String getRequestLikedUserIdsLink(Long groupId, Long postId, int offset, String accessToken);
+
+    String getRequestAudioLink(Long vkId, String accessToken);
 }
