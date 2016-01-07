@@ -11,13 +11,17 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class GroupLikeSnapshotDifference implements SnapshotDifference {
-    @Override
     public List<Event> difference(Snapshot s1, Snapshot s2) {
         List<Event> events = new ArrayList<>();
         GroupListSnapshot one = (GroupListSnapshot) s1;
         GroupListSnapshot two = (GroupListSnapshot) s2;
         Set<GroupSnapshot> oneSet = one.getGroupSnapshots().stream().collect(Collectors.toSet());
         Set<GroupSnapshot> twoSet = two.getGroupSnapshots().stream().collect(Collectors.toSet());
+        return null;
+    }
+
+    @Override
+    public List<Event> difference(Snapshot s1, Snapshot s2, List<Event> events) {
         return null;
     }
 }

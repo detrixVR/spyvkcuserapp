@@ -1,10 +1,14 @@
 package shared.controller.db_service;
 
+import shared.model.audio.Audio;
+import shared.model.event.Event;
+import shared.model.event.FollowerEvents;
 import shared.model.group.Group;
+import shared.model.snapshots.AudioListSnapshot;
 import shared.model.snapshots.GroupSnapshot;
 import shared.model.post.Post;
+import shared.model.snapshots.TTT;
 import shared.model.user.Follower;
-import shared.model.user.FollowerCount;
 import shared.model.user.Following;
 
 import java.util.Map;
@@ -17,6 +21,8 @@ public interface IDBService {
 
     void updateFollower(Follower follower);
 
+    void saveAudio(Audio audio);
+
     void updateFollowing(Following following);
 
     Following getFollowingByVkId(Long id);
@@ -27,8 +33,6 @@ public interface IDBService {
 
     Map<Long, Follower> getAllFollowers();
 
-    void saveFollowerCount(FollowerCount followerCount);
-
     void updateGroup(Group group);
 
     Set<Post> getAllPosts();
@@ -38,4 +42,14 @@ public interface IDBService {
     Follower getFollowerByVkId(Long id);
 
     void saveGroupSnapshot(GroupSnapshot groupSnapshot);
+
+    void saveAudioListSnapshot(AudioListSnapshot audioListSnapshot);
+
+    void saveFollowerEvents(FollowerEvents followerEvents);
+
+    void updateFollowerEvents(FollowerEvents followerEvents);
+
+    void saveTTT(TTT t1);
+
+    void saveEvent(Event event);
 }

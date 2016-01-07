@@ -1,6 +1,7 @@
 package shared.model.event;
 
 import shared.model.snapshots.Snapshot;
+import shared.model.snapshots.TTT;
 import shared.model.user.Follower;
 
 import javax.persistence.*;
@@ -8,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "follower_events")
-public class Follower_Events {
+@Table
+public class FollowerEvents {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,12 +26,15 @@ public class Follower_Events {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Snapshot> snapshots = new ArrayList<>();
 
-    public Follower_Events(Follower follower, List<Event> events) {
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<TTT> ttt = new ArrayList<>();
+
+    public FollowerEvents(Follower follower, List<Event> events) {
         this.follower = follower;
         this.events = events;
     }
 
-    public Follower_Events() {}
+    public FollowerEvents() {}
 
     public Follower getFollower() {
         return follower;
@@ -62,5 +66,13 @@ public class Follower_Events {
 
     public void setSnapshots(List<Snapshot> snapshots) {
         this.snapshots = snapshots;
+    }
+
+    public List<TTT> getTtt() {
+        return ttt;
+    }
+
+    public void setTtt(List<TTT> ttt) {
+        this.ttt = ttt;
     }
 }

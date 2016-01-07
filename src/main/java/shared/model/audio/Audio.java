@@ -48,4 +48,11 @@ public class Audio {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Audio audio = (Audio) obj;
+        return audio.getVkId().equals(this.getVkId());
+    }
 }
+

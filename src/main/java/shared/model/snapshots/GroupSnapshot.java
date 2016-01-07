@@ -7,10 +7,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "groupsnaphot")
+@Table
 public class GroupSnapshot extends Snapshot {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "`group`")
+    @JoinColumn
     private Group group;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "groupSnapshot")

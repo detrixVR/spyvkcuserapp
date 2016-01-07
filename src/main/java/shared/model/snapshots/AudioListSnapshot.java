@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 @Table
 public class AudioListSnapshot extends Snapshot {
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Audio> audioList = new ArrayList<>();
 
     public List<Audio> getAudioList() {

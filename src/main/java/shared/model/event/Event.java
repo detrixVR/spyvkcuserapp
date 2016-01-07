@@ -10,11 +10,11 @@ public abstract class Event {
     protected Long id;
 
     @Enumerated(EnumType.STRING)
-    public EventType eventType;
+    protected EventType eventType;
 
-    public EventAction eventAction;
+    protected EventAction eventAction;
 
-    public Long eventDate;
+    protected Long eventDate;
 
     public enum EventAction {
         ADD,
@@ -23,6 +23,18 @@ public abstract class Event {
 
     public void setEventDate(Long eventDate) {
         this.eventDate = eventDate;
+    }
+
+    public EventAction getEventAction() {
+        return eventAction;
+    }
+
+    public void setEventAction(EventAction eventAction) {
+        this.eventAction = eventAction;
+    }
+
+    public Long getEventDate() {
+        return eventDate;
     }
 
     public EventType getEventType() {

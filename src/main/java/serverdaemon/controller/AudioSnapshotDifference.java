@@ -3,42 +3,77 @@ package serverdaemon.controller;
 import shared.model.audio.Audio;
 import shared.model.event.AudioEvent;
 import shared.model.event.Event;
+import shared.model.event.EventType;
 import shared.model.snapshots.AudioListSnapshot;
 import shared.model.snapshots.Snapshot;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class AudioSnapshotDifference implements SnapshotDifference {
     @Override
-    public List<Event> difference(Snapshot s1, Snapshot s2) {
-        List<Event> events = new ArrayList<>();
+    public List<Event> difference(Snapshot oldS, Snapshot newS, List<Event> events) {
+        List<Event> newEvents = new ArrayList<>();
 
-        AudioListSnapshot one = (AudioListSnapshot) s1;
-        AudioListSnapshot two = (AudioListSnapshot) s2;
-        Set<Audio> oneSet = one.getAudioList().stream().collect(Collectors.toSet());
-        Set<Audio> twoSet = two.getAudioList().stream().collect(Collectors.toSet());
-        Set<Audio> addSet = new HashSet<>(twoSet);
-        addSet.removeAll(oneSet);
-        Set<Audio> removeSet = new HashSet<>(oneSet);
-        removeSet.removeAll(twoSet);
+        List<Event> audioEvents = events
+                .stream()
+                .filter(event -> event.getEventType() == EventType.AUDIO)
+                .sorted((o1, o2) -> {
+                    if(o1.getEventDate() < o2.getEventDate()) return -1;
+                    else if(o1.getEventDate() == o2.getEventDate()) return 0;
+                    else return 1;
+                })
+                .collect(Collectors.toList());
 
-        addSet.forEach(audio -> {
+        AudioListSnapshot one = (AudioListSnapshot) oldS;
+        AudioListSnapshot two = (AudioListSnapshot) newS;
+        List<Audio> oneList = new ArrayList<>(one.getAudioList());
+        List<Audio> twoList = two.getAudioList();
+
+        audioEvents.forEach(event -> {
+            AudioEvent audioEvent = (AudioEvent) event;
+            if(audioEvent.getEventAction() == Event.EventAction.ADD) {
+                oneList.add(audioEvent.getAudio());
+            } else {
+                oneList.removeIf(audio -> audio.equals(audioEvent.getAudio()));
+            }
+        });
+
+        List<Audio> addList = twoList.stream().filter(a -> {
+            boolean exist = false;
+            for (Audio audio : oneList) {
+                if(a.equals(audio)) {
+                    exist = true;
+                    break;
+                }
+            }
+            return !exist;
+        }).collect(Collectors.toList());
+        List<Audio> removeList = oneList.stream().filter(a -> {
+            boolean exist = false;
+            for (Audio audio : twoList) {
+                if(a.equals(audio)) {
+                    exist = true;
+                    break;
+                }
+            }
+            return !exist;
+        }).collect(Collectors.toList());
+
+        addList.forEach(audio -> {
             AudioEvent audioEvent = new AudioEvent(Event.EventAction.ADD);
             audioEvent.setAudio(audio);
             audioEvent.setEventDate(System.currentTimeMillis());
-            events.add(audioEvent);
+            newEvents.add(audioEvent);
         });
-        removeSet.forEach(audio -> {
+        removeList.forEach(audio -> {
             AudioEvent audioEvent = new AudioEvent(Event.EventAction.REMOVE);
             audioEvent.setAudio(audio);
             audioEvent.setEventDate(System.currentTimeMillis());
-            events.add(audioEvent);
+            newEvents.add(audioEvent);
         });
 
-        return events;
+        return newEvents;
     }
 }

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "grouplistsnapshot")
+//@Table
 public class GroupListSnapshot extends Snapshot {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<GroupSnapshot> groupSnapshots = new ArrayList<>();

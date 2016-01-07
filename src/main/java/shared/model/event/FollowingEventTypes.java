@@ -1,6 +1,5 @@
 package shared.model.event;
 
-import shared.model.snapshots.Snapshot;
 import shared.model.user.Following;
 
 import javax.persistence.*;
@@ -8,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "following_eventtypes")
-public class Following_EventTypes {
+@Table
+public class FollowingEventTypes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,13 +18,13 @@ public class Following_EventTypes {
 
     @ElementCollection(fetch = FetchType.LAZY, targetClass = EventType.class)
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "Following_EventTypes_EventTypes")
-    @Column(name = "eventtype")
+    @CollectionTable
+    @Column
     private List<EventType> eventTypes = new ArrayList<>();
 
-    public Following_EventTypes() {}
+    public FollowingEventTypes() {}
 
-    public Following_EventTypes(Following following, List<EventType> eventTypes) {
+    public FollowingEventTypes(Following following, List<EventType> eventTypes) {
         this.following = following;
         this.eventTypes = eventTypes;
     }

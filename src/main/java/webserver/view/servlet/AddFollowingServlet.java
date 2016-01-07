@@ -4,8 +4,8 @@ import com.google.inject.Inject;
 import shared.controller.account_service.IAccountService;
 import shared.controller.api_service.IApiService;
 import shared.controller.db_service.IDBService;
-import shared.model.event.Follower_Events;
-import shared.model.event.Following_EventTypes;
+import shared.model.event.FollowerEvents;
+import shared.model.event.FollowingEventTypes;
 import shared.model.event.EventType;
 import shared.model.user.Follower;
 import shared.model.user.Following;
@@ -58,8 +58,8 @@ public class AddFollowingServlet extends HttpServlet {
                             .findFirst()
                             .get());
         }
-        Following_EventTypes following_eventTypes = new Following_EventTypes(following, eventTypes);
-        Follower_Events follower_events = new Follower_Events(follower, new ArrayList<>());
+        FollowingEventTypes following_eventTypes = new FollowingEventTypes(following, eventTypes);
+        FollowerEvents follower_events = new FollowerEvents(follower, new ArrayList<>());
         follower_events.setAddingDate(System.currentTimeMillis());
 
         follower.addFollowing(following);

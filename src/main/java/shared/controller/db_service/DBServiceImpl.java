@@ -8,16 +8,14 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import shared.model.audio.Audio;
 import shared.model.dao.*;
+import shared.model.event.AudioEvent;
 import shared.model.event.Event;
-import shared.model.event.Follower_Events;
-import shared.model.event.Following_EventTypes;
+import shared.model.event.FollowerEvents;
+import shared.model.event.FollowingEventTypes;
 import shared.model.group.Group;
 import shared.model.group.GroupInfo;
-import shared.model.snapshots.GroupListSnapshot;
-import shared.model.snapshots.GroupSnapshot;
+import shared.model.snapshots.*;
 import shared.model.post.Post;
-import shared.model.snapshots.PostSnapshot;
-import shared.model.snapshots.Snapshot;
 import shared.model.user.*;
 
 import java.sql.Statement;
@@ -37,15 +35,17 @@ public class DBServiceImpl implements IDBService {
         configuration.addAnnotatedClass(Group.class);
         configuration.addAnnotatedClass(GroupInfo.class);
         configuration.addAnnotatedClass(Post.class);
-        configuration.addAnnotatedClass(FollowerCount.class);
         configuration.addAnnotatedClass(GroupSnapshot.class);
         configuration.addAnnotatedClass(PostSnapshot.class);
-        configuration.addAnnotatedClass(Following_EventTypes.class);
+        configuration.addAnnotatedClass(FollowingEventTypes.class);
         configuration.addAnnotatedClass(Event.class);
-        configuration.addAnnotatedClass(Follower_Events.class);
+        configuration.addAnnotatedClass(FollowerEvents.class);
         configuration.addAnnotatedClass(Snapshot.class);
         configuration.addAnnotatedClass(GroupListSnapshot.class);
         configuration.addAnnotatedClass(Audio.class);
+        configuration.addAnnotatedClass(AudioListSnapshot.class);
+        configuration.addAnnotatedClass(TTT.class);
+        configuration.addAnnotatedClass(AudioEvent.class);
 
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
         configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
@@ -151,26 +151,23 @@ public class DBServiceImpl implements IDBService {
                 Hibernate.initialize(following.getUserInfo());
                 Hibernate.initialize(following.getFollower_EventsList());
                 Hibernate.initialize(following.getFollowers());
-                for (Follower_Events follower_events : following.getFollower_EventsList()) {
+                for (FollowerEvents follower_events : following.getFollower_EventsList()) {
                     Hibernate.initialize(follower_events.getFollower());
                     Hibernate.initialize(follower_events.getSnapshots());
+                    Hibernate.initialize(follower_events.getEvents());
+                    for (Snapshot snapshot : follower_events.getSnapshots()) {
+                        Hibernate.initialize(snapshot);
+                    }
+                    Hibernate.initialize(follower_events.getTtt());
                 }
             }
-            for (Following_EventTypes following_eventTypes : follower.getFollowing_EventTypesList()) {
+            for (FollowingEventTypes following_eventTypes : follower.getFollowing_EventTypesList()) {
                 Hibernate.initialize(following_eventTypes.getEventTypes());
             }
             idFollowerMap.put(follower.getUserInfo().getVkId(), follower);
         }
         session.close();
         return idFollowerMap;
-    }
-
-    @Override
-    public void saveFollowerCount(FollowerCount followerCount) {
-        Session session = sessionFactory.openSession();
-        FollowerCountDAO dao = new FollowerCountDAO(session);
-        dao.save(followerCount);
-        session.close();
     }
 
     @Override
@@ -231,6 +228,54 @@ public class DBServiceImpl implements IDBService {
         Session session = sessionFactory.openSession();
         GroupSnapshotDAO dao = new GroupSnapshotDAO(session);
         dao.save(groupSnapshot);
+        session.close();
+    }
+
+    @Override
+    public void saveAudioListSnapshot(AudioListSnapshot audioListSnapshot) {
+        Session session = sessionFactory.openSession();
+        AudioListSnapshotDAO dao = new AudioListSnapshotDAO(session);
+        dao.save(audioListSnapshot);
+        session.close();
+    }
+
+    @Override
+    public void saveFollowerEvents(FollowerEvents followerEvents) {
+        Session session = sessionFactory.openSession();
+        FollowerEventsDAO dao = new FollowerEventsDAO(session);
+        dao.save(followerEvents);
+        session.close();
+    }
+
+    @Override
+    public void updateFollowerEvents(FollowerEvents followerEvents) {
+        Session session = sessionFactory.openSession();
+        FollowerEventsDAO dao = new FollowerEventsDAO(session);
+        dao.update(followerEvents);
+        session.close();
+    }
+
+    @Override
+    public void saveTTT(TTT t1) {
+        Session session = sessionFactory.openSession();
+        TTTDAO dao = new TTTDAO(session);
+        dao.save(t1);
+        session.close();
+    }
+
+    @Override
+    public void saveEvent(Event event) {
+        Session session = sessionFactory.openSession();
+        EventDAO dao = new EventDAO(session);
+        dao.save(event);
+        session.close();
+    }
+
+    @Override
+    public void saveAudio(Audio audio) {
+        Session session = sessionFactory.openSession();
+        AudioDAO dao = new AudioDAO(session);
+        dao.save(audio);
         session.close();
     }
 

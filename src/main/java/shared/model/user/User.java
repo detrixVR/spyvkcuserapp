@@ -7,7 +7,6 @@ import java.io.Serializable;
 public abstract class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     protected Long id;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

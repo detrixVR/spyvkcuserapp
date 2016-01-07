@@ -20,11 +20,11 @@ public class GroupSnapshotBuilder implements SnapshotBuilder<GroupSnapshot, Grou
 //            postSnapshot.setDate(post.getDate());
 //            postSnapshot.getLikedUserIds().addAll(post.getLikedUserIds());
             postSnapshot.setPost(post);
-            postSnapshot.setDateOfSnapshot(dateOfSnapshot);
+            postSnapshot.setSnapshotDate(dateOfSnapshot);
             postSnapshot.setGroupSnapshot(groupSnapshot);
             groupSnapshot.getPostSnapshots().add(postSnapshot);
         }
-        groupSnapshot.setDateOfSnapshot(dateOfSnapshot);
+        groupSnapshot.setSnapshotDate(dateOfSnapshot);
         groupSnapshot.setGroup(group);
         return groupSnapshot;
     }

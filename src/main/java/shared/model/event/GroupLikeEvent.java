@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "grouplikeevent")
+@Table
 public class GroupLikeEvent extends Event {
 
 }

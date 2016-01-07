@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity
 @Table
 public class AudioEvent extends Event {
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Audio audio;
 
     public AudioEvent(EventAction eventAction) {

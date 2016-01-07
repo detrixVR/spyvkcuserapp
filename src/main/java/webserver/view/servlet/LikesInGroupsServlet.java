@@ -4,11 +4,6 @@ import com.google.inject.Inject;
 import shared.controller.account_service.IAccountService;
 import shared.controller.api_service.IApiService;
 import shared.controller.db_service.IDBService;
-import shared.model.group.Group;
-import shared.model.group.GroupInfo;
-import shared.model.user.Follower;
-import shared.model.user.FollowerCount;
-import shared.model.user.Following;
 import webserver.controller.cookies_service.ICookiesService;
 
 import javax.servlet.ServletException;
@@ -16,8 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class LikesInGroupsServlet extends HttpServlet {
     private IApiService apiService;

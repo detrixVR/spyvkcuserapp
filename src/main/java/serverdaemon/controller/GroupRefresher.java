@@ -2,7 +2,7 @@ package serverdaemon.controller;
 
 import shared.controller.api_service.IApiService;
 import shared.controller.db_service.IDBService;
-import shared.model.event.Follower_Events;
+import shared.model.event.FollowerEvents;
 import shared.model.group.Group;
 import shared.model.group.GroupInfo;
 import shared.model.post.Post;
@@ -27,7 +27,7 @@ public class GroupRefresher implements Refreshable<GroupListSnapshot> {
         GroupListSnapshot groupListSnapshot = new GroupListSnapshot();
         List<GroupSnapshot> groupSnapshots = groupListSnapshot.getGroupSnapshots();
 
-        Follower_Events followerEvents = following
+        FollowerEvents followerEvents = following
                 .getFollower_EventsList()
                 .stream()
                 .filter(follower_events -> follower_events.getFollower() == follower)
@@ -50,10 +50,10 @@ public class GroupRefresher implements Refreshable<GroupListSnapshot> {
 
             GroupSnapshot groupSnapshot = new GroupSnapshot();
             groupSnapshot.setGroup(group);
-            groupSnapshot.setDateOfSnapshot(System.currentTimeMillis());
+            groupSnapshot.setSnapshotDate(System.currentTimeMillis());
             groupSnapshots.add(groupSnapshot);
         });
-        groupListSnapshot.setDateOfSnapshot(System.currentTimeMillis());
+        groupListSnapshot.setSnapshotDate(System.currentTimeMillis());
         return groupListSnapshot;
     }
 

@@ -3,19 +3,16 @@ package shared.model.group;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "groupinfo")
+@Table
 public class GroupInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "vk_id")
     private Long vkId = 0L;
 
-    @Column(name = "name")
     private String name = "";
 
-    @Column(name = "screenname")
     private String screenName = "";
 
     public GroupInfo(Long vkId, String name, String screenName) {

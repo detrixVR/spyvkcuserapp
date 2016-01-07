@@ -3,7 +3,7 @@ package serverdaemon.controller;
 import shared.controller.api_service.IApiService;
 import shared.controller.db_service.IDBService;
 import shared.model.audio.Audio;
-import shared.model.event.Follower_Events;
+import shared.model.event.FollowerEvents;
 import shared.model.snapshots.AudioListSnapshot;
 import shared.model.user.Follower;
 import shared.model.user.Following;
@@ -23,7 +23,7 @@ public class AudioRefresher implements Refreshable<AudioListSnapshot> {
     @Override
     public AudioListSnapshot refresh(Following following, Follower follower) {
         AudioListSnapshot audioListSnapshot = new AudioListSnapshot();
-        Follower_Events followerEvents = following
+        FollowerEvents followerEvents = following
                 .getFollower_EventsList()
                 .stream()
                 .filter(follower_events -> follower_events.getFollower() == follower)
@@ -35,8 +35,10 @@ public class AudioRefresher implements Refreshable<AudioListSnapshot> {
                 follower.getAccessToken()
         );
         List<Audio> audio = apiService.requestAudio(following.getUserInfo().getVkId(), follower.getAccessToken());
+
         audioListSnapshot.setAudioList(audio);
-        audioListSnapshot.setDateOfSnapshot(System.currentTimeMillis());
+        audioListSnapshot.setSnapshotDate(System.currentTimeMillis());
+
         return audioListSnapshot;
     }
 }

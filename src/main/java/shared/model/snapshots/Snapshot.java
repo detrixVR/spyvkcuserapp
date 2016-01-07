@@ -9,14 +9,13 @@ public class Snapshot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "date_of_snapshot")
-    private Long dateOfSnapshot;
+    private Long snapshotDate;
 
-    public Long getDateOfSnapshot() {
-        return dateOfSnapshot;
+    public Long getSnapshotDate() {
+        return snapshotDate;
     }
 
-    public void setDateOfSnapshot(Long dateOfSnapshot) {
-        this.dateOfSnapshot = dateOfSnapshot;
+    public void setSnapshotDate(Long snapshotDate) {
+        this.snapshotDate = snapshotDate;
     }
 }

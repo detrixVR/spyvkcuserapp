@@ -6,9 +6,11 @@ import shared.controller.api_service.IApiService;
 import shared.controller.db_service.IDBService;
 import shared.model.event.Event;
 import shared.model.event.EventType;
-import shared.model.event.Follower_Events;
-import shared.model.event.Following_EventTypes;
+import shared.model.event.FollowerEvents;
+import shared.model.event.FollowingEventTypes;
+import shared.model.snapshots.AudioListSnapshot;
 import shared.model.snapshots.Snapshot;
+import shared.model.snapshots.TTT;
 import shared.model.user.Follower;
 import shared.model.user.Following;
 
@@ -54,7 +56,7 @@ public class RefreshTask extends TimerTask {
             Set<Following> followings = follower.getFollowing();
             followings.forEach(following -> {
 
-                Following_EventTypes followingEventTypes = follower
+                FollowingEventTypes followingEventTypes = follower
                         .getFollowing_EventTypesList()
                         .stream()
                         .filter(following_eventTypes -> following_eventTypes.getFollowing() == following)
@@ -62,13 +64,20 @@ public class RefreshTask extends TimerTask {
                         .get();
                 List<EventType> eventTypes = followingEventTypes.getEventTypes();
 
-                Follower_Events followerEvents = following
+                FollowerEvents followerEvents = following
                         .getFollower_EventsList()
                         .stream()
                         .filter(follower_events -> follower_events.getFollower() == follower)
                         .findFirst()
                         .get();
                 List<Snapshot> snapshots = followerEvents.getSnapshots();
+                List<TTT> ttt = followerEvents.getTtt();
+                TTT t1 = new TTT();
+                TTT t2 = new TTT();
+                dbService.saveTTT(t1);
+                dbService.saveTTT(t2);
+                ttt.add(t1);
+                ttt.add(t2);
 
                 eventTypes.forEach(eventType -> {
                     switch (eventType) {
@@ -83,13 +92,24 @@ public class RefreshTask extends TimerTask {
 //                            }
 //                            break;
                         case AUDIO:
-                            Snapshot snapshot = audioRefresher.refresh(following, follower);
+                            AudioListSnapshot snapshot = audioRefresher.refresh(following, follower);
                             if(snapshots.size() == 0) {
+                                snapshot.getAudioList().forEach(a -> dbService.saveAudio(a));
+                                dbService.saveAudioListSnapshot(snapshot);
                                 snapshots.add(snapshot);
+                                dbService.updateFollowerEvents(followerEvents);
+                                dbService.updateFollower(follower);
+                                dbService.updateFollowing(following);
                             } else {
                                 AudioSnapshotDifference audioSnapshotDifference = new AudioSnapshotDifference();
-                                List<Event> difference = audioSnapshotDifference.difference(snapshots.get(0), snapshot);
+                                List<Event> difference = audioSnapshotDifference.difference(
+                                        snapshots.get(0),
+                                        snapshot,
+                                        followerEvents.getEvents()
+                                );
+                                difference.forEach(event -> dbService.saveEvent(event));
                                 followerEvents.getEvents().addAll(difference);
+                                dbService.updateFollowerEvents(followerEvents);
                             }
                     }
                 });

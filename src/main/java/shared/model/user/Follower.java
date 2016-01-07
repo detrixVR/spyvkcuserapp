@@ -1,6 +1,6 @@
 package shared.model.user;
 
-import shared.model.event.Following_EventTypes;
+import shared.model.event.FollowingEventTypes;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,16 +10,15 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "followers")
+@Table
 public class Follower extends User implements Serializable { // those who follow for users
-    @Column(name = "accessToken")
     private String accessToken = "";
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Following> following = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Following_EventTypes> following_EventTypesList = new ArrayList<>();
+    private List<FollowingEventTypes> following_EventTypesList = new ArrayList<>();
 
     public Follower() {
     }
@@ -60,15 +59,15 @@ public class Follower extends User implements Serializable { // those who follow
         this.accessToken = accessToken;
     }
 
-    public List<Following_EventTypes> getFollowing_EventTypesList() {
+    public List<FollowingEventTypes> getFollowing_EventTypesList() {
         return following_EventTypesList;
     }
 
-    public void setFollowing_EventTypesList(List<Following_EventTypes> following_EventTypesList) {
+    public void setFollowing_EventTypesList(List<FollowingEventTypes> following_EventTypesList) {
         this.following_EventTypesList = following_EventTypesList;
     }
 
-    public void addFollowing_EventTypes(Following_EventTypes following_eventTypes) {
+    public void addFollowing_EventTypes(FollowingEventTypes following_eventTypes) {
         following_EventTypesList.add(following_eventTypes);
     }
 }

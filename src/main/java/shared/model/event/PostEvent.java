@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "postevent")
+@Table
 public class PostEvent extends Event {
 
 }

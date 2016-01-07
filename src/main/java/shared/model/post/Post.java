@@ -7,22 +7,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "post")
+@Table
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "vk_id")
     private Long vkId = 0L;
 
-    @Column(name = "text", length = 10000)
+    @Column(length = 10000)
     private String text = "";
 
-    @Column(name = "date")
     private Long date = 0L;
 
-    @Column(name = "likes_count")
     private Integer likesCount = 0;
 
     @ElementCollection(fetch = FetchType.LAZY, targetClass = Long.class)
