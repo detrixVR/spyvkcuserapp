@@ -31,7 +31,7 @@
         <#list events as event>
             <div id="event">
                 <p>
-                    <script>document.write(timeConverter(${event.eventDate?c}))</script>
+                    <script>document.write(timeConverter(${event.eventDate?c}))</script>:
                     ${event.toString()}
                 </p>
             </div>

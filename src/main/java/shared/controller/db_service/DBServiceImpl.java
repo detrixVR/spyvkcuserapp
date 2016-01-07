@@ -35,8 +35,6 @@ public class DBServiceImpl implements IDBService {
         configuration.addAnnotatedClass(Follower.class);
         configuration.addAnnotatedClass(Group.class);
         configuration.addAnnotatedClass(Post.class);
-        configuration.addAnnotatedClass(GroupSnapshot.class);
-        configuration.addAnnotatedClass(PostSnapshot.class);
         configuration.addAnnotatedClass(FollowingEventTypes.class);
         configuration.addAnnotatedClass(Event.class);
         configuration.addAnnotatedClass(FollowerEvents.class);
@@ -116,32 +114,6 @@ public class DBServiceImpl implements IDBService {
     }
 
     @Override
-    public Following getFollowingByVkId(Long id) {
-        Session session = sessionFactory.openSession();
-        FollowingDAO dao = new FollowingDAO(session);
-        Following following = dao.getByVkId(id);
-        session.close();
-        return following;
-    }
-
-    @Override
-    public void saveGroup(Group group) {
-        Session session = sessionFactory.openSession();
-        GroupDAO dao = new GroupDAO(session);
-        dao.save(group);
-        session.close();
-    }
-
-    @Override
-    public Set<Group> getAllGroups() {
-        Session session = sessionFactory.openSession();
-        GroupDAO dao = new GroupDAO(session);
-        Set<Group> groups = dao.getAll();
-        session.close();
-        return groups;
-    }
-
-    @Override
     public Map<Long, Follower> getAllFollowers() {
         Session session = sessionFactory.openSession();
         FollowerDAO dao = new FollowerDAO(session);
@@ -173,34 +145,6 @@ public class DBServiceImpl implements IDBService {
     }
 
     @Override
-    public void updateGroup(Group group) {
-        Session session = sessionFactory.openSession();
-        GroupDAO dao = new GroupDAO(session);
-        dao.update(group);
-        session.close();
-    }
-
-    @Override
-    public Set<Post> getAllPosts() {
-        Session session = sessionFactory.openSession();
-        PostDAO dao = new PostDAO(session);
-        session.close();
-        return dao.getAll();
-    }
-
-    @Override
-    public Set<Following> getAllFollowings() {
-        Session session = sessionFactory.openSession();
-        FollowingDAO dao = new FollowingDAO(session);
-        Set<Following> following = dao.getAll();
-        for (Following followingOne : following) {
-            Hibernate.initialize(followingOne.getUserInfo());
-        }
-        session.close();
-        return following;
-    }
-
-    @Override
     public Follower getFollowerByVkId(Long id) {
         Session session = sessionFactory.openSession();
         FollowerDAO dao = new FollowerDAO(session);
@@ -218,108 +162,16 @@ public class DBServiceImpl implements IDBService {
     }
 
     @Override
-    public void saveGroupSnapshot(GroupSnapshot groupSnapshot) {
-        Session session = sessionFactory.openSession();
-        GroupSnapshotDAO dao = new GroupSnapshotDAO(session);
-        dao.save(groupSnapshot);
-        session.close();
-    }
-
-    @Override
-    public void saveAudioListSnapshot(AudioListSnapshot audioListSnapshot) {
-        Session session = sessionFactory.openSession();
-        AudioListSnapshotDAO dao = new AudioListSnapshotDAO(session);
-        dao.save(audioListSnapshot);
-        session.close();
-    }
-
-    @Override
-    public void saveFollowerEvents(FollowerEvents followerEvents) {
-        Session session = sessionFactory.openSession();
-        FollowerEventsDAO dao = new FollowerEventsDAO(session);
-        dao.save(followerEvents);
-        session.close();
-    }
-
-    @Override
     public void updateFollowerEvents(FollowerEvents followerEvents) {
         Session session = sessionFactory.openSession();
-        session.doReturningWork(new ReturningWork<Object>() {
-            @Override
-            public Object execute(Connection conn) throws SQLException
-            {
-                try(Statement stmt = conn.createStatement()) {
-                    stmt.executeQuery("SET NAMES utf8mb4");
-                }
-                return null;
+        session.doReturningWork(conn -> {
+            try(Statement stmt = conn.createStatement()) {
+                stmt.executeQuery("SET NAMES utf8mb4");
             }
+            return null;
         });
         FollowerEventsDAO dao = new FollowerEventsDAO(session);
         dao.update(followerEvents);
-        session.close();
-    }
-
-    @Override
-    public void saveEvent(Event event) {
-        Session session = sessionFactory.openSession();
-        EventDAO dao = new EventDAO(session);
-        dao.save(event);
-        session.close();
-    }
-
-    @Override
-    public void saveAudioEvent(AudioEvent event) {
-        Session session = sessionFactory.openSession();
-        AudioEventDAO dao = new AudioEventDAO(session);
-        dao.save(event);
-        session.close();
-    }
-
-    @Override
-    public void saveVideo(Video video) {
-        Session session = sessionFactory.openSession();
-        VideoDAO dao = new VideoDAO(session);
-        dao.save(video);
-        session.close();
-    }
-
-    @Override
-    public void saveVideoListSnapshot(VideoListSnapshot videoListSnapshot) {
-        Session session = sessionFactory.openSession();
-        VideoListSnapshotDAO dao = new VideoListSnapshotDAO(session);
-        dao.save(videoListSnapshot);
-        session.close();
-    }
-
-    @Override
-    public void saveVideoEvent(VideoEvent event) {
-        Session session = sessionFactory.openSession();
-        VideoEventDAO dao = new VideoEventDAO(session);
-        dao.save(event);
-        session.close();
-    }
-
-    @Override
-    public void saveFriend(Friend a) {
-        Session session = sessionFactory.openSession();
-        FriendDAO dao = new FriendDAO(session);
-        dao.save(a);
-        session.close();
-    }
-
-    @Override
-    public void saveFriendListSnapshot(FriendListSnapshot friendListSnapshot) {
-        Session session = sessionFactory.openSession();
-        FriendListSnapshotDAO dao = new FriendListSnapshotDAO(session);
-        dao.save(friendListSnapshot);
-        session.close();
-    }
-
-    @Override
-    public void saveFriendEvent(FriendEvent event) {
-        Session session = sessionFactory.openSession();
-        FriendEventDAO dao = new FriendEventDAO(session);
-        dao.save(event);
         session.close();
     }
 
@@ -342,13 +194,7 @@ public class DBServiceImpl implements IDBService {
                 return super.getAll();
             }
         };
-    }
-
-    @Override
-    public void saveAudio(Audio audio) {
-        Session session = sessionFactory.openSession();
-        AudioDAO dao = new AudioDAO(session);
-        dao.save(audio);
+        dao.save(t);
         session.close();
     }
 

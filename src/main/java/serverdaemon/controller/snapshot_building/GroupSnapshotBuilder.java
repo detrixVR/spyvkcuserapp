@@ -1,4 +1,4 @@
-package serverdaemon.controller;
+package serverdaemon.controller.snapshot_building;
 
 import shared.controller.api_service.IApiService;
 import shared.controller.db_service.IDBService;
@@ -9,17 +9,15 @@ import shared.model.user.Following;
 
 import java.util.*;
 
-public class GroupRefresher implements Refreshable<GroupListSnapshot> {
+public class GroupSnapshotBuilder implements SnapshotBuilder<GroupListSnapshot> {
     private final IApiService apiService;
-    private final IDBService dbService;
 
-    public GroupRefresher(IApiService apiService, IDBService dbService) {
+    public GroupSnapshotBuilder(IApiService apiService) {
         this.apiService = apiService;
-        this.dbService = dbService;
     }
 
     @Override
-    public GroupListSnapshot refresh(Following following, Follower follower) {
+    public GroupListSnapshot build(Following following, Follower follower) {
         GroupListSnapshot groupListSnapshot = new GroupListSnapshot();
         List<Long> groupIds = apiService.requestGroupIds(following.getUserInfo().getVkId(), follower.getAccessToken());
         List<Group> groupList = apiService.requestGroups(groupIds);

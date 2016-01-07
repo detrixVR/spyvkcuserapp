@@ -2,8 +2,6 @@ package shared.controller;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
-import serverdaemon.controller.logic.AppLogicImpl;
-import serverdaemon.controller.logic.IAppLogic;
 import shared.controller.account_service.AccountServiceImpl;
 import shared.controller.account_service.IAccountService;
 import shared.controller.api_service.ApiServiceImpl;
@@ -30,7 +28,6 @@ public class ApplicationModule extends AbstractModule {
         bind(IAccountService.class).to(AccountServiceImpl.class).in(Singleton.class);
         bind(ICookiesService.class).to(CookiesServiceImpl.class).in(Singleton.class);
         bind(IPageGenerator.class).to(PageGeneratorImpl.class).in(Singleton.class);
-        bind(IAppLogic.class).to(AppLogicImpl.class).in(Singleton.class);
         bind(IDBService.class).to(DBServiceImpl.class).in(Singleton.class);
         bind(IApiService.class).to(ApiServiceImpl.class).in(Singleton.class);
     }

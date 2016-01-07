@@ -1,4 +1,4 @@
-package serverdaemon.controller;
+package serverdaemon.controller.snapshot_difference;
 
 import shared.model.event.Event;
 import shared.model.event.EventType;
@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public abstract class SnapshotDifference<SnapshotCast extends Snapshot, EventEntity, TypeOfEvent extends Event> {
     @SuppressWarnings(value = "unchecked")
-    List<Event> difference(Snapshot oldS, Snapshot newS, List<Event> events, EventType eventType) {
+    public List<Event> difference(Snapshot oldS, Snapshot newS, List<Event> events, EventType eventType) {
         List<Event> newEvents = new ArrayList<>();
         List<Event> concreteEvents = getConcreteEvents(events, eventType); // get events of concrete type
 

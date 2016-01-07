@@ -1,7 +1,8 @@
 package serverdaemon.controller;
 
 import com.google.inject.Inject;
-import serverdaemon.controller.logic.IAppLogic;
+import serverdaemon.controller.snapshot_building.*;
+import serverdaemon.controller.snapshot_difference.*;
 import shared.controller.api_service.IApiService;
 import shared.controller.db_service.IDBService;
 import shared.model.audio.Audio;
@@ -21,25 +22,22 @@ import java.util.TimerTask;
 
 public class RefreshTask extends TimerTask {
     private IApiService apiService;
-    private IAppLogic appLogic;
     private IDBService dbService;
 
     @Inject
     private RefreshTask(IApiService apiService,
-                        IAppLogic appLogic,
                         IDBService dbService) {
         this.apiService = apiService;
-        this.appLogic = appLogic;
         this.dbService = dbService;
     }
 
     @Override
     public void run() {
-        AudioRefresher audioRefresher = new AudioRefresher(apiService, dbService);
-        VideoRefresher videoRefresher = new VideoRefresher(apiService, dbService);
-        FriendRefresher friendRefresher = new FriendRefresher(apiService, dbService);
-        GroupRefresher groupRefresher = new GroupRefresher(apiService, dbService);
-        PostRefresher postRefresher = new PostRefresher(apiService, dbService);
+        AudioSnapshotBuilder audioSnapshotBuilder = new AudioSnapshotBuilder(apiService);
+        VideoSnapshotBuilder videoSnapshotBuilder = new VideoSnapshotBuilder(apiService);
+        FriendSnapshotBuilder friendSnapshotBuilder = new FriendSnapshotBuilder(apiService);
+        GroupSnapshotBuilder groupSnapshotBuilder = new GroupSnapshotBuilder(apiService);
+        PostSnapshotBuilder postSnapshotBuilder = new PostSnapshotBuilder(apiService);
 
         Map<Long, Follower> followers = dbService.getAllFollowers();
         followers.forEach((id, follower) -> {
@@ -66,27 +64,27 @@ public class RefreshTask extends TimerTask {
                     EventType eventType = eventTypes.get(i);
                     switch (eventType) {
                         case AUDIO:
-                            Process(audioRefresher, follower, following, followingEventTypes, followerEvents, snapshots, i,
+                            Process(audioSnapshotBuilder, follower, following, followingEventTypes, followerEvents, snapshots, i,
                                     Audio.class, AudioListSnapshot.class, AudioEvent.class, new AudioSnapshotDifference(),
                                     EventType.AUDIO);
                             break;
                         case VIDEO:
-                            Process(videoRefresher, follower, following, followingEventTypes, followerEvents, snapshots, i,
+                            Process(videoSnapshotBuilder, follower, following, followingEventTypes, followerEvents, snapshots, i,
                                     Video.class, VideoListSnapshot.class, VideoEvent.class, new VideoSnapshotDifference(),
                                     EventType.VIDEO);
                             break;
                         case FRIEND:
-                            Process(friendRefresher, follower, following, followingEventTypes, followerEvents, snapshots, i,
+                            Process(friendSnapshotBuilder, follower, following, followingEventTypes, followerEvents, snapshots, i,
                                     Friend.class, FriendListSnapshot.class, FriendEvent.class, new FriendSnapshotDifference(),
                                     EventType.FRIEND);
                             break;
                         case GROUP:
-                            Process(groupRefresher, follower, following, followingEventTypes, followerEvents, snapshots, i,
+                            Process(groupSnapshotBuilder, follower, following, followingEventTypes, followerEvents, snapshots, i,
                                     Group.class, GroupListSnapshot.class, GroupEvent.class, new GroupSnapshotDifference(),
                                     EventType.GROUP);
                             break;
                         case POST:
-                            Process(postRefresher, follower, following, followingEventTypes, followerEvents, snapshots, i,
+                            Process(postSnapshotBuilder, follower, following, followingEventTypes, followerEvents, snapshots, i,
                                     Post.class, PostListSnapshot.class, PostEvent.class, new PostSnapshotDifference(),
                                     EventType.POST);
                     }
@@ -99,7 +97,7 @@ public class RefreshTask extends TimerTask {
 
     @SuppressWarnings(value = "unchecked")
     private <TypeOfSnapshot extends Snapshot,
-            Refresher extends Refreshable,
+            Refresher extends SnapshotBuilder,
             TypeOfEvent extends Event,
             EventEntity> void Process(
             Refresher refresher,
@@ -114,7 +112,7 @@ public class RefreshTask extends TimerTask {
             Class<TypeOfEvent> typeOfEventClass,
             SnapshotDifference snapshotDifference,
             EventType eventType) {
-        TypeOfSnapshot snapshot = (TypeOfSnapshot) refresher.refresh(following, follower);
+        TypeOfSnapshot snapshot = (TypeOfSnapshot) refresher.build(following, follower);
         if (snapshots.size() < followingEventTypes.getEventTypes().size()) {
             snapshot.getList().forEach(a -> dbService.save((EventEntity) a, eventEntityClass));
             dbService.save(snapshot, typeOfSnapshotClass);

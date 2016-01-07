@@ -1,4 +1,4 @@
-package serverdaemon.controller;
+package serverdaemon.controller.snapshot_building;
 
 import shared.controller.api_service.IApiService;
 import shared.controller.db_service.IDBService;
@@ -9,18 +9,16 @@ import shared.model.video.Video;
 
 import java.util.List;
 
-public class VideoRefresher implements Refreshable<VideoListSnapshot> {
+public class VideoSnapshotBuilder implements SnapshotBuilder<VideoListSnapshot> {
 
     private IApiService apiService;
-    private IDBService dbService;
 
-    public VideoRefresher(IApiService apiService, IDBService dbService) {
+    public VideoSnapshotBuilder(IApiService apiService) {
         this.apiService = apiService;
-        this.dbService = dbService;
     }
 
     @Override
-    public VideoListSnapshot refresh(Following following, Follower follower) {
+    public VideoListSnapshot build(Following following, Follower follower) {
         VideoListSnapshot videoListSnapshot = new VideoListSnapshot();
         List<Video> video = apiService.requestVideo(following.getUserInfo().getVkId(), follower.getAccessToken());
 

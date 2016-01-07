@@ -1,4 +1,4 @@
-package serverdaemon.controller;
+package serverdaemon.controller.snapshot_difference;
 
 import shared.model.audio.Audio;
 import shared.model.event.AudioEvent;

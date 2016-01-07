@@ -19,18 +19,13 @@ public class WebServer {
         Servlet loginServlet = servletsInjector.getInstance(LoginServlet.class);
         Servlet addFollowingServlet= servletsInjector.getInstance(AddFollowingServlet.class);
         Servlet followingServlet = servletsInjector.getInstance(FollowingServlet.class);
-        Servlet likesInGroupsServlet = servletsInjector.getInstance(LikesInGroupsServlet.class);
-        Servlet resultServlet = servletsInjector.getInstance(ResultServlet.class);
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        //context.setContextPath("/vkchase");
 
         context.addServlet(new ServletHolder(rootServlet), "/");
         context.addServlet(new ServletHolder(loginServlet), "/login");
         context.addServlet(new ServletHolder(addFollowingServlet), "/addfollowing");
         context.addServlet(new ServletHolder(followingServlet), "/following");
-        context.addServlet(new ServletHolder(likesInGroupsServlet), "/grouplikes");
-        context.addServlet(new ServletHolder(resultServlet), "/result");
 
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setDirectoriesListed(false);

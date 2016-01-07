@@ -1,4 +1,4 @@
-package serverdaemon.controller;
+package serverdaemon.controller.snapshot_building;
 
 import shared.controller.api_service.IApiService;
 import shared.controller.db_service.IDBService;
@@ -10,21 +10,18 @@ import shared.model.user.Following;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PostRefresher implements Refreshable<PostListSnapshot> {
+public class PostSnapshotBuilder implements SnapshotBuilder<PostListSnapshot> {
     private final IApiService apiService;
-    private final IDBService dbService;
 
-    public PostRefresher(IApiService apiService, IDBService dbService) {
+    public PostSnapshotBuilder(IApiService apiService) {
         this.apiService = apiService;
-        this.dbService = dbService;
     }
 
     @Override
-    public PostListSnapshot refresh(Following following, Follower follower) {
+    public PostListSnapshot build(Following following, Follower follower) {
         PostListSnapshot postListSnapshot = new PostListSnapshot();
         List<Post> posts = apiService.requestPosts(following.getUserInfo().getVkId(), 0L, follower.getAccessToken())
                 .stream().collect(Collectors.toList());
-
         postListSnapshot.setPostList(posts);
         postListSnapshot.setSnapshotDate(System.currentTimeMillis()/1000);
 

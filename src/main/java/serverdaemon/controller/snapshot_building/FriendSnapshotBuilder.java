@@ -1,4 +1,4 @@
-package serverdaemon.controller;
+package serverdaemon.controller.snapshot_building;
 
 import shared.controller.api_service.IApiService;
 import shared.controller.db_service.IDBService;
@@ -9,20 +9,17 @@ import shared.model.user.Following;
 
 import java.util.List;
 
-public class FriendRefresher implements Refreshable<FriendListSnapshot> {
+public class FriendSnapshotBuilder implements SnapshotBuilder<FriendListSnapshot> {
     private final IApiService apiService;
-    private final IDBService dbService;
 
-    public FriendRefresher(IApiService apiService, IDBService dbService) {
+    public FriendSnapshotBuilder(IApiService apiService) {
         this.apiService = apiService;
-        this.dbService = dbService;
     }
 
     @Override
-    public FriendListSnapshot refresh(Following following, Follower follower) {
+    public FriendListSnapshot build(Following following, Follower follower) {
         FriendListSnapshot friendListSnapshot = new FriendListSnapshot();
         List<Friend> friends = apiService.requestFriends(following.getUserInfo().getVkId(), follower.getAccessToken());
-
         friendListSnapshot.setFriendList(friends);
         friendListSnapshot.setSnapshotDate(System.currentTimeMillis()/1000);
 

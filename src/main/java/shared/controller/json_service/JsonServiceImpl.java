@@ -169,6 +169,10 @@ public class JsonServiceImpl implements IJsonService {
             System.out.println(ex.getMessage());
             System.out.println("Too many requests per second in getVideo");
             return null;
+        } catch (NullPointerException ex) {
+            System.out.println(ex.getMessage());
+            System.out.println("in getVideo");
+            return null;
         }
         return videoList;
     }
