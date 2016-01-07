@@ -10,18 +10,25 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class GroupLikeSnapshotDifference implements SnapshotDifference {
-    public List<Event> difference(Snapshot s1, Snapshot s2) {
-        List<Event> events = new ArrayList<>();
-        GroupListSnapshot one = (GroupListSnapshot) s1;
-        GroupListSnapshot two = (GroupListSnapshot) s2;
-        Set<GroupSnapshot> oneSet = one.getGroupSnapshots().stream().collect(Collectors.toSet());
-        Set<GroupSnapshot> twoSet = two.getGroupSnapshots().stream().collect(Collectors.toSet());
+public class GroupLikeSnapshotDifference extends SnapshotDifference {
+
+    @Override
+    protected void setAction(Event concreteEvent, Object action) {
+
+    }
+
+    @Override
+    protected Object getConcreteEventEntity(Event concreteEvent) {
         return null;
     }
 
     @Override
-    public List<Event> difference(Snapshot s1, Snapshot s2, List<Event> events) {
+    protected List getListOfEventEntity(Snapshot snapshot) {
+        return null;
+    }
+
+    @Override
+    protected Event createTypeOfEvent(Event.EventAction eventAction) {
         return null;
     }
 }

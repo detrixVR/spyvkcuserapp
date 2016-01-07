@@ -96,7 +96,8 @@ public class RefreshTask extends TimerTask {
                                 List<Event> difference = audioSnapshotDifference.difference(
                                         snapshots.get(0),
                                         snapshot,
-                                        followerEvents.getEvents()
+                                        followerEvents.getEvents(),
+                                        EventType.AUDIO
                                 );
                                 difference.forEach(event -> dbService.saveAudioEvent((AudioEvent) event));
                                 followerEvents.getEvents().addAll(difference);
@@ -117,7 +118,8 @@ public class RefreshTask extends TimerTask {
                                 List<Event> difference = videoSnapshotDifference.difference(
                                         snapshots.get(1),
                                         videoListSnapshot,
-                                        followerEvents.getEvents()
+                                        followerEvents.getEvents(),
+                                        EventType.VIDEO
                                 );
                                 difference.forEach(event -> dbService.saveVideoEvent((VideoEvent) event));
                                 followerEvents.getEvents().addAll(difference);
