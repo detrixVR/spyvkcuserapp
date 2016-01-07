@@ -19,7 +19,7 @@ public class Group {
 
     private String screenName = "";
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "group")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Post> posts = new LinkedHashSet<>();
 
     public Group(Set<Post> posts) {

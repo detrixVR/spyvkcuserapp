@@ -129,6 +129,9 @@ public class ApiServiceImpl implements IApiService {
                     isContinue[0] = false;
                 }
             });
+            if(result.size() < 10) {
+                isContinue[0] = false;
+            }
             posts.addAll(filterPosts);
             i++;
         } while (isContinue[0]);

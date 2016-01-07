@@ -48,9 +48,10 @@ public class DBServiceImpl implements IDBService {
         configuration.addAnnotatedClass(Friend.class);
         configuration.addAnnotatedClass(FriendListSnapshot.class);
         configuration.addAnnotatedClass(FriendEvent.class);
-        configuration.addAnnotatedClass(Group.class);
         configuration.addAnnotatedClass(GroupListSnapshot.class);
         configuration.addAnnotatedClass(GroupEvent.class);
+        configuration.addAnnotatedClass(PostListSnapshot.class);
+        configuration.addAnnotatedClass(PostEvent.class);
 
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
         configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");

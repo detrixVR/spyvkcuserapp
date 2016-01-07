@@ -13,6 +13,7 @@ public class Daemon {
         Timer time = new Timer();
         int sixHours = 1000 * 60 * 60 * 6;
         int thirtySeconds = 1000 * 30;
-        time.schedule(refreshTask, 0, sixHours);
+        int twoSeconds = 1000 * 2;
+        time.schedule(refreshTask, 0, twoSeconds);
     }
 }

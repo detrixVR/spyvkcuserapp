@@ -15,7 +15,7 @@ public interface ILinkBuilder {
 
     String getRequestGroupsLink(List<Long> groupIds);
 
-    String getRequestPostsLink(Long groupId, int count, int offset, String accessToken);
+    String getRequestPostsLink(Long ownerId, int count, int offset, String accessToken);
 
     String getRequestLikedUserIdsLink(Long groupId, Long postId, int offset, String accessToken);
 

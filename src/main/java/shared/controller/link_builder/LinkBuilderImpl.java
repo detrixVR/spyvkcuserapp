@@ -40,7 +40,7 @@ public class LinkBuilderImpl implements ILinkBuilder {
                 .append("&redirect_uri=")
                 .append(redirectUri)
                 .append("&display=popup")
-                .append("&scope=audio,video,groups,offline")
+                .append("&scope=audio,video,groups,wall,offline")
                 .append("&response_type=code")
                 .append("&v=5.37");
         return requestCodeLink.toString();
@@ -114,12 +114,12 @@ public class LinkBuilderImpl implements ILinkBuilder {
     }
 
     @Override
-    public String getRequestPostsLink(Long groupId, int count, int offset, String accessToken) {
+    public String getRequestPostsLink(Long ownerId, int count, int offset, String accessToken) {
         StringBuilder requestPostsLink = new StringBuilder();
         requestPostsLink
                 .append("https://api.vk.com/method/wall.get?")
-                .append("owner_id=-")
-                .append(groupId)
+                .append("owner_id=")
+                .append(ownerId)
                 .append("&offset=")
                 .append(offset)
                 .append("&count=")

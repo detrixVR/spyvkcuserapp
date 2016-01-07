@@ -8,6 +8,7 @@ import shared.model.audio.Audio;
 import shared.model.event.*;
 import shared.model.friend.Friend;
 import shared.model.group.Group;
+import shared.model.post.Post;
 import shared.model.snapshots.*;
 import shared.model.user.Follower;
 import shared.model.user.Following;
@@ -38,6 +39,7 @@ public class RefreshTask extends TimerTask {
         VideoRefresher videoRefresher = new VideoRefresher(apiService, dbService);
         FriendRefresher friendRefresher = new FriendRefresher(apiService, dbService);
         GroupRefresher groupRefresher = new GroupRefresher(apiService, dbService);
+        PostRefresher postRefresher = new PostRefresher(apiService, dbService);
 
         Map<Long, Follower> followers = dbService.getAllFollowers();
         followers.forEach((id, follower) -> {
@@ -82,6 +84,11 @@ public class RefreshTask extends TimerTask {
                             Process(groupRefresher, follower, following, followingEventTypes, followerEvents, snapshots, i,
                                     Group.class, GroupListSnapshot.class, GroupEvent.class, new GroupSnapshotDifference(),
                                     EventType.GROUP);
+                            break;
+                        case POST:
+                            Process(postRefresher, follower, following, followingEventTypes, followerEvents, snapshots, i,
+                                    Post.class, PostListSnapshot.class, PostEvent.class, new PostSnapshotDifference(),
+                                    EventType.POST);
                     }
                 }
             });

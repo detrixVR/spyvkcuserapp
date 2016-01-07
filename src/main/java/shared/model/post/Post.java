@@ -15,6 +15,8 @@ public class Post {
 
     private Long vkId = 0L;
 
+    private Long ownerId = 0L;
+
     @Column(length = 10000)
     private String text = "";
 
@@ -24,9 +26,6 @@ public class Post {
 
     @ElementCollection(fetch = FetchType.LAZY, targetClass = Long.class)
     private Set<Long> likedUserIds = new HashSet<>();
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Group group;
 
     public Long getId() {
         return id;
@@ -55,15 +54,7 @@ public class Post {
     @Override
     public boolean equals(Object obj) {
         Post post = (Post) obj;
-        return this.id.equals(post.id) && this.text.equals(post.text) && this.likedUserIds.equals(post.likedUserIds);
-    }
-
-    public Group getGroup() {
-        return group;
-    }
-
-    public void setGroup(Group group) {
-        this.group = group;
+        return post.getVkId().equals(this.getVkId());
     }
 
     public Long getVkId() {
@@ -88,5 +79,13 @@ public class Post {
 
     public void setDate(Long date) {
         this.date = date;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 }

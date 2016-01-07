@@ -40,10 +40,14 @@ public class JsonServiceImpl implements IJsonService {
     @Override
     public ArrayList<Long> getGroupsIds(String answer) {
         JSONObject jsonObject = new JSONObject(answer);
-        JSONArray jsonArray = jsonObject.getJSONObject("response").getJSONArray("items");
         ArrayList<Long> groupIDs = new ArrayList<>();
-        for (int i = 0; !jsonArray.isNull(i); i++) {
-            groupIDs.add(jsonArray.getLong(i));
+        try {
+            JSONArray jsonArray = jsonObject.getJSONObject("response").getJSONArray("items");
+            for (int i = 0; !jsonArray.isNull(i); i++) {
+                groupIDs.add(jsonArray.getLong(i));
+            }
+        } catch (JSONException ex) {
+            System.out.println(ex.getMessage());
         }
         return groupIDs;
     }
@@ -69,12 +73,12 @@ public class JsonServiceImpl implements IJsonService {
         Set<Post> posts = new LinkedHashSet<>();
         try {
             JSONObject jsonObject = new JSONObject(answer);
-            System.out.println(answer);
             JSONArray itemsArray = jsonObject.getJSONObject("response").getJSONArray("items");
             for (int i = 0; !itemsArray.isNull(i); i++) {
                 Post post = new Post();
                 JSONObject item = itemsArray.getJSONObject(i);
                 post.setVkId(item.getLong("id"));
+                post.setOwnerId(item.getLong("owner_id"));
                 post.setText(item.getString("text"));
                 post.setDate(item.getLong("date"));
                 JSONObject likes = item.getJSONObject("likes");
