@@ -3,6 +3,7 @@ package shared.controller.json_service;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.mockito.internal.matchers.Null;
 import shared.model.audio.Audio;
 import shared.model.friend.Friend;
 import shared.model.group.Group;
@@ -10,7 +11,6 @@ import shared.model.post.Post;
 import shared.model.user.UserInfo;
 import shared.model.video.Video;
 
-import java.sql.Timestamp;
 import java.util.*;
 
 public class JsonServiceImpl implements IJsonService {
@@ -48,6 +48,8 @@ public class JsonServiceImpl implements IJsonService {
             }
         } catch (JSONException ex) {
             System.out.println(ex.getMessage());
+            System.out.println("Too many requests per second in getGroupIds");
+            return null;
         }
         return groupIDs;
     }
@@ -56,14 +58,20 @@ public class JsonServiceImpl implements IJsonService {
     public ArrayList<Group> getGroups(String answer) {
         ArrayList<Group> groups = new ArrayList<>();
         JSONObject jsonObject = new JSONObject(answer);
-        JSONArray jsonArray = jsonObject.getJSONArray("response");
-        for (int i = 0; !jsonArray.isNull(i); i++) {
-            JSONObject groupObject = jsonArray.getJSONObject(i);
-            Group group = new Group();
-            group.setVkId(groupObject.getLong("id"));
-            group.setName(groupObject.getString("name"));
-            group.setScreenName(groupObject.getString("screen_name"));
-            groups.add(group);
+        try {
+            JSONArray jsonArray = jsonObject.getJSONArray("response");
+            for (int i = 0; !jsonArray.isNull(i); i++) {
+                JSONObject groupObject = jsonArray.getJSONObject(i);
+                Group group = new Group();
+                group.setVkId(groupObject.getLong("id"));
+                group.setName(groupObject.getString("name"));
+                group.setScreenName(groupObject.getString("screen_name"));
+                groups.add(group);
+            }
+        } catch (JSONException ex) {
+            System.out.println(ex.getMessage());
+            System.out.println("Too many requests per second in getGroups");
+            return null;
         }
         return groups;
     }
@@ -87,7 +95,11 @@ public class JsonServiceImpl implements IJsonService {
             }
         } catch (JSONException e) {
             System.out.println(e.getMessage());
-            System.out.println("Too many requests per second");
+            System.out.println("Too many requests per second in getPosts");
+            return null;
+        } catch (NullPointerException ex) {
+            System.out.println(ex.getMessage());
+            System.out.println("in getPosts");
             return null;
         }
         return posts;
@@ -134,7 +146,7 @@ public class JsonServiceImpl implements IJsonService {
             }
         } catch (JSONException ex) {
             System.out.println(ex.getMessage());
-            System.out.println("Too many requests per second");
+            System.out.println("Too many requests per second in getAudio");
             return null;
         }
         return audioList;
@@ -155,7 +167,7 @@ public class JsonServiceImpl implements IJsonService {
             }
         } catch (JSONException ex) {
             System.out.println(ex.getMessage());
-            System.out.println("Too many requests per second");
+            System.out.println("Too many requests per second in getVideo");
             return null;
         }
         return videoList;
@@ -177,7 +189,7 @@ public class JsonServiceImpl implements IJsonService {
             }
         } catch (JSONException ex) {
             System.out.println(ex.getMessage());
-            System.out.println("Too many requests per second");
+            System.out.println("Too many requests per second in getFriends");
             return null;
         }
         return friendsList;

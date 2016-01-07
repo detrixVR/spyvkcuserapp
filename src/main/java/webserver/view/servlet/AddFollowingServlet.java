@@ -69,6 +69,6 @@ public class AddFollowingServlet extends HttpServlet {
         dbService.saveFollowing(following);
         dbService.updateFollower(follower);
 
-        resp.sendRedirect("following?id=" + userInfo.getVkId());
+        resp.sendRedirect("/" + userInfo.getVkId());
     }
 }

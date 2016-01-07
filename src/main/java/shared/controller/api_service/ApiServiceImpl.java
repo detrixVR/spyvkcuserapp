@@ -53,7 +53,7 @@ public class ApiServiceImpl implements IApiService {
         String userInfoString;
         UserInfo userInfo;
         do {
-            userInfoString = request.get(getUserInfoLink, 0);
+            userInfoString = request.get(getUserInfoLink, 200);
             userInfo = jsonService.getUserInfo(userInfoString);
         } while(userInfo == null);
         return userInfo;
@@ -90,7 +90,7 @@ public class ApiServiceImpl implements IApiService {
         String answer;
         ArrayList<Group> groups;
         do {
-            answer = request.get(requestGroupsLink, 0);
+            answer = request.get(requestGroupsLink, 200);
             groups = jsonService.getGroups(answer);
         } while(groups == null);
         return groups;
@@ -99,18 +99,7 @@ public class ApiServiceImpl implements IApiService {
     @Override
     public Set<Post> requestPosts(Long groupId, Long addingDate, String accessToken) {
         Set<Post> posts = new HashSet<>();
-//        final int maxCount = 10;
-//        for(int i = 0; i < (int) Math.ceil((((double) addingDate)/((double)maxCount))); ++i) {
-//            String requestPostsLink = linkBuilder.getRequestPostsLink(groupId, addingDate, i*maxCount, accessToken);
-//            String answer;
-//            Set<Post> result;
-//            do {
-//                answer = request.get(requestPostsLink, 200);
-//                result = jsonService.getPosts(answer);
-//            } while(result == null);
-//            posts.addAll(result);
-//        }
-        final int count = 10;
+        final int count = 100;
         int i=0;
         final boolean[] isContinue = {true};
         do {
@@ -173,7 +162,7 @@ public class ApiServiceImpl implements IApiService {
         String requestVideoLink = linkBuilder.getRequestVideoLink(vkId, accessToken);
         String answer;
         do {
-            answer = request.get(requestVideoLink, 200);
+            answer = request.get(requestVideoLink, 250);
             video = jsonService.getVideo(answer);
         } while (video == null);
         return video;

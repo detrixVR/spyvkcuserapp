@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.jdbc.ReturningWork;
 import org.hibernate.service.ServiceRegistry;
 import shared.model.audio.Audio;
 import shared.model.dao.*;
@@ -16,6 +17,8 @@ import shared.model.post.Post;
 import shared.model.user.*;
 import shared.model.video.Video;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,7 +58,7 @@ public class DBServiceImpl implements IDBService {
 
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
         configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
-        configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/vkchase");
+        configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/vkchase?useUnicode=true&amp;characterEncoding=UTF-8");
         configuration.setProperty("hibernate.connection.username", "root");
         configuration.setProperty("hibernate.connection.password", "root");
         configuration.setProperty("hibernate.cache.use_second_level_cache", "false");
@@ -64,7 +67,7 @@ public class DBServiceImpl implements IDBService {
         configuration.setProperty("hibernate.connection.characterEncoding", "utf8");
 //        configuration.setProperty("hibernate.show_sql", "true");
         configuration.setProperty("hibernate.hbm2ddl.auto", "update");
-        configuration.setProperty("hibernate.connection.autocommit", "false");
+        configuration.setProperty("hibernate.connection.autocommit", "true");
 
         sessionFactory = createSessionFactory(configuration);
         setUTF8MB4();
@@ -241,6 +244,16 @@ public class DBServiceImpl implements IDBService {
     @Override
     public void updateFollowerEvents(FollowerEvents followerEvents) {
         Session session = sessionFactory.openSession();
+        session.doReturningWork(new ReturningWork<Object>() {
+            @Override
+            public Object execute(Connection conn) throws SQLException
+            {
+                try(Statement stmt = conn.createStatement()) {
+                    stmt.executeQuery("SET NAMES utf8mb4");
+                }
+                return null;
+            }
+        });
         FollowerEventsDAO dao = new FollowerEventsDAO(session);
         dao.update(followerEvents);
         session.close();

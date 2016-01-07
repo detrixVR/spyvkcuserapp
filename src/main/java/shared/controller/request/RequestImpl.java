@@ -12,6 +12,11 @@ public class RequestImpl implements IRequest {
     public String get(String request, int waitSeconds) {
         StringBuilder result = new StringBuilder();
         try {
+            try {
+                Thread.sleep(waitSeconds);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             URL url = new URL(request);
 //        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("icc.csu.ru", 8080));
             HttpURLConnection conn = (HttpURLConnection) url.openConnection(/*proxy*/);
@@ -22,11 +27,6 @@ public class RequestImpl implements IRequest {
                 result.append(line);
             }
             rd.close();
-            try {
-                Thread.sleep(waitSeconds);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         } catch (UnknownHostException e) {
             System.out.println(e.getMessage());
             System.exit(1);
