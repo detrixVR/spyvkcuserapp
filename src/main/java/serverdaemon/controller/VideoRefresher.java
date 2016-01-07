@@ -25,7 +25,7 @@ public class VideoRefresher implements Refreshable<VideoListSnapshot> {
         List<Video> video = apiService.requestVideo(following.getUserInfo().getVkId(), follower.getAccessToken());
 
         videoListSnapshot.setVideoList(video);
-        videoListSnapshot.setSnapshotDate(System.currentTimeMillis());
+        videoListSnapshot.setSnapshotDate(System.currentTimeMillis()/1000);
 
         return videoListSnapshot;
     }

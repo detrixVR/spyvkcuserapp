@@ -34,7 +34,7 @@ public abstract class SnapshotDifference<SnapshotCast extends Snapshot, EventEnt
         removeList.forEach(action -> {
             TypeOfEvent concreteEvent = createTypeOfEvent(Event.EventAction.REMOVE);
             setAction(concreteEvent, action);
-            concreteEvent.setEventDate(System.currentTimeMillis());
+            concreteEvent.setEventDate(System.currentTimeMillis()/1000);
             newEvents.add(concreteEvent);
         });
     }
@@ -43,7 +43,7 @@ public abstract class SnapshotDifference<SnapshotCast extends Snapshot, EventEnt
         addList.forEach(action -> {
             TypeOfEvent concreteEvent = createTypeOfEvent(Event.EventAction.ADD);
             setAction(concreteEvent, action);
-            concreteEvent.setEventDate(System.currentTimeMillis());
+            concreteEvent.setEventDate(System.currentTimeMillis()/1000);
             newEvents.add(concreteEvent);
         });
     }

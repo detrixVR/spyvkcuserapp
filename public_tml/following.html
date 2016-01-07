@@ -5,13 +5,35 @@
     <meta charset="UTF-8">
     <title>${followingInfo.firstName} ${followingInfo.lastName}</title>
 </head>
+<script>
+    function timeConverter(UNIX_timestamp){
+        var a = new Date(UNIX_timestamp * 1000);
+        var months = ['Янв','Фев','Мар','Апр','Мая','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'];
+        var year = a.getFullYear();
+        var month = months[a.getMonth()];
+        var date = a.getDate();
+        var hour = a.getHours();
+        var min = a.getMinutes();
+        var sec = a.getSeconds();
+        var time = date + ' ' + month + ' ' + year + ' ' + fillZero(hour) + ':' + fillZero(min) + ':' + fillZero(sec);
+        return time;
+    }
+
+    function fillZero(unit) {
+        return ((unit.toString().length == 1) ? ('0' + unit) : unit);
+    }
+</script>
 <body>
+    <h4><a href="/">На главную</a></h4>
     <#if events?size == 0>
         На данный момент событий нет.
     <#else>
         <#list events as event>
             <div id="event">
-                <p>${event.toString()}</p>
+                <p>
+                    <script>document.write(timeConverter(${event.eventDate?c}))</script>
+                    ${event.toString()}
+                </p>
             </div>
         </#list>
     </#if>

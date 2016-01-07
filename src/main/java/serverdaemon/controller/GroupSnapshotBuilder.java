@@ -11,7 +11,7 @@ public class GroupSnapshotBuilder implements SnapshotBuilder<GroupSnapshot, Grou
     @Override
     public GroupSnapshot build(Group group) {
         GroupSnapshot groupSnapshot = new GroupSnapshot();
-        long dateOfSnapshot = System.currentTimeMillis();
+        long dateOfSnapshot = System.currentTimeMillis()/1000;
         Set<Post> posts = group.getPosts();
         for (Post post : posts) {
             PostSnapshot postSnapshot = new PostSnapshot();

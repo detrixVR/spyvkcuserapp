@@ -60,7 +60,7 @@ public class AddFollowingServlet extends HttpServlet {
         }
         FollowingEventTypes following_eventTypes = new FollowingEventTypes(following, eventTypes);
         FollowerEvents follower_events = new FollowerEvents(follower, new ArrayList<>());
-        follower_events.setAddingDate(System.currentTimeMillis());
+        follower_events.setAddingDate(System.currentTimeMillis()/1000);
 
         follower.addFollowing(following);
         follower.addFollowing_EventTypes(following_eventTypes);
@@ -69,6 +69,6 @@ public class AddFollowingServlet extends HttpServlet {
         dbService.saveFollowing(following);
         dbService.updateFollower(follower);
 
-        resp.sendRedirect("/" + userInfo.getVkId());
+        resp.sendRedirect("/");
     }
 }

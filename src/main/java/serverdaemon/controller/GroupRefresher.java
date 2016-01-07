@@ -24,7 +24,7 @@ public class GroupRefresher implements Refreshable<GroupListSnapshot> {
         List<Long> groupIds = apiService.requestGroupIds(following.getUserInfo().getVkId(), follower.getAccessToken());
         List<Group> groupList = apiService.requestGroups(groupIds);
         groupListSnapshot.setGroupList(groupList);
-        groupListSnapshot.setSnapshotDate(System.currentTimeMillis());
+        groupListSnapshot.setSnapshotDate(System.currentTimeMillis()/1000);
 
         return groupListSnapshot;
     }

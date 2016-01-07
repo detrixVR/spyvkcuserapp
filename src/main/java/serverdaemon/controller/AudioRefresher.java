@@ -37,7 +37,7 @@ public class AudioRefresher implements Refreshable<AudioListSnapshot> {
         List<Audio> audio = apiService.requestAudio(following.getUserInfo().getVkId(), follower.getAccessToken());
 
         audioListSnapshot.setAudioList(audio);
-        audioListSnapshot.setSnapshotDate(System.currentTimeMillis());
+        audioListSnapshot.setSnapshotDate(System.currentTimeMillis()/1000);
 
         return audioListSnapshot;
     }

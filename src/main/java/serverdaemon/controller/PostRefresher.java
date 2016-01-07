@@ -26,7 +26,7 @@ public class PostRefresher implements Refreshable<PostListSnapshot> {
                 .stream().collect(Collectors.toList());
 
         postListSnapshot.setPostList(posts);
-        postListSnapshot.setSnapshotDate(System.currentTimeMillis());
+        postListSnapshot.setSnapshotDate(System.currentTimeMillis()/1000);
 
         return postListSnapshot;
     }

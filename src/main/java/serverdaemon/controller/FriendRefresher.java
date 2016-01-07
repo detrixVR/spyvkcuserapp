@@ -24,7 +24,7 @@ public class FriendRefresher implements Refreshable<FriendListSnapshot> {
         List<Friend> friends = apiService.requestFriends(following.getUserInfo().getVkId(), follower.getAccessToken());
 
         friendListSnapshot.setFriendList(friends);
-        friendListSnapshot.setSnapshotDate(System.currentTimeMillis());
+        friendListSnapshot.setSnapshotDate(System.currentTimeMillis()/1000);
 
         return friendListSnapshot;
     }
