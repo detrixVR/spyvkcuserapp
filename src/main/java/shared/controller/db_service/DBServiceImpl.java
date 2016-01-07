@@ -44,7 +44,6 @@ public class DBServiceImpl implements IDBService {
         configuration.addAnnotatedClass(GroupListSnapshot.class);
         configuration.addAnnotatedClass(Audio.class);
         configuration.addAnnotatedClass(AudioListSnapshot.class);
-        configuration.addAnnotatedClass(TTT.class);
         configuration.addAnnotatedClass(AudioEvent.class);
 
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
@@ -158,7 +157,7 @@ public class DBServiceImpl implements IDBService {
                     for (Snapshot snapshot : follower_events.getSnapshots()) {
                         Hibernate.initialize(snapshot);
                     }
-                    Hibernate.initialize(follower_events.getTtt());
+//                    Hibernate.initialize(follower_events.getTtt());
                 }
             }
             for (FollowingEventTypes following_eventTypes : follower.getFollowing_EventTypesList()) {
@@ -252,14 +251,6 @@ public class DBServiceImpl implements IDBService {
         Session session = sessionFactory.openSession();
         FollowerEventsDAO dao = new FollowerEventsDAO(session);
         dao.update(followerEvents);
-        session.close();
-    }
-
-    @Override
-    public void saveTTT(TTT t1) {
-        Session session = sessionFactory.openSession();
-        TTTDAO dao = new TTTDAO(session);
-        dao.save(t1);
         session.close();
     }
 

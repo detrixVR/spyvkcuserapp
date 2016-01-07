@@ -7,7 +7,6 @@ import shared.model.group.Group;
 import shared.model.snapshots.AudioListSnapshot;
 import shared.model.snapshots.GroupSnapshot;
 import shared.model.post.Post;
-import shared.model.snapshots.TTT;
 import shared.model.user.Follower;
 import shared.model.user.Following;
 
@@ -48,8 +47,6 @@ public interface IDBService {
     void saveFollowerEvents(FollowerEvents followerEvents);
 
     void updateFollowerEvents(FollowerEvents followerEvents);
-
-    void saveTTT(TTT t1);
 
     void saveEvent(Event event);
 }

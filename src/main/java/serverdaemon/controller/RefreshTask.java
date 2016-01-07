@@ -10,7 +10,6 @@ import shared.model.event.FollowerEvents;
 import shared.model.event.FollowingEventTypes;
 import shared.model.snapshots.AudioListSnapshot;
 import shared.model.snapshots.Snapshot;
-import shared.model.snapshots.TTT;
 import shared.model.user.Follower;
 import shared.model.user.Following;
 
@@ -71,13 +70,6 @@ public class RefreshTask extends TimerTask {
                         .findFirst()
                         .get();
                 List<Snapshot> snapshots = followerEvents.getSnapshots();
-                List<TTT> ttt = followerEvents.getTtt();
-                TTT t1 = new TTT();
-                TTT t2 = new TTT();
-                dbService.saveTTT(t1);
-                dbService.saveTTT(t2);
-                ttt.add(t1);
-                ttt.add(t2);
 
                 eventTypes.forEach(eventType -> {
                     switch (eventType) {
