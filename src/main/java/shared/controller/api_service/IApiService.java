@@ -4,6 +4,7 @@ import shared.model.audio.Audio;
 import shared.model.group.GroupInfo;
 import shared.model.post.Post;
 import shared.model.user.UserInfo;
+import shared.model.video.Video;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,4 +28,6 @@ public interface IApiService {
     Set<Long> requestLikedUserIds(Long groupId, Long postId, int count, String accessToken);
 
     List<Audio> requestAudio(Long vkId, String accessToken);
+
+    List<Video> requestVideo(Long vkId, String accessToken);
 }

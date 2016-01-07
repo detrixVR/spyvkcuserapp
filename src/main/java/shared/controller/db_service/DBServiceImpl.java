@@ -8,15 +8,13 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import shared.model.audio.Audio;
 import shared.model.dao.*;
-import shared.model.event.AudioEvent;
-import shared.model.event.Event;
-import shared.model.event.FollowerEvents;
-import shared.model.event.FollowingEventTypes;
+import shared.model.event.*;
 import shared.model.group.Group;
 import shared.model.group.GroupInfo;
 import shared.model.snapshots.*;
 import shared.model.post.Post;
 import shared.model.user.*;
+import shared.model.video.Video;
 
 import java.sql.Statement;
 import java.util.HashMap;
@@ -45,6 +43,9 @@ public class DBServiceImpl implements IDBService {
         configuration.addAnnotatedClass(Audio.class);
         configuration.addAnnotatedClass(AudioListSnapshot.class);
         configuration.addAnnotatedClass(AudioEvent.class);
+        configuration.addAnnotatedClass(Video.class);
+        configuration.addAnnotatedClass(VideoListSnapshot.class);
+        configuration.addAnnotatedClass(VideoEvent.class);
 
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
         configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
@@ -254,6 +255,30 @@ public class DBServiceImpl implements IDBService {
     public void saveAudioEvent(AudioEvent event) {
         Session session = sessionFactory.openSession();
         AudioEventDAO dao = new AudioEventDAO(session);
+        dao.save(event);
+        session.close();
+    }
+
+    @Override
+    public void saveVideo(Video video) {
+        Session session = sessionFactory.openSession();
+        VideoDAO dao = new VideoDAO(session);
+        dao.save(video);
+        session.close();
+    }
+
+    @Override
+    public void saveVideoListSnapshot(VideoListSnapshot videoListSnapshot) {
+        Session session = sessionFactory.openSession();
+        VideoListSnapshotDAO dao = new VideoListSnapshotDAO(session);
+        dao.save(videoListSnapshot);
+        session.close();
+    }
+
+    @Override
+    public void saveVideoEvent(VideoEvent event) {
+        Session session = sessionFactory.openSession();
+        VideoEventDAO dao = new VideoEventDAO(session);
         dao.save(event);
         session.close();
     }

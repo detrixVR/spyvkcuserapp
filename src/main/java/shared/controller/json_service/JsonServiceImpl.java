@@ -7,6 +7,7 @@ import shared.model.audio.Audio;
 import shared.model.group.GroupInfo;
 import shared.model.post.Post;
 import shared.model.user.UserInfo;
+import shared.model.video.Video;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -132,5 +133,26 @@ public class JsonServiceImpl implements IJsonService {
             return null;
         }
         return audioList;
+    }
+
+    @Override
+    public List<Video> getVideo(String answer) {
+        List<Video> videoList = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(answer);
+            JSONArray videoArray = jsonObject.getJSONObject("response").getJSONArray("items");
+            for (int i = 0; !videoArray.isNull(i); i++) {
+                Video video = new Video();
+                JSONObject audioObject = videoArray.getJSONObject(i);
+                video.setVkId(audioObject.getLong("id"));
+                video.setTitle(audioObject.getString("title"));
+                videoList.add(video);
+            }
+        } catch (JSONException ex) {
+            System.out.println(ex.getMessage());
+            System.out.println("Too many requests per second");
+            return null;
+        }
+        return videoList;
     }
 }

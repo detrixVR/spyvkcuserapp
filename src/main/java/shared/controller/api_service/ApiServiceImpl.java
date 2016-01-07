@@ -8,6 +8,7 @@ import shared.model.audio.Audio;
 import shared.model.group.GroupInfo;
 import shared.model.post.Post;
 import shared.model.user.UserInfo;
+import shared.model.video.Video;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -161,5 +162,17 @@ public class ApiServiceImpl implements IApiService {
             audio = jsonService.getAudio(answer);
         } while (audio == null);
         return audio;
+    }
+
+    @Override
+    public List<Video> requestVideo(Long vkId, String accessToken) {
+        List<Video> video;
+        String requestVideoLink = linkBuilder.getRequestVideoLink(vkId, accessToken);
+        String answer;
+        do {
+            answer = request.get(requestVideoLink, 200);
+            video = jsonService.getVideo(answer);
+        } while (video == null);
+        return video;
     }
 }

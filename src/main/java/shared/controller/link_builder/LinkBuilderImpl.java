@@ -40,7 +40,7 @@ public class LinkBuilderImpl implements ILinkBuilder {
                 .append("&redirect_uri=")
                 .append(redirectUri)
                 .append("&display=popup")
-                .append("&scope=audio,groups,offline")
+                .append("&scope=audio,video,groups,offline")
                 .append("&response_type=code")
                 .append("&v=5.37");
         return requestCodeLink.toString();
@@ -162,5 +162,20 @@ public class LinkBuilderImpl implements ILinkBuilder {
                 .append("&access_token=")
                 .append(accessToken);
         return requestAudioLink.toString();
+    }
+
+    @Override
+    public String getRequestVideoLink(Long vkId, String accessToken) {
+        StringBuilder requestVideoLink = new StringBuilder();
+        requestVideoLink
+                .append("https://api.vk.com/method/video.get?")
+                .append("owner_id=")
+                .append(vkId)
+                .append("&count=200")
+                .append("&extended=0")
+                .append("&v=5.42")
+                .append("&access_token=")
+                .append(accessToken);
+        return requestVideoLink.toString();
     }
 }

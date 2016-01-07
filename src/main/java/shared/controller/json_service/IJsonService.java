@@ -4,6 +4,7 @@ import shared.model.audio.Audio;
 import shared.model.group.GroupInfo;
 import shared.model.post.Post;
 import shared.model.user.UserInfo;
+import shared.model.video.Video;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,4 +28,6 @@ public interface IJsonService {
     String getClientSecret(String valuesJson);
 
     List<Audio> getAudio(String answer);
+
+    List<Video> getVideo(String answer);
 }

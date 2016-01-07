@@ -7,6 +7,7 @@ import shared.controller.db_service.IDBService;
 import shared.model.event.*;
 import shared.model.snapshots.AudioListSnapshot;
 import shared.model.snapshots.Snapshot;
+import shared.model.snapshots.VideoListSnapshot;
 import shared.model.user.Follower;
 import shared.model.user.Following;
 
@@ -46,6 +47,7 @@ public class RefreshTask extends TimerTask {
 //        followingRefresher.refresh(following);
         GroupRefresher groupRefresher = new GroupRefresher(apiService, dbService);
         AudioRefresher audioRefresher = new AudioRefresher(apiService, dbService);
+        VideoRefresher videoRefresher = new VideoRefresher(apiService, dbService);
 
         Map<Long, Follower> followers = dbService.getAllFollowers();
         followers.forEach((id, follower) -> {
@@ -82,7 +84,7 @@ public class RefreshTask extends TimerTask {
 //                            break;
                         case AUDIO:
                             AudioListSnapshot snapshot = audioRefresher.refresh(following, follower);
-                            if(snapshots.size() == 0) {
+                            if(snapshots.size() < followingEventTypes.getEventTypes().size()) {
                                 snapshot.getAudioList().forEach(a -> dbService.saveAudio(a));
                                 dbService.saveAudioListSnapshot(snapshot);
                                 snapshots.add(snapshot);
@@ -100,6 +102,28 @@ public class RefreshTask extends TimerTask {
                                 followerEvents.getEvents().addAll(difference);
                                 dbService.updateFollowerEvents(followerEvents);
                             }
+                            break;
+                        case VIDEO:
+                            VideoListSnapshot videoListSnapshot = videoRefresher.refresh(following, follower);
+                            if(snapshots.size() < followingEventTypes.getEventTypes().size()) {
+                                videoListSnapshot.getVideoList().forEach(a -> dbService.saveVideo(a));
+                                dbService.saveVideoListSnapshot(videoListSnapshot);
+                                snapshots.add(videoListSnapshot);
+                                dbService.updateFollowerEvents(followerEvents);
+                                dbService.updateFollower(follower);
+                                dbService.updateFollowing(following);
+                            } else {
+                                VideoSnapshotDifference videoSnapshotDifference = new VideoSnapshotDifference();
+                                List<Event> difference = videoSnapshotDifference.difference(
+                                        snapshots.get(1),
+                                        videoListSnapshot,
+                                        followerEvents.getEvents()
+                                );
+                                difference.forEach(event -> dbService.saveVideoEvent((VideoEvent) event));
+                                followerEvents.getEvents().addAll(difference);
+                                dbService.updateFollowerEvents(followerEvents);
+                            }
+                            break;
                     }
                 });
             });
