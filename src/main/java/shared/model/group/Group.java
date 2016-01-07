@@ -1,11 +1,8 @@
 package shared.model.group;
 
 import shared.model.post.Post;
-import shared.model.snapshots.GroupSnapshot;
-import shared.model.user.Following;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -16,45 +13,20 @@ public class Group {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private GroupInfo groupInfo;
+    private Long vkId = 0L;
+
+    private String name = "";
+
+    private String screenName = "";
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "group")
     private Set<Post> posts = new LinkedHashSet<>();
 
-//    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "groups")
-//    private Set<Following> following = new HashSet<>();
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "group")
-    private Set<GroupSnapshot> groupSnapshots = new HashSet<>();
-
-    public Group(GroupInfo groupInfo, Set<Post> posts) {
-        this.groupInfo = groupInfo;
+    public Group(Set<Post> posts) {
         this.posts = posts;
     }
 
-    public Group(GroupInfo info) {
-        this.groupInfo = info;
-    }
-
-    public Group() {
-    }
-
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
-
-    public GroupInfo getGroupInfo() {
-        return groupInfo;
-    }
-
-    public void setGroupInfo(GroupInfo groupInfo) {
-        this.groupInfo = groupInfo;
-    }
+    public Group() { }
 
     public Set<Post> getPosts() {
         return posts;
@@ -64,23 +36,33 @@ public class Group {
         this.posts = posts;
     }
 
-//    public Set<Following> getFollowing() {
-//        return following;
-//    }
-
-//    public void setFollowing(Set<Following> following) {
-//        this.following = following;
-//    }
-//
-//    public void addFollowing(Following following) {
-//        this.following.add(following);
-//    }
-
-    public Set<GroupSnapshot> getGroupSnapshots() {
-        return groupSnapshots;
+    public Long getVkId() {
+        return vkId;
     }
 
-    public void setGroupSnapshots(Set<GroupSnapshot> groupSnapshots) {
-        this.groupSnapshots = groupSnapshots;
+    public void setVkId(Long vkId) {
+        this.vkId = vkId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getScreenName() {
+        return screenName;
+    }
+
+    public void setScreenName(String screenName) {
+        this.screenName = screenName;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Group group = (Group) obj;
+        return group.getVkId().equals(this.getVkId());
     }
 }

@@ -61,9 +61,9 @@ public class LikesInGroupsServlet extends HttpServlet {
 //                .stream(req.getParameterValues("count"))
 //                .map(Integer::parseInt)
 //                .collect(Collectors.toList());
-//        List<GroupInfo> groupsInfo = apiService.requestGroupsInfo(groupIds);
+//        List<GroupInfo> groupsInfo = apiService.requestGroups(groupIds);
 //
-//        apiService.requestGroupsInfo(groupIds);
+//        apiService.requestGroups(groupIds);
 //        Set<Group> groups = new HashSet<>();
 //        groupsInfo.forEach((info) -> {
 //            Group group = new Group(info);

@@ -7,10 +7,8 @@ import shared.controller.db_service.IDBService;
 import shared.model.audio.Audio;
 import shared.model.event.*;
 import shared.model.friend.Friend;
-import shared.model.snapshots.AudioListSnapshot;
-import shared.model.snapshots.FriendListSnapshot;
-import shared.model.snapshots.Snapshot;
-import shared.model.snapshots.VideoListSnapshot;
+import shared.model.group.Group;
+import shared.model.snapshots.*;
 import shared.model.user.Follower;
 import shared.model.user.Following;
 import shared.model.video.Video;
@@ -39,6 +37,7 @@ public class RefreshTask extends TimerTask {
         AudioRefresher audioRefresher = new AudioRefresher(apiService, dbService);
         VideoRefresher videoRefresher = new VideoRefresher(apiService, dbService);
         FriendRefresher friendRefresher = new FriendRefresher(apiService, dbService);
+        GroupRefresher groupRefresher = new GroupRefresher(apiService, dbService);
 
         Map<Long, Follower> followers = dbService.getAllFollowers();
         followers.forEach((id, follower) -> {
@@ -78,6 +77,11 @@ public class RefreshTask extends TimerTask {
                             Process(friendRefresher, follower, following, followingEventTypes, followerEvents, snapshots, i,
                                     Friend.class, FriendListSnapshot.class, FriendEvent.class, new FriendSnapshotDifference(),
                                     EventType.FRIEND);
+                            break;
+                        case GROUP:
+                            Process(groupRefresher, follower, following, followingEventTypes, followerEvents, snapshots, i,
+                                    Group.class, GroupListSnapshot.class, GroupEvent.class, new GroupSnapshotDifference(),
+                                    EventType.GROUP);
                     }
                 }
             });

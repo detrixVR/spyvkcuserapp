@@ -5,7 +5,6 @@ import shared.controller.account_service.IAccountService;
 import shared.controller.api_service.IApiService;
 import shared.controller.db_service.IDBService;
 import shared.model.event.Event;
-import shared.model.group.GroupInfo;
 import shared.model.user.Follower;
 import shared.model.user.Following;
 import webserver.controller.cookies_service.ICookiesService;
@@ -40,10 +39,7 @@ public class FollowingServlet extends HttpServlet {
         Long followingId = Long.valueOf(req.getParameter("id"));
         Long followerId = Long.valueOf(cookiesService.getCookie(req, "id"));
         Follower follower = dbService.getFollowerByVkId(followerId);
-        String accessToken = follower.getAccessToken();
 
-        List<Long> groupIds = apiService.requestGroupIds(followingId, accessToken);
-        List<GroupInfo> groupsInfo = apiService.requestGroupsInfo(groupIds);
         Map<String, Object> pageVariables = new HashMap<>();
 
         Following following = follower.getFollowingByVkId(followingId);
@@ -68,7 +64,6 @@ public class FollowingServlet extends HttpServlet {
         });
 
         pageVariables.put("followingInfo", following.getUserInfo());
-        pageVariables.put("groupsInfo", groupsInfo);
         pageVariables.put("events", events);
         resp.setContentType("text/html; charset=utf-8");
         resp.getWriter().println(pageGenerator.getPage("following.html", pageVariables));

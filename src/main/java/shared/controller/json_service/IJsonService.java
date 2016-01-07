@@ -2,7 +2,7 @@ package shared.controller.json_service;
 
 import shared.model.audio.Audio;
 import shared.model.friend.Friend;
-import shared.model.group.GroupInfo;
+import shared.model.group.Group;
 import shared.model.post.Post;
 import shared.model.user.UserInfo;
 import shared.model.video.Video;
@@ -20,7 +20,7 @@ public interface IJsonService {
 
     ArrayList<Long> getGroupsIds(String answer);
 
-    ArrayList<GroupInfo> getGroupsInfo(String answer);
+    ArrayList<Group> getGroups(String answer);
 
     Set<Post> getPosts(String answer);
 

@@ -2,7 +2,7 @@ package shared.controller.api_service;
 
 import shared.model.audio.Audio;
 import shared.model.friend.Friend;
-import shared.model.group.GroupInfo;
+import shared.model.group.Group;
 import shared.model.post.Post;
 import shared.model.user.UserInfo;
 import shared.model.video.Video;
@@ -22,7 +22,7 @@ public interface IApiService {
 
     ArrayList<Long> requestGroupIds(long followerId, String accessToken);
 
-    List<GroupInfo> requestGroupsInfo(List<Long> groupIds);
+    List<Group> requestGroups(List<Long> groupIds);
 
     Set<Post> requestPosts(Long groupId, Long addingDate, String accessToken);
 

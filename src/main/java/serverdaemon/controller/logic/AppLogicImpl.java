@@ -24,7 +24,7 @@ public class AppLogicImpl implements IAppLogic {
                 }
             }
             if (isAdded) {
-                Group newGroup = new Group(group.getGroupInfo(), likedPosts);
+                Group newGroup = new Group(likedPosts);
                 groupsWithPostsLikedByFollowing.add(newGroup);
             }
         }

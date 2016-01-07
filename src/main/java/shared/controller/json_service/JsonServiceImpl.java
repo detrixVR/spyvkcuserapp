@@ -5,7 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import shared.model.audio.Audio;
 import shared.model.friend.Friend;
-import shared.model.group.GroupInfo;
+import shared.model.group.Group;
 import shared.model.post.Post;
 import shared.model.user.UserInfo;
 import shared.model.video.Video;
@@ -49,19 +49,19 @@ public class JsonServiceImpl implements IJsonService {
     }
 
     @Override
-    public ArrayList<GroupInfo> getGroupsInfo(String answer) {
-        ArrayList<GroupInfo> groupsInfo = new ArrayList<>();
+    public ArrayList<Group> getGroups(String answer) {
+        ArrayList<Group> groups = new ArrayList<>();
         JSONObject jsonObject = new JSONObject(answer);
         JSONArray jsonArray = jsonObject.getJSONArray("response");
         for (int i = 0; !jsonArray.isNull(i); i++) {
             JSONObject groupObject = jsonArray.getJSONObject(i);
-            GroupInfo groupInfo = new GroupInfo();
-            groupInfo.setVkId(groupObject.getLong("id"));
-            groupInfo.setName(groupObject.getString("name"));
-            groupInfo.setScreenName(groupObject.getString("screen_name"));
-            groupsInfo.add(groupInfo);
+            Group group = new Group();
+            group.setVkId(groupObject.getLong("id"));
+            group.setName(groupObject.getString("name"));
+            group.setScreenName(groupObject.getString("screen_name"));
+            groups.add(group);
         }
-        return groupsInfo;
+        return groups;
     }
 
     @Override

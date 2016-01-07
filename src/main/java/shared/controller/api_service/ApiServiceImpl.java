@@ -6,7 +6,7 @@ import shared.controller.link_builder.ILinkBuilder;
 import shared.controller.request.IRequest;
 import shared.model.audio.Audio;
 import shared.model.friend.Friend;
-import shared.model.group.GroupInfo;
+import shared.model.group.Group;
 import shared.model.post.Post;
 import shared.model.user.UserInfo;
 import shared.model.video.Video;
@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class ApiServiceImpl implements IApiService {
     private ILinkBuilder linkBuilder;
@@ -86,15 +85,15 @@ public class ApiServiceImpl implements IApiService {
     }
 
     @Override
-    public List<GroupInfo> requestGroupsInfo(List<Long> groupIds) {
+    public List<Group> requestGroups(List<Long> groupIds) {
         String requestGroupsLink = linkBuilder.getRequestGroupsLink(groupIds);
         String answer;
-        ArrayList<GroupInfo> groupsInfo;
+        ArrayList<Group> groups;
         do {
             answer = request.get(requestGroupsLink, 0);
-            groupsInfo = jsonService.getGroupsInfo(answer);
-        } while(groupsInfo == null);
-        return groupsInfo;
+            groups = jsonService.getGroups(answer);
+        } while(groups == null);
+        return groups;
     }
 
     @Override

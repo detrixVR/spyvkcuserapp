@@ -11,7 +11,6 @@ import shared.model.dao.*;
 import shared.model.event.*;
 import shared.model.friend.Friend;
 import shared.model.group.Group;
-import shared.model.group.GroupInfo;
 import shared.model.snapshots.*;
 import shared.model.post.Post;
 import shared.model.user.*;
@@ -19,7 +18,6 @@ import shared.model.video.Video;
 
 import java.sql.Statement;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,7 +31,6 @@ public class DBServiceImpl implements IDBService {
         configuration.addAnnotatedClass(Following.class);
         configuration.addAnnotatedClass(Follower.class);
         configuration.addAnnotatedClass(Group.class);
-        configuration.addAnnotatedClass(GroupInfo.class);
         configuration.addAnnotatedClass(Post.class);
         configuration.addAnnotatedClass(GroupSnapshot.class);
         configuration.addAnnotatedClass(PostSnapshot.class);
@@ -51,6 +48,9 @@ public class DBServiceImpl implements IDBService {
         configuration.addAnnotatedClass(Friend.class);
         configuration.addAnnotatedClass(FriendListSnapshot.class);
         configuration.addAnnotatedClass(FriendEvent.class);
+        configuration.addAnnotatedClass(Group.class);
+        configuration.addAnnotatedClass(GroupListSnapshot.class);
+        configuration.addAnnotatedClass(GroupEvent.class);
 
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
         configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
@@ -133,9 +133,6 @@ public class DBServiceImpl implements IDBService {
         Session session = sessionFactory.openSession();
         GroupDAO dao = new GroupDAO(session);
         Set<Group> groups = dao.getAll();
-        for (Group group : groups) {
-            Hibernate.initialize(group.getGroupInfo());
-        }
         session.close();
         return groups;
     }

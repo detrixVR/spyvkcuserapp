@@ -3,7 +3,6 @@ import shared.controller.api_service.IApiService;
 import shared.controller.json_service.IJsonService;
 import shared.controller.link_builder.ILinkBuilder;
 import shared.controller.request.IRequest;
-import shared.model.post.Post;
 import shared.model.user.UserInfo;
 import org.junit.Before;
 import org.junit.Test;
@@ -112,13 +111,13 @@ public class ApiServiceImplTest {
         when(linkBuilder.getRequestGroupsLink(groupIds)).thenReturn(requestGroupsLink);
         String answer = "answer";
         when(request.get(requestGroupsLink, 0)).thenReturn(answer);
-        when(jsonService.getGroupsInfo(answer)).thenReturn(new ArrayList<>());
+        when(jsonService.getGroups(answer)).thenReturn(new ArrayList<>());
 
-        apiService.requestGroupsInfo(groupIds);
+        apiService.requestGroups(groupIds);
 
         verify(linkBuilder, times(1)).getRequestGroupsLink(groupIds);
         verify(request, times(1)).get(requestGroupsLink, 0);
-        verify(jsonService, times(1)).getGroupsInfo(answer);
+        verify(jsonService, times(1)).getGroups(answer);
     }
 
     @Test
