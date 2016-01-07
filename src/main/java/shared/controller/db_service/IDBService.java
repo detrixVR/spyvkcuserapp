@@ -13,6 +13,7 @@ import shared.model.user.Follower;
 import shared.model.user.Following;
 import shared.model.video.Video;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,6 +23,8 @@ public interface IDBService {
     void saveFollowing(Following following);
 
     void updateFollower(Follower follower);
+
+    <T> void save(T t, Class<T> classT);
 
     void saveAudio(Audio audio);
 

@@ -3,11 +3,12 @@ package shared.model.snapshots;
 import shared.model.post.Post;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table
 
-public class PostSnapshot extends Snapshot {
+public class PostSnapshot extends Snapshot<Post> {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn
@@ -30,5 +31,10 @@ public class PostSnapshot extends Snapshot {
 
     public void setPost(Post post) {
         this.post = post;
+    }
+
+    @Override
+    public List<Post> getList() {
+        return null;
     }
 }

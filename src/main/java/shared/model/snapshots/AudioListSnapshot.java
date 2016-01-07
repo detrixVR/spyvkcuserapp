@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Table
-public class AudioListSnapshot extends Snapshot {
+public class AudioListSnapshot extends Snapshot<Audio> {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Audio> audioList = new ArrayList<>();
 
@@ -18,5 +18,10 @@ public class AudioListSnapshot extends Snapshot {
 
     public void setAudioList(List<Audio> audioList) {
         this.audioList = audioList;
+    }
+
+    @Override
+    public List<Audio> getList() {
+        return audioList;
     }
 }

@@ -61,6 +61,12 @@ public class FollowingServlet extends HttpServlet {
             events = new ArrayList<>();
         }
 
+        events.sort((o1, o2) -> {
+            if(o1.getEventDate() < o2.getEventDate()) return 1;
+            if(o1.getEventDate() > o2.getEventDate()) return -1;
+            else return 0;
+        });
+
         pageVariables.put("followingInfo", following.getUserInfo());
         pageVariables.put("groupsInfo", groupsInfo);
         pageVariables.put("events", events);

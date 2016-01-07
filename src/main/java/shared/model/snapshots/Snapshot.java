@@ -1,10 +1,11 @@
 package shared.model.snapshots;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Inheritance
-public class Snapshot {
+public abstract class Snapshot<T> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,4 +19,6 @@ public class Snapshot {
     public void setSnapshotDate(Long snapshotDate) {
         this.snapshotDate = snapshotDate;
     }
+
+    public abstract List<T> getList();
 }

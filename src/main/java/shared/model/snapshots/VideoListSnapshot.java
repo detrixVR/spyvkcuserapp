@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Table
-public class VideoListSnapshot extends Snapshot {
+public class VideoListSnapshot extends Snapshot<Video> {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Video> videoList = new ArrayList<>();
 
@@ -18,5 +18,10 @@ public class VideoListSnapshot extends Snapshot {
 
     public void setVideoList(List<Video> videoList) {
         this.videoList = videoList;
+    }
+
+    @Override
+    public List<Video> getList() {
+        return videoList;
     }
 }

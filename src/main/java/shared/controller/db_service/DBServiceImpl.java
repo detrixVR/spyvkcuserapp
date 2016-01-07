@@ -19,6 +19,7 @@ import shared.model.video.Video;
 
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -309,6 +310,27 @@ public class DBServiceImpl implements IDBService {
         FriendEventDAO dao = new FriendEventDAO(session);
         dao.save(event);
         session.close();
+    }
+
+    @Override
+    public <T> void save(T t, Class<T> classT) {
+        Session session = sessionFactory.openSession();
+        DAO<T> dao = new DAO<T>(session, classT) {
+            @Override
+            public void save(T object) {
+                super.save(object);
+            }
+
+            @Override
+            public void update(T object) {
+                super.update(object);
+            }
+
+            @Override
+            public Set<T> getAll() {
+                return super.getAll();
+            }
+        };
     }
 
     @Override
