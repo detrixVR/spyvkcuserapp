@@ -2,13 +2,11 @@ package serverdaemon.controller;
 
 import shared.controller.api_service.IApiService;
 import shared.controller.db_service.IDBService;
-import shared.model.event.FollowerEvents;
 import shared.model.snapshots.VideoListSnapshot;
 import shared.model.user.Follower;
 import shared.model.user.Following;
 import shared.model.video.Video;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class VideoRefresher implements Refreshable<VideoListSnapshot> {

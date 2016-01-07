@@ -178,4 +178,18 @@ public class LinkBuilderImpl implements ILinkBuilder {
                 .append(accessToken);
         return requestVideoLink.toString();
     }
+
+    @Override
+    public String getRequestFriendsLink(Long vkId, String accessToken) {
+        StringBuilder requestFriendsLink = new StringBuilder();
+        requestFriendsLink
+                .append("https://api.vk.com/method/friends.get?")
+                .append("user_id=")
+                .append(vkId)
+                .append("&fields=domain")
+                .append("&v=5.42")
+                .append("&access_token=")
+                .append(accessToken);
+        return requestFriendsLink.toString();
+    }
 }

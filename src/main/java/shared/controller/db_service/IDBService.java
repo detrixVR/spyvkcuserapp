@@ -1,12 +1,11 @@
 package shared.controller.db_service;
 
 import shared.model.audio.Audio;
-import shared.model.event.AudioEvent;
-import shared.model.event.Event;
-import shared.model.event.FollowerEvents;
-import shared.model.event.VideoEvent;
+import shared.model.event.*;
+import shared.model.friend.Friend;
 import shared.model.group.Group;
 import shared.model.snapshots.AudioListSnapshot;
+import shared.model.snapshots.FriendListSnapshot;
 import shared.model.snapshots.GroupSnapshot;
 import shared.model.post.Post;
 import shared.model.snapshots.VideoListSnapshot;
@@ -61,4 +60,10 @@ public interface IDBService {
     void saveVideoListSnapshot(VideoListSnapshot videoListSnapshot);
 
     void saveVideoEvent(VideoEvent event);
+
+    void saveFriend(Friend a);
+
+    void saveFriendListSnapshot(FriendListSnapshot friendListSnapshot);
+
+    void saveFriendEvent(FriendEvent event);
 }

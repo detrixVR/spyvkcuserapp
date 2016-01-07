@@ -1,6 +1,7 @@
 package shared.controller.api_service;
 
 import shared.model.audio.Audio;
+import shared.model.friend.Friend;
 import shared.model.group.GroupInfo;
 import shared.model.post.Post;
 import shared.model.user.UserInfo;
@@ -30,4 +31,6 @@ public interface IApiService {
     List<Audio> requestAudio(Long vkId, String accessToken);
 
     List<Video> requestVideo(Long vkId, String accessToken);
+
+    List<Friend> requestFriends(Long vkId, String accessToken);
 }

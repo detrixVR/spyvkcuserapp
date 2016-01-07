@@ -6,6 +6,7 @@ import shared.controller.api_service.IApiService;
 import shared.controller.db_service.IDBService;
 import shared.model.event.*;
 import shared.model.snapshots.AudioListSnapshot;
+import shared.model.snapshots.FriendListSnapshot;
 import shared.model.snapshots.Snapshot;
 import shared.model.snapshots.VideoListSnapshot;
 import shared.model.user.Follower;
@@ -32,22 +33,10 @@ public class RefreshTask extends TimerTask {
 
     @Override
     public void run() {
-//        Set<Group> groups = dbService.getAllGroups();
-//        GroupRefresher groupRefresher = new GroupRefresher(apiService, dbService);
-//        groupRefresher.refresh(groups);
-//
-//        GroupSnapshotBuilder groupSnapshotBuilder = new GroupSnapshotBuilder();
-//        for (Group group : groups) {
-//            GroupSnapshot groupSnapshot = groupSnapshotBuilder.build(group);
-//            dbService.saveGroupSnapshot(groupSnapshot);
-//        }
-//
-//        Set<Following> following = dbService.getAllFollowings();
-//        FollowingRefresher followingRefresher = new FollowingRefresher(appLogic, dbService);
-//        followingRefresher.refresh(following);
         GroupRefresher groupRefresher = new GroupRefresher(apiService, dbService);
         AudioRefresher audioRefresher = new AudioRefresher(apiService, dbService);
         VideoRefresher videoRefresher = new VideoRefresher(apiService, dbService);
+        FriendRefresher friendRefresher = new FriendRefresher(apiService, dbService);
 
         Map<Long, Follower> followers = dbService.getAllFollowers();
         followers.forEach((id, follower) -> {
@@ -70,7 +59,8 @@ public class RefreshTask extends TimerTask {
                         .get();
                 List<Snapshot> snapshots = followerEvents.getSnapshots();
 
-                eventTypes.forEach(eventType -> {
+                for (int i = 0; i < eventTypes.size(); i++) {
+                    EventType eventType = eventTypes.get(i);
                     switch (eventType) {
 //                        case GROUP_LIKE:
 //                            Snapshot snapshot = groupRefresher.refresh(following, follower);
@@ -84,7 +74,7 @@ public class RefreshTask extends TimerTask {
 //                            break;
                         case AUDIO:
                             AudioListSnapshot snapshot = audioRefresher.refresh(following, follower);
-                            if(snapshots.size() < followingEventTypes.getEventTypes().size()) {
+                            if (snapshots.size() < followingEventTypes.getEventTypes().size()) {
                                 snapshot.getAudioList().forEach(a -> dbService.saveAudio(a));
                                 dbService.saveAudioListSnapshot(snapshot);
                                 snapshots.add(snapshot);
@@ -94,7 +84,7 @@ public class RefreshTask extends TimerTask {
                             } else {
                                 AudioSnapshotDifference audioSnapshotDifference = new AudioSnapshotDifference();
                                 List<Event> difference = audioSnapshotDifference.difference(
-                                        snapshots.get(0),
+                                        snapshots.get(i),
                                         snapshot,
                                         followerEvents.getEvents(),
                                         EventType.AUDIO
@@ -106,7 +96,7 @@ public class RefreshTask extends TimerTask {
                             break;
                         case VIDEO:
                             VideoListSnapshot videoListSnapshot = videoRefresher.refresh(following, follower);
-                            if(snapshots.size() < followingEventTypes.getEventTypes().size()) {
+                            if (snapshots.size() < followingEventTypes.getEventTypes().size()) {
                                 videoListSnapshot.getVideoList().forEach(a -> dbService.saveVideo(a));
                                 dbService.saveVideoListSnapshot(videoListSnapshot);
                                 snapshots.add(videoListSnapshot);
@@ -116,7 +106,7 @@ public class RefreshTask extends TimerTask {
                             } else {
                                 VideoSnapshotDifference videoSnapshotDifference = new VideoSnapshotDifference();
                                 List<Event> difference = videoSnapshotDifference.difference(
-                                        snapshots.get(1),
+                                        snapshots.get(i),
                                         videoListSnapshot,
                                         followerEvents.getEvents(),
                                         EventType.VIDEO
@@ -126,8 +116,29 @@ public class RefreshTask extends TimerTask {
                                 dbService.updateFollowerEvents(followerEvents);
                             }
                             break;
+                        case FRIEND:
+                            FriendListSnapshot friendListSnapshot = friendRefresher.refresh(following, follower);
+                            if (snapshots.size() < followingEventTypes.getEventTypes().size()) {
+                                friendListSnapshot.getFriendList().forEach(a -> dbService.saveFriend(a));
+                                dbService.saveFriendListSnapshot(friendListSnapshot);
+                                snapshots.add(friendListSnapshot);
+                                dbService.updateFollowerEvents(followerEvents);
+                                dbService.updateFollower(follower);
+                                dbService.updateFollowing(following);
+                            } else {
+                                FriendSnapshotDifference friendSnapshotDifference = new FriendSnapshotDifference();
+                                List<Event> difference = friendSnapshotDifference.difference(
+                                        snapshots.get(i),
+                                        friendListSnapshot,
+                                        followerEvents.getEvents(),
+                                        EventType.FRIEND
+                                );
+                                difference.forEach(event -> dbService.saveFriendEvent((FriendEvent) event));
+                                followerEvents.getEvents().addAll(difference);
+                                dbService.updateFollowerEvents(followerEvents);
+                            }
                     }
-                });
+                }
             });
         });
 

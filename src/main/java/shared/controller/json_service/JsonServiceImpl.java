@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import shared.model.audio.Audio;
+import shared.model.friend.Friend;
 import shared.model.group.GroupInfo;
 import shared.model.post.Post;
 import shared.model.user.UserInfo;
@@ -154,5 +155,27 @@ public class JsonServiceImpl implements IJsonService {
             return null;
         }
         return videoList;
+    }
+
+    @Override
+    public List<Friend> getFriends(String answer) {
+        List<Friend> friendsList = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(answer);
+            JSONArray friendArray = jsonObject.getJSONObject("response").getJSONArray("items");
+            for (int i = 0; !friendArray.isNull(i); i++) {
+                Friend friend = new Friend();
+                JSONObject friendObject = friendArray.getJSONObject(i);
+                friend.setVkId(friendObject.getLong("id"));
+                friend.setFirstName(friendObject.getString("first_name"));
+                friend.setLastName(friendObject.getString("last_name"));
+                friendsList.add(friend);
+            }
+        } catch (JSONException ex) {
+            System.out.println(ex.getMessage());
+            System.out.println("Too many requests per second");
+            return null;
+        }
+        return friendsList;
     }
 }

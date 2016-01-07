@@ -22,4 +22,6 @@ public interface ILinkBuilder {
     String getRequestAudioLink(Long vkId, String accessToken);
 
     String getRequestVideoLink(Long vkId, String accessToken);
+
+    String getRequestFriendsLink(Long vkId, String accessToken);
 }

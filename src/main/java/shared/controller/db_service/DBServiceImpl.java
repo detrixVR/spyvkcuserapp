@@ -9,6 +9,7 @@ import org.hibernate.service.ServiceRegistry;
 import shared.model.audio.Audio;
 import shared.model.dao.*;
 import shared.model.event.*;
+import shared.model.friend.Friend;
 import shared.model.group.Group;
 import shared.model.group.GroupInfo;
 import shared.model.snapshots.*;
@@ -46,6 +47,9 @@ public class DBServiceImpl implements IDBService {
         configuration.addAnnotatedClass(Video.class);
         configuration.addAnnotatedClass(VideoListSnapshot.class);
         configuration.addAnnotatedClass(VideoEvent.class);
+        configuration.addAnnotatedClass(Friend.class);
+        configuration.addAnnotatedClass(FriendListSnapshot.class);
+        configuration.addAnnotatedClass(FriendEvent.class);
 
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
         configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
@@ -279,6 +283,30 @@ public class DBServiceImpl implements IDBService {
     public void saveVideoEvent(VideoEvent event) {
         Session session = sessionFactory.openSession();
         VideoEventDAO dao = new VideoEventDAO(session);
+        dao.save(event);
+        session.close();
+    }
+
+    @Override
+    public void saveFriend(Friend a) {
+        Session session = sessionFactory.openSession();
+        FriendDAO dao = new FriendDAO(session);
+        dao.save(a);
+        session.close();
+    }
+
+    @Override
+    public void saveFriendListSnapshot(FriendListSnapshot friendListSnapshot) {
+        Session session = sessionFactory.openSession();
+        FriendListSnapshotDAO dao = new FriendListSnapshotDAO(session);
+        dao.save(friendListSnapshot);
+        session.close();
+    }
+
+    @Override
+    public void saveFriendEvent(FriendEvent event) {
+        Session session = sessionFactory.openSession();
+        FriendEventDAO dao = new FriendEventDAO(session);
         dao.save(event);
         session.close();
     }

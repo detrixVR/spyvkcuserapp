@@ -5,6 +5,7 @@ import shared.controller.json_service.IJsonService;
 import shared.controller.link_builder.ILinkBuilder;
 import shared.controller.request.IRequest;
 import shared.model.audio.Audio;
+import shared.model.friend.Friend;
 import shared.model.group.GroupInfo;
 import shared.model.post.Post;
 import shared.model.user.UserInfo;
@@ -174,5 +175,17 @@ public class ApiServiceImpl implements IApiService {
             video = jsonService.getVideo(answer);
         } while (video == null);
         return video;
+    }
+
+    @Override
+    public List<Friend> requestFriends(Long vkId, String accessToken) {
+        List<Friend> friends;
+        String requestFriendsLink = linkBuilder.getRequestFriendsLink(vkId, accessToken);
+        String answer;
+        do {
+            answer = request.get(requestFriendsLink, 200);
+            friends = jsonService.getFriends(answer);
+        } while (friends == null);
+        return friends;
     }
 }

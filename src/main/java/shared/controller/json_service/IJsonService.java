@@ -1,6 +1,7 @@
 package shared.controller.json_service;
 
 import shared.model.audio.Audio;
+import shared.model.friend.Friend;
 import shared.model.group.GroupInfo;
 import shared.model.post.Post;
 import shared.model.user.UserInfo;
@@ -30,4 +31,6 @@ public interface IJsonService {
     List<Audio> getAudio(String answer);
 
     List<Video> getVideo(String answer);
+
+    List<Friend> getFriends(String answer);
 }
