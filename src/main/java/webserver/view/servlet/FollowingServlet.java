@@ -3,6 +3,7 @@ package webserver.view.servlet;
 import com.google.inject.Inject;
 import shared.controller.account_service.IAccountService;
 import shared.controller.api_service.IApiService;
+import shared.controller.db_service.IDBService;
 import shared.model.event.Event;
 import shared.model.group.GroupInfo;
 import shared.model.user.Follower;
@@ -22,21 +23,23 @@ public class FollowingServlet extends HttpServlet {
     private IAccountService accountService;
     private ICookiesService cookiesService;
     private IPageGenerator pageGenerator;
+    private IDBService dbService;
 
     @Inject
     public FollowingServlet(IApiService apiService, IAccountService accountService, ICookiesService cookiesService,
-                            IPageGenerator pageGenerator) {
+                            IPageGenerator pageGenerator, IDBService dbService) {
         this.apiService = apiService;
         this.accountService = accountService;
         this.cookiesService = cookiesService;
         this.pageGenerator = pageGenerator;
+        this.dbService = dbService;
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Long followingId = Long.valueOf(req.getParameter("id"));
         Long followerId = Long.valueOf(cookiesService.getCookie(req, "id"));
-        Follower follower = accountService.getFollower(followerId);
+        Follower follower = dbService.getFollowerByVkId(followerId);
         String accessToken = follower.getAccessToken();
 
         List<Long> groupIds = apiService.requestGroupIds(followingId, accessToken);

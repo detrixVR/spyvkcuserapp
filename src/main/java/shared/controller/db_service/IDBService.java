@@ -1,6 +1,7 @@
 package shared.controller.db_service;
 
 import shared.model.audio.Audio;
+import shared.model.event.AudioEvent;
 import shared.model.event.Event;
 import shared.model.event.FollowerEvents;
 import shared.model.group.Group;
@@ -49,4 +50,6 @@ public interface IDBService {
     void updateFollowerEvents(FollowerEvents followerEvents);
 
     void saveEvent(Event event);
+
+    void saveAudioEvent(AudioEvent event);
 }

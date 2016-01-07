@@ -24,4 +24,18 @@ public class AudioEvent extends Event {
     public void setAudio(Audio audio) {
         this.audio = audio;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        EventAction eventAction = this.eventAction;
+        if(eventAction == EventAction.ADD) stringBuilder.append("Добавил ");
+        if(eventAction == EventAction.REMOVE) stringBuilder.append("Удалил ");
+        stringBuilder.append("аудиозапись ");
+        stringBuilder.append(audio.getArtist());
+        stringBuilder.append(" - ");
+        stringBuilder.append(audio.getTitle());
+        stringBuilder.append(".");
+        return stringBuilder.toString();
+    }
 }

@@ -51,6 +51,8 @@ public class DBServiceImpl implements IDBService {
         configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/vkchase");
         configuration.setProperty("hibernate.connection.username", "root");
         configuration.setProperty("hibernate.connection.password", "root");
+        configuration.setProperty("hibernate.cache.use_second_level_cache", "false");
+        configuration.setProperty("hibernate.cache.use_query_cache", "false");
         configuration.setProperty("hibernate.connection.CharSet", "utf8mb4");
         configuration.setProperty("hibernate.connection.characterEncoding", "utf8");
 //        configuration.setProperty("hibernate.show_sql", "true");
@@ -126,12 +128,7 @@ public class DBServiceImpl implements IDBService {
         GroupDAO dao = new GroupDAO(session);
         Set<Group> groups = dao.getAll();
         for (Group group : groups) {
-//            Hibernate.initialize(group.getFollowing());
             Hibernate.initialize(group.getGroupInfo());
-//            for (Following following : group.getFollowing()) {
-////                Hibernate.initialize(following.getGroups());
-//                Hibernate.initialize(following.getFollowers());
-//            }
         }
         session.close();
         return groups;
@@ -157,7 +154,6 @@ public class DBServiceImpl implements IDBService {
                     for (Snapshot snapshot : follower_events.getSnapshots()) {
                         Hibernate.initialize(snapshot);
                     }
-//                    Hibernate.initialize(follower_events.getTtt());
                 }
             }
             for (FollowingEventTypes following_eventTypes : follower.getFollowing_EventTypesList()) {
@@ -191,13 +187,6 @@ public class DBServiceImpl implements IDBService {
         FollowingDAO dao = new FollowingDAO(session);
         Set<Following> following = dao.getAll();
         for (Following followingOne : following) {
-//            Hibernate.initialize(followingOne.getGroups());
-//            for (Group group : followingOne.getGroups().keySet()) {
-//                Hibernate.initialize(group.getPosts());
-//                for (Post post : group.getPosts()) {
-//                    Hibernate.initialize(post.getLikedUserIds());
-//                }
-//            }
             Hibernate.initialize(followingOne.getUserInfo());
         }
         session.close();
@@ -211,12 +200,11 @@ public class DBServiceImpl implements IDBService {
         Follower follower = dao.getByVkId(id);
         Hibernate.initialize(follower.getFollowing());
         for (Following following : follower.getFollowing()) {
-//            Hibernate.initialize(following.getLikedPosts());
-//            for (Post post : following.getLikedPosts()) {
-//                Hibernate.initialize(post);
-//                Hibernate.initialize(post.getGroup().getGroupInfo());
-//            }
             Hibernate.initialize(following.getUserInfo());
+            Hibernate.initialize(following.getFollower_EventsList());
+            for (FollowerEvents followerEvents : following.getFollower_EventsList()) {
+                Hibernate.initialize(followerEvents.getEvents());
+            }
         }
         session.close();
         return follower;
@@ -258,6 +246,14 @@ public class DBServiceImpl implements IDBService {
     public void saveEvent(Event event) {
         Session session = sessionFactory.openSession();
         EventDAO dao = new EventDAO(session);
+        dao.save(event);
+        session.close();
+    }
+
+    @Override
+    public void saveAudioEvent(AudioEvent event) {
+        Session session = sessionFactory.openSession();
+        AudioEventDAO dao = new AudioEventDAO(session);
         dao.save(event);
         session.close();
     }

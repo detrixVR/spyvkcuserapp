@@ -4,10 +4,7 @@ import com.google.inject.Inject;
 import serverdaemon.controller.logic.IAppLogic;
 import shared.controller.api_service.IApiService;
 import shared.controller.db_service.IDBService;
-import shared.model.event.Event;
-import shared.model.event.EventType;
-import shared.model.event.FollowerEvents;
-import shared.model.event.FollowingEventTypes;
+import shared.model.event.*;
 import shared.model.snapshots.AudioListSnapshot;
 import shared.model.snapshots.Snapshot;
 import shared.model.user.Follower;
@@ -99,7 +96,7 @@ public class RefreshTask extends TimerTask {
                                         snapshot,
                                         followerEvents.getEvents()
                                 );
-                                difference.forEach(event -> dbService.saveEvent(event));
+                                difference.forEach(event -> dbService.saveAudioEvent((AudioEvent) event));
                                 followerEvents.getEvents().addAll(difference);
                                 dbService.updateFollowerEvents(followerEvents);
                             }
