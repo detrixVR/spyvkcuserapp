@@ -21,6 +21,9 @@ public class FriendSnapshotBuilder implements SnapshotBuilder<FriendListSnapshot
     public FriendListSnapshot build(Following following, Follower follower) {
         FriendListSnapshot friendListSnapshot = new FriendListSnapshot();
         List<Friend> friends = apiService.requestFriends(following.getUserInfo().getVkId(), follower.getAccessToken());
+        if(friends == null) {
+            throw new NullPointerException();
+        }
         friendListSnapshot.setFriendList(friends);
         friendListSnapshot.setSnapshotDate(System.currentTimeMillis()/1000);
 

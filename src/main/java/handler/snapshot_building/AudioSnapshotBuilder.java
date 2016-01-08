@@ -21,6 +21,9 @@ public class AudioSnapshotBuilder implements SnapshotBuilder<AudioListSnapshot> 
     public AudioListSnapshot build(Following following, Follower follower) {
         AudioListSnapshot audioListSnapshot = new AudioListSnapshot();
         List<Audio> audio = apiService.requestAudio(following.getUserInfo().getVkId(), follower.getAccessToken());
+        if(audio == null) {
+            throw new NullPointerException();
+        }
         audioListSnapshot.setAudioList(audio);
         audioListSnapshot.setSnapshotDate(System.currentTimeMillis()/1000);
 

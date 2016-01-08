@@ -22,7 +22,7 @@ public class VideoSnapshotBuilder implements SnapshotBuilder<VideoListSnapshot> 
     public VideoListSnapshot build(Following following, Follower follower) {
         VideoListSnapshot videoListSnapshot = new VideoListSnapshot();
         List<Video> video = apiService.requestVideo(following.getUserInfo().getVkId(), follower.getAccessToken());
-
+        if(video == null) throw new NullPointerException();
         videoListSnapshot.setVideoList(video);
         videoListSnapshot.setSnapshotDate(System.currentTimeMillis()/1000);
 

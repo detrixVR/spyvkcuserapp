@@ -1,3 +1,5 @@
+package shared.controller.api_service;
+
 import shared.controller.api_service.ApiServiceImpl;
 import shared.controller.api_service.IApiService;
 import shared.controller.json_service.IJsonService;
@@ -53,18 +55,18 @@ public class ApiServiceImplTest {
 
     @Test
     public void testGetUserInfo() throws Exception {
-        Long userId = 1l;
+        Long userId = 1L;
         String accessToken = "accessToken";
         String userInfoLink = "userInfoLink";
         when(linkBuilder.getUserInfoLink(userId, accessToken)).thenReturn(userInfoLink);
         String userInfoString = "userInfoString";
-        when(request.get(userInfoLink, 0)).thenReturn(userInfoString);
+        when(request.get(userInfoLink, 200)).thenReturn(userInfoString);
         when(jsonService.getUserInfo(userInfoString)).thenReturn(new UserInfo());
 
         apiService.getUserInfo(userId, accessToken);
 
         verify(linkBuilder, times(1)).getUserInfoLink(userId, accessToken);
-        verify(request, times(1)).get(userInfoLink, 0);
+        verify(request, times(1)).get(userInfoLink, 200);
         verify(jsonService, times(1)).getUserInfo(userInfoString);
     }
 
@@ -110,20 +112,21 @@ public class ApiServiceImplTest {
         String requestGroupsLink = "requestGroupsLink";
         when(linkBuilder.getRequestGroupsLink(groupIds)).thenReturn(requestGroupsLink);
         String answer = "answer";
-        when(request.get(requestGroupsLink, 0)).thenReturn(answer);
+        when(request.get(requestGroupsLink, 200)).thenReturn(answer);
         when(jsonService.getGroups(answer)).thenReturn(new ArrayList<>());
 
         apiService.requestGroups(groupIds);
 
         verify(linkBuilder, times(1)).getRequestGroupsLink(groupIds);
-        verify(request, times(1)).get(requestGroupsLink, 0);
+        verify(request, times(1)).get(requestGroupsLink, 200);
         verify(jsonService, times(1)).getGroups(answer);
     }
 
     @Test
     public void testRequestPosts() throws Exception {
         Long groupId = 1L;
-        int count = 1;
+        Long addingDate = 0L;
+        int count = 100;
         int offset = 0;
         String accessToken = "accessToken";
         String requestPostsLink = "requestPostsLink";
@@ -132,7 +135,7 @@ public class ApiServiceImplTest {
         when(request.get(requestPostsLink, 200)).thenReturn(answer);
         when(jsonService.getPosts(answer)).thenReturn(new LinkedHashSet<>());
 
-//        apiService.requestPosts(groupId, count, accessToken);
+        apiService.requestPosts(groupId, addingDate, accessToken);
 
         verify(linkBuilder, times(1)).getRequestPostsLink(groupId, count, offset, accessToken);
         verify(request, times(1)).get(requestPostsLink, 200);

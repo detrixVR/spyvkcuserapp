@@ -22,6 +22,7 @@ public class GroupSnapshotBuilder implements SnapshotBuilder<GroupListSnapshot> 
         GroupListSnapshot groupListSnapshot = new GroupListSnapshot();
         List<Long> groupIds = apiService.requestGroupIds(following.getUserInfo().getVkId(), follower.getAccessToken());
         List<Group> groupList = apiService.requestGroups(groupIds);
+        if(groupList == null) throw new NullPointerException();
         groupListSnapshot.setGroupList(groupList);
         groupListSnapshot.setSnapshotDate(System.currentTimeMillis()/1000);
 
