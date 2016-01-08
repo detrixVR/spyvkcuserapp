@@ -1,19 +1,18 @@
-package serverdaemon.controller.snapshot_building;
+package handler.snapshot_building;
 
+import com.google.inject.Inject;
 import shared.controller.api_service.IApiService;
-import shared.controller.db_service.IDBService;
 import shared.model.audio.Audio;
-import shared.model.event.FollowerEvents;
 import shared.model.snapshots.AudioListSnapshot;
 import shared.model.user.Follower;
 import shared.model.user.Following;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AudioSnapshotBuilder implements SnapshotBuilder<AudioListSnapshot> {
     private IApiService apiService;
 
+    @Inject
     public AudioSnapshotBuilder(IApiService apiService) {
         this.apiService = apiService;
     }

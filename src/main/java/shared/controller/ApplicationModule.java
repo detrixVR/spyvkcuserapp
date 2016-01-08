@@ -2,8 +2,8 @@ package shared.controller;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
-import shared.controller.account_service.AccountServiceImpl;
-import shared.controller.account_service.IAccountService;
+import webserver.controller.account_service.AccountServiceImpl;
+import webserver.controller.account_service.IAccountService;
 import shared.controller.api_service.ApiServiceImpl;
 import shared.controller.api_service.IApiService;
 import shared.controller.db_service.DBServiceImpl;

@@ -1,7 +1,7 @@
-package serverdaemon.controller.snapshot_building;
+package handler.snapshot_building;
 
+import com.google.inject.Inject;
 import shared.controller.api_service.IApiService;
-import shared.controller.db_service.IDBService;
 import shared.model.post.Post;
 import shared.model.snapshots.PostListSnapshot;
 import shared.model.user.Follower;
@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 public class PostSnapshotBuilder implements SnapshotBuilder<PostListSnapshot> {
     private final IApiService apiService;
 
+    @Inject
     public PostSnapshotBuilder(IApiService apiService) {
         this.apiService = apiService;
     }

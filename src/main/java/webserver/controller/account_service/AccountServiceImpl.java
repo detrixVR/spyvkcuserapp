@@ -1,4 +1,4 @@
-package shared.controller.account_service;
+package webserver.controller.account_service;
 
 import com.google.inject.Inject;
 import shared.controller.db_service.IDBService;

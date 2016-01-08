@@ -1,4 +1,4 @@
-package serverdaemon.controller.snapshot_difference;
+package handler.snapshot_difference;
 
 import shared.model.event.Event;
 import shared.model.event.GroupEvent;

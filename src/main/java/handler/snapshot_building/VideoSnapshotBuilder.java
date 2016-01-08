@@ -1,7 +1,7 @@
-package serverdaemon.controller.snapshot_building;
+package handler.snapshot_building;
 
+import com.google.inject.Inject;
 import shared.controller.api_service.IApiService;
-import shared.controller.db_service.IDBService;
 import shared.model.snapshots.VideoListSnapshot;
 import shared.model.user.Follower;
 import shared.model.user.Following;
@@ -13,6 +13,7 @@ public class VideoSnapshotBuilder implements SnapshotBuilder<VideoListSnapshot> 
 
     private IApiService apiService;
 
+    @Inject
     public VideoSnapshotBuilder(IApiService apiService) {
         this.apiService = apiService;
     }

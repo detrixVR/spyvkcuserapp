@@ -1,4 +1,4 @@
-package serverdaemon.controller.snapshot_building;
+package handler.snapshot_building;
 
 import shared.model.user.Follower;
 import shared.model.user.Following;

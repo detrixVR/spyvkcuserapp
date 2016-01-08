@@ -17,6 +17,7 @@ public class FollowerDAO extends DAO<Follower> {
                 .createAlias("userInfo", "userInfo")
                 .add(Restrictions.eq("userInfo.vkId", id))
                 .uniqueResult();
+
         session.getTransaction().commit();
         return follower;
     }

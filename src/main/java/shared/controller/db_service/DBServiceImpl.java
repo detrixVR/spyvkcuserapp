@@ -150,11 +150,17 @@ public class DBServiceImpl implements IDBService {
         FollowerDAO dao = new FollowerDAO(session);
         Follower follower = dao.getByVkId(id);
         Hibernate.initialize(follower.getFollowing());
+        Hibernate.initialize(follower.getFollowing_EventTypesList());
+        for (FollowingEventTypes followingEventTypes : follower.getFollowing_EventTypesList()) {
+            Hibernate.initialize(followingEventTypes.getEventTypes());
+        }
         for (Following following : follower.getFollowing()) {
             Hibernate.initialize(following.getUserInfo());
             Hibernate.initialize(following.getFollower_EventsList());
+            Hibernate.initialize(following.getFollowers());
             for (FollowerEvents followerEvents : following.getFollower_EventsList()) {
                 Hibernate.initialize(followerEvents.getEvents());
+                Hibernate.initialize(followerEvents.getSnapshots());
             }
         }
         session.close();

@@ -1,4 +1,4 @@
-package shared.controller.account_service;
+package webserver.controller.account_service;
 
 import shared.model.user.Follower;
 

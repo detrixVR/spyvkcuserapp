@@ -1,7 +1,7 @@
 package webserver.view.servlet;
 
 import com.google.inject.Inject;
-import shared.controller.account_service.IAccountService;
+import webserver.controller.account_service.IAccountService;
 import shared.model.user.Follower;
 import shared.model.user.Following;
 import webserver.controller.cookies_service.ICookiesService;

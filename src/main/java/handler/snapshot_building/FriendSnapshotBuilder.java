@@ -1,7 +1,7 @@
-package serverdaemon.controller.snapshot_building;
+package handler.snapshot_building;
 
+import com.google.inject.Inject;
 import shared.controller.api_service.IApiService;
-import shared.controller.db_service.IDBService;
 import shared.model.friend.Friend;
 import shared.model.snapshots.FriendListSnapshot;
 import shared.model.user.Follower;
@@ -12,6 +12,7 @@ import java.util.List;
 public class FriendSnapshotBuilder implements SnapshotBuilder<FriendListSnapshot> {
     private final IApiService apiService;
 
+    @Inject
     public FriendSnapshotBuilder(IApiService apiService) {
         this.apiService = apiService;
     }
